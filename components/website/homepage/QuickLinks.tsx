@@ -12,8 +12,7 @@ const QuickLinks = () => {
           {[
             {
               title: "Concerts",
-              description:
-                "Enjoy live music and unforgettable performances",
+              description: "Enjoy live music and unforgettable performances",
               image:
                 "https://img.freepik.com/free-photo/man-with-dreads-representing-rastafari-movement_23-2151532087.jpg?uid=R137948985&ga=GA1.1.1977978369.1744267390&semt=ais_hybrid&w=740",
             },
@@ -47,8 +46,7 @@ const QuickLinks = () => {
             },
             {
               title: "Workshops",
-              description:
-                "Learn new skills through workshops and classes",
+              description: "Learn new skills through workshops and classes",
               image:
                 "https://img.freepik.com/premium-photo/man-speaking-front-large-audience_1276913-30195.jpg?uid=R137948985&ga=GA1.1.1977978369.1744267390&semt=ais_items_boosted&w=740",
             },
@@ -68,13 +66,13 @@ const QuickLinks = () => {
             },
           ].map((item, index) => (
             <Link href="/" key={index} className="cursor-pointer">
-              <article className="relative overflow-hidden rounded-lg shadow-sm transition hover:shadow-lg group">
+              <article className="quick-link-card group">
                 <img
                   alt={item.title}
                   src={item.image}
                   className="absolute inset-0 h-full w-full object-cover transition-transform duration-300 group-hover:scale-110"
                 />
-                <div className="relative bg-gradient-to-t from-gray-900 to-gray-900/5 pt-40">
+                <div className="relative pt-40">
                   <div className="p-4">
                     <h1 className="text-white text-[13px] md:text-sm font-semibold mb-1 group-hover:-translate-y-9 transition-transform duration-300">
                       {item.title}

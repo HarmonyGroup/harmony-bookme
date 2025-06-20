@@ -117,6 +117,7 @@
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
   }
@@ -153,7 +154,8 @@
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.85), rgba(24,50,100, 0.7)); /* adjust colors here */
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.85), rgba(24, 50, 100, 0.7));
+  /* adjust colors here */
   z-index: 1;
   pointer-events: none;
 }
@@ -165,4 +167,35 @@
   max-width: 48rem;
   padding: 1.25rem;
   color: white;
+}
+
+.quick-link-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 0.5rem;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.04);
+  transition: box-shadow 0.3s ease;
+}
+
+.quick-link-card:hover {
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+}
+
+.quick-link-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.9), rgba(24, 50, 100, 0.3));
+  /* similar to gray-900 to transparent */
+  z-index: 1;
+  pointer-events: none;
+}
+
+.quick-link-card img {
+  z-index: 0;
+}
+
+.quick-link-card>div {
+  position: relative;
+  z-index: 2;
 }
