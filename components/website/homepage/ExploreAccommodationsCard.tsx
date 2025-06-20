@@ -61,12 +61,12 @@ const ExploreAccommodationsCard = () => {
         src={EventBanner}
         className="h-56 w-full rounded-lg object-cover mb-5"
       />
-      <h3 className="text-primary text-sm font-medium mt-4 sm:mt-3.5">
+      <h3 className="text-primary text-sm font-semibold mt-4 sm:mt-3.5">
         Nova base apartments Lekki
       </h3>
       <p className="text-gray-500 text-xs mt-1.5">Victoria Island, Lagos</p>
       <div className="flex items-center justify-between text-primary font-semibold mt-6">
-        <p className="text-sm"><span className="text-xs font-light">from{" "}</span> ₦245k / Night</p>
+        <p className="text-sm">₦ 245,000 / Night</p>
         <Link
           href={"/"}
           className="flex items-center gap-1.5 bg-white hover:bg-primary text-primary hover:text-white text-xs font-semibold border border-primary rounded-full px-3 py-2 transition duration-300"
