@@ -65,19 +65,19 @@ const ExploreAccommodations = () => {
           className="w-full mt-10 md:mt-12"
         >
           <CarouselContent className="-ml-2 md:-ml-4">
-            <CarouselItem className="pl-2 md:pl-4 basis-full lg:basis-1/3">
+            <CarouselItem className="pl-2 md:pl-6 basis-full lg:basis-1/3">
               <ExploreAccommodationsCard />
             </CarouselItem>
-            <CarouselItem className="pl-2 md:pl-4 basis-full lg:basis-1/3">
+            <CarouselItem className="pl-2 md:pl-6 basis-full lg:basis-1/3">
               <ExploreAccommodationsCard />
             </CarouselItem>
-            <CarouselItem className="pl-2 md:pl-4 basis-full lg:basis-1/3">
+            <CarouselItem className="pl-2 md:pl-6 basis-full lg:basis-1/3">
               <ExploreAccommodationsCard />
             </CarouselItem>
-            <CarouselItem className="pl-2 md:pl-4 basis-full lg:basis-1/3">
+            <CarouselItem className="pl-2 md:pl-6 basis-full lg:basis-1/3">
               <ExploreAccommodationsCard />
             </CarouselItem>
-            <CarouselItem className="pl-2 md:pl-4 basis-full lg:basis-1/3">
+            <CarouselItem className="pl-2 md:pl-6 basis-full lg:basis-1/3">
               <ExploreAccommodationsCard />
             </CarouselItem>
           </CarouselContent>
