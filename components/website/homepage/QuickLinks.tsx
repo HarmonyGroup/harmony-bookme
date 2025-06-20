@@ -5,10 +5,10 @@ const QuickLinks = () => {
   return (
     <section className="bg-white pt-14 md:pt-8 pb-6 md:pb-10">
       <div className="mx-auto w-full max-w-7xl px-5 md:px-10">
-        <h1 className="text-primary text-center text-base md:text-xl/tight md:text-left font-medium">
+        <h1 className="text-primary text-center text-base md:text-xl/tight md:text-left font-semibold">
           Discover what&apos;s happening near you
         </h1>
-        <div className="grid grid-cols-2 gap-4 lg:grid-cols-4 lg:gap-5 mt-12">
+        <div className="grid grid-cols-2 gap-3 lg:grid-cols-4 lg:gap-5 mt-10 md:mt-12">
           {[
             {
               title: "Concerts",

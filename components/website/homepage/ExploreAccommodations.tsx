@@ -7,7 +7,7 @@ const ExploreAccommodations = () => {
     <section className="bg-white py-16">
       <div className="mx-auto w-full max-w-7xl px-5 md:px-10">
         <div className="flex items-center justify-center md:justify-between">
-          <h1 className="text-[#183264] text-center text-lg md:text-xl/tight font-medium">
+          <h1 className="text-[#183264] text-center text-lg md:text-xl/tight font-semibold">
             Find your perfect stay
           </h1>
           <div className="hidden md:flex items-center gap-2">
@@ -45,7 +45,7 @@ const ExploreAccommodations = () => {
             </Button>
           </div>
         </div>
-        <div className="grid grid-cols-1 gap-4 lg:grid-cols-3 lg:gap-8 mt-12 md:mt-12">
+        <div className="grid grid-cols-1 gap-4 lg:grid-cols-3 lg:gap-8 mt-10 md:mt-12">
           <ExploreAccommodationsCard />
           <ExploreAccommodationsCard />
           <ExploreAccommodationsCard />
