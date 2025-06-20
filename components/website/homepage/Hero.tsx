@@ -17,9 +17,9 @@ const Hero = () => {
         />
       </div>
 
-      <div className="relative flex flex-col items-center justify-center">
-        <h1 className="mb-5 text-white text-center text-4xl font-bold md:text-7xl/[80px]">
-          Simplified Booking!
+      <div className="mx-auto max-w-7xl px-8 relative flex flex-col items-center justify-center">
+        <h1 className="mb-5 text-white text-center text-4xl/[45px] font-bold md:text-7xl/[80px]">
+          Simplified <br className="block sm:hidden" /> Booking!
         </h1>
         <p className="text-center text-white/80 text-sm/relaxed md:text-base/relaxed font-semibold mx-auto max-w-3xl">
           We&apos;ve built a platform where you can book everything—from
@@ -28,7 +28,7 @@ const Hero = () => {
         </p>
         <Link
           href="/"
-          className="flex items-center gap-2 text-white/80 text-sm md:text-base font-semibold border rounded-full px-5 py-2 mt-10"
+          className="flex items-center gap-2 bg-white/5 text-white/80 text-sm md:text-base font-semibold border rounded-full px-5 py-2 mt-10 hover:bg-white/10 hover:text-white transition ease-in-out duration-300"
         >
           Discover
         </Link>
