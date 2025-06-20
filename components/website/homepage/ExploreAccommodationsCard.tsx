@@ -69,7 +69,7 @@ const ExploreAccommodationsCard = () => {
         <p className="text-sm">₦ 245,000 / Night</p>
         <Link
           href={"/"}
-          className="flex items-center gap-1.5 bg-white hover:bg-primary text-primary hover:text-white text-xs font-semibold border border-primary rounded-full px-3 py-2 transition duration-300"
+          className="flex items-center gap-1.5 bg-primary hover:bg-primary/85 text-white text-[13px] font-semibold rounded-full px-3 py-2 transition duration-300"
         >
           Book Now
           {/* <svg
