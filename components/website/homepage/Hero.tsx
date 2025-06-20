@@ -12,7 +12,7 @@ const Hero = () => {
           alt="Harmony BookMe"
           fill
           priority
-          className="hero-image blur-sm"
+          className="hero-image blur-xs"
           sizes="100vw"
         />
       </div>
