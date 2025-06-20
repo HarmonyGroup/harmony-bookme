@@ -2,7 +2,6 @@ import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import Logo from "@/public/assets/logo-wordmark-light.png";
-import { Separator } from "@/components/ui/separator";
 
 const Footer = () => {
   return (
