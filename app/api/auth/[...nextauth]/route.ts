@@ -81,9 +81,9 @@ const authOptions: NextAuthOptions = {
     async jwt({ token, user }) {
       if (user) {
         token.id = user.id;
-        token.role = user.role;
-        token.permissions = user.permissions;
-        token.avatar = user.avatar;
+        // token.role = user.role;
+        // token.permissions = user.permissions;
+        // token.avatar = user.avatar;
       }
       return token;
     },
