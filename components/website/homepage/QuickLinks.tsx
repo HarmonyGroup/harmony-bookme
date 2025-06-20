@@ -74,7 +74,7 @@ const QuickLinks = () => {
                 />
                 <div className="relative pt-40">
                   <div className="p-4">
-                    <h1 className="text-white text-[13px] md:text-sm font-semibold mb-1 group-hover:-translate-y-9 transition-transform duration-300">
+                    <h1 className="text-white text-xs md:text-sm font-semibold mb-1 group-hover:-translate-y-9 transition-transform duration-300">
                       {item.title}
                     </h1>
                     <p className="text-white/80 text-xs/normal absolute bottom-0 group-hover:bottom-4 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
