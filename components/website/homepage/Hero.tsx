@@ -18,7 +18,7 @@ const Hero = () => {
       </div>
 
       <div className="mx-auto max-w-7xl px-8 relative flex flex-col items-center justify-center">
-        <h1 className="mb-5 text-white text-center text-4xl/[45px] font-bold md:text-7xl/[80px]">
+        <h1 className="mb-6 text-white text-center text-[40px]/[50px] font-bold md:text-7xl/[80px]">
           Simplified <br className="block sm:hidden" /> Booking!
         </h1>
         <p className="text-center text-white/80 text-sm/relaxed md:text-base/relaxed font-semibold mx-auto max-w-3xl">
