@@ -21,7 +21,7 @@ const ResponsiveSidebar = () => {
           viewBox="0 0 24 24"
           strokeWidth="1.8"
           stroke="currentColor"
-          className="size-6"
+          className="text-primary size-5"
         >
           <path
             strokeLinecap="round"

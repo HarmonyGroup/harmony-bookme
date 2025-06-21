@@ -97,7 +97,7 @@ const Navbar = () => {
 
   return (
     <header className="bg-white border-b">
-      <div className="mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8 py-6 md:py-6">
+      <div className="mx-auto max-w-screen-xl px-5 py-6 md:py-6">
         <div className="flex items-center justify-between">
           <div className="flex items-center md:gap-12">
             <Link href={"/"} className="text-[#183264] text-base font-semibold">
@@ -107,7 +107,7 @@ const Navbar = () => {
 
           <div className="hidden lg:block">
             <nav aria-label="Global">
-              <ul className="flex items-center gap-10 text-[13px] font-semibold">
+              <ul className="flex items-center gap-10 text-[13px] font-medium">
                 <li>
                   <Link className="text-primary transition" href="/">
                     {" "}
@@ -176,14 +176,14 @@ const Navbar = () => {
                       clipRule="evenodd"
                     />
                   </svg>
-                  <span className="text-primary text-[13px] font-semibold hidden md:block">
+                  <span className="text-primary text-[13px] font-medium hidden md:block">
                     {session?.user?.name}
                   </span>
                   <IoMdArrowDropdown size={18} className="text-primary" />
                 </DropdownMenuTrigger>
                 <DropdownMenuContent
                   align="end"
-                  className="min-w-[160px] shadow-xs space-y-1 border-none rounded-t-none mt-9 p-3"
+                  className="min-w-[160px] shadow-sm space-y-1 border-none rounded-t-none mt-9 p-3"
                 >
                   <div className="flex items-center gap-2 p-2 py-4 pr-8">
                     <div className="size-8 flex items-center justify-center text-white text-sm font-medium bg-gradient-to-r from-primary to-primary rounded-full">

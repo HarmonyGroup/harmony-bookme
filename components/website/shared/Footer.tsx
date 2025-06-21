@@ -33,7 +33,7 @@ const Footer = () => {
                 </Link>
               </li>
               <li>
-                <Link href={"/accommodation"} className="text-white">
+                <Link href={"/accommodations"} className="text-white">
                   Accommodation
                 </Link>
               </li>
@@ -49,7 +49,7 @@ const Footer = () => {
             <ul className="space-y-4 text-xs font-medium mt-6">
               <li>
                 <Link href={"/helpdesk"} className="text-white">
-                  Helpdesk
+                  Help desk
                 </Link>
               </li>
               <li>
