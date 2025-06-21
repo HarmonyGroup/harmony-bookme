@@ -7,14 +7,14 @@ const HeroSearchBox = () => {
         <div className="relative w-full">
           <input
             type="text"
-            className="w-full rounded-lg placeholder:text-primary placeholder:text-xs md:placeholder:text-sm placeholder:font-medium text-primary text-sm font-medium ring-0 outline-0 transition ease-in-out duration-200 ps-10 px-5 py-4"
+            className="w-full rounded-lg placeholder:text-primary placeholder:text-xs md:placeholder:text-sm placeholder:font-semibold text-primary text-sm font-medium ring-0 outline-0 transition ease-in-out duration-200 ps-10 px-5 py-4"
             placeholder="What are you looking for?"
           />
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
-            strokeWidth="2.9"
+            strokeWidth="3.2"
             stroke="currentColor"
             className="absolute left-4 top-1/2 -translate-y-1/2 size-[14px] text-primary"
           >

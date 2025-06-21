@@ -66,26 +66,12 @@ const ExploreAccommodationsCard = () => {
       </h3>
       <p className="text-gray-500 text-xs mt-1.5">Victoria Island, Lagos</p>
       <div className="flex items-center justify-between text-primary font-semibold mt-6">
-        <p className="text-sm">₦ 245,000 / Night</p>
+        <p className="text-[13px]">₦ 245,000 / Night</p>
         <Link
           href={"/"}
-          className="flex items-center gap-1.5 bg-primary hover:bg-primary/85 text-white text-[13px] font-semibold rounded-full px-3 py-2 transition duration-300"
+          className="flex items-center gap-1.5 bg-primary hover:bg-primary/85 text-white text-[13px] font-semibold rounded-full px-3 py-1.5 transition duration-300"
         >
           Book Now
-          {/* <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth="3"
-            stroke="currentColor"
-            className="size-[11px] mt-[1px]"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="m4.5 19.5 15-15m0 0H8.25m11.25 0v11.25"
-            />
-          </svg> */}
         </Link>
       </div>
     </div>

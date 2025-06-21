@@ -107,7 +107,7 @@ const Navbar = () => {
 
           <div className="hidden lg:block">
             <nav aria-label="Global">
-              <ul className="flex items-center gap-10 text-[13px] font-medium">
+              <ul className="flex items-center gap-10 text-[13px] font-semibold">
                 <li>
                   <Link className="text-primary transition" href="/">
                     {" "}
@@ -176,10 +176,10 @@ const Navbar = () => {
                       clipRule="evenodd"
                     />
                   </svg>
-                  <span className="text-primary text-[13px] font-medium hidden md:block">
+                  <span className="text-primary text-[13px] font-semibold hidden md:block">
                     {session?.user?.name}
                   </span>
-                  <IoMdArrowDropdown size={15} className="text-primary" />
+                  <IoMdArrowDropdown size={18} className="text-primary" />
                 </DropdownMenuTrigger>
                 <DropdownMenuContent
                   align="end"
