@@ -1,19 +1,24 @@
-"use client"
-import { Carousel, CarouselContent, CarouselItem, type CarouselApi } from "@/components/ui/carousel"
-import { Button } from "@/components/ui/button"
-import { useState } from "react"
-import ExploreAccommodationsCard from "./ExploreAccommodationsCard"
+"use client";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  type CarouselApi,
+} from "@/components/ui/carousel";
+import { Button } from "@/components/ui/button";
+import { useState } from "react";
+import ExploreAccommodationsCard from "./ExploreAccommodationsCard";
 
 const ExploreAccommodations = () => {
-  const [api, setApi] = useState<CarouselApi>()
+  const [api, setApi] = useState<CarouselApi>();
 
   const scrollPrev = () => {
-    api?.scrollPrev()
-  }
+    api?.scrollPrev();
+  };
 
   const scrollNext = () => {
-    api?.scrollNext()
-  }
+    api?.scrollNext();
+  };
 
   return (
     <section className="bg-white py-16">
@@ -35,7 +40,11 @@ const ExploreAccommodations = () => {
                 stroke="currentColor"
                 className="size-3.5 md:size-[17px]"
               >
-                <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18"
+                />
               </svg>
             </Button>
             <Button
@@ -50,7 +59,11 @@ const ExploreAccommodations = () => {
                 stroke="currentColor"
                 className="size-3.5 md:size-[17px]"
               >
-                <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"
+                />
               </svg>
             </Button>
           </div>
@@ -86,38 +99,46 @@ const ExploreAccommodations = () => {
         <div className="md:hidden flex items-center justify-center gap-2 mt-12">
           <Button
             onClick={scrollPrev}
-            className="bg-white text-[#183264] hover:bg-[#183264] hover:text-white size-8 border border-[#183264] rounded-full cursor-pointer transition-all duration-300"
+            className="bg-white text-[#183264] hover:bg-[#183264] hover:text-white size-10 border border-[#183264] rounded-full cursor-pointer transition-all duration-300"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
-              strokeWidth="2.2"
+              strokeWidth="2.4"
               stroke="currentColor"
-              className="size-3.5"
+              className="size-[16px]"
             >
-              <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18"
+              />
             </svg>
           </Button>
           <Button
             onClick={scrollNext}
-            className="bg-white text-[#183264] hover:bg-[#183264] hover:text-white size-8 border border-[#183264] rounded-full cursor-pointer transition-all duration-300"
+            className="bg-white text-[#183264] hover:bg-[#183264] hover:text-white size-10 border border-[#183264] rounded-full cursor-pointer transition-all duration-300"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
-              strokeWidth="2.2"
+              strokeWidth="2.4"
               stroke="currentColor"
-              className="size-3.5"
+              className="size-[16px]"
             >
-              <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"
+              />
             </svg>
           </Button>
         </div>
       </div>
     </section>
-  )
-}
+  );
+};
 
-export default ExploreAccommodations
+export default ExploreAccommodations;
