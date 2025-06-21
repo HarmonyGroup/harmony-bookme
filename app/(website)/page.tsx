@@ -4,8 +4,8 @@ import HeroSearchBox from "@/components/website/homepage/HeroSearchBox";
 import QuickLinks from "@/components/website/homepage/QuickLinks";
 import RewardsBanner from "@/components/website/homepage/RewardsBanner";
 import ExploreAccommodations from "@/components/website/homepage/ExploreAccommodations";
-import ExploreMovies from "@/components/website/homepage/ExploreMovies";
-import WhyChooseUs from "@/components/website/homepage/WhyChooseUs";
+// import ExploreMovies from "@/components/website/homepage/ExploreMovies";
+// import WhyChooseUs from "@/components/website/homepage/WhyChooseUs";
 import VendorBanner from "@/components/website/homepage/VendorBanner";
 
 const Page = () => {

@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import React from "react";
-import { FaCircle } from "react-icons/fa";
+// import { FaCircle } from "react-icons/fa";
 import CinemaImage from "@/public/assets/sample-shortlet.jpg";
 
 const ExploreMoviesCard = () => {
