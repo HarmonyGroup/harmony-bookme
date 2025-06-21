@@ -62,7 +62,7 @@ const AccommodationCard = () => {
         src={EventBanner}
         className="h-56 w-full rounded-t-lg object-cover"
       />
-      <div className="bg-white rounded-b-lg p-4">
+      <div className="bg-white rounded-b-lg py-4">
         <h3 className="text-primary text-xs font-semibold">
           Nova base apartments Lekki
         </h3>

@@ -1,7 +1,8 @@
 import React from "react";
 import Image from "next/image";
-import FilterBox from "@/components/website/accommodations/FilterBox";
-import AccommodationCard from "@/components/website/accommodations/AccommodationCard";
+import FilterBox from "@/components/website/events/FilterBox";
+import HeaderBG from "@/public/assets/homepage-hero-background.jpg";
+import EventCard from "@/components/website/events/EventCard";
 
 const Page = () => {
   return (
@@ -9,9 +10,7 @@ const Page = () => {
       <section className="relative h-[14vh] md:h-[20vh] w-full bg-primary flex flex-col items-center justify-center overflow-x-hidden">
         <div className="mx-auto w-full max-w-7xl px-5">
           <Image
-            src={
-              "https://img.freepik.com/free-photo/3d-house-model-with-modern-architecture_23-2151004039.jpg?uid=R137948985&ga=GA1.1.1977978369.1744267390&semt=ais_hybrid&w=740"
-            }
+            src={HeaderBG}
             layout="fill"
             objectFit="cover"
             alt="Harmony BookMe"
@@ -23,7 +22,7 @@ const Page = () => {
             // ref={heroRef}
           >
             <h1 className="text-white text-left text-lg font-bold md:text-2xl/snug max-w-xl">
-              Book your next stay
+              Find events happening near you
             </h1>
           </div>
         </div>
@@ -36,7 +35,7 @@ const Page = () => {
           </div>
           <div className="w-full h-full col-span-1 lg:col-span-2">
             <div className="w-full h-full">
-              <div className="flex items-center justify-between">
+              <div className="flex items-start justify-between">
                 <p className="text-xs font-medium">Found 300 results</p>
                 <div className="md:flex items-center gap-1 rounded-md p-1">
                   <button className="cursor-pointer rounded-sm px-2.5 py-1 hover:bg-gray-200/65 duration-300 transition-all ease-in-out">
@@ -74,12 +73,7 @@ const Page = () => {
                 </div>
               </div>
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:gap-6 lg:gap-y-8 mt-4">
-                <AccommodationCard />
-                <AccommodationCard />
-                <AccommodationCard />
-                <AccommodationCard />
-                <AccommodationCard />
-                <AccommodationCard />
+                <EventCard />
               </div>
             </div>
           </div>
