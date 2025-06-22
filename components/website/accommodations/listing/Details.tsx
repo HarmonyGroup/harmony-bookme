@@ -10,7 +10,7 @@ const Details = () => {
         <h1 className="text-primary text-xs sm:text-sm font-semibold">
           De Aries Apartments
         </h1>
-        <p className="text-gray-600 text-[11px] sm:text-xs mt-2">
+        <p className="text-gray-600 text-[11px] sm:text-xs mt-1 sm:mt-2">
           4 bedrooms | 2 bath | 3 parking | WiFi
         </p>
       </div>

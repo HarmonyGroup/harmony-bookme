@@ -47,9 +47,9 @@ const Page = () => {
             <h1 className="text-primary text-base md:text-xl/tight font-semibold mt-1">
               De Aries Apartments
             </h1>
-            <div className="flex items-center gap-4 mt-2">
+            <div className="flex items-center gap-4 mt-1 sm:mt-2">
               <div className="flex items-center gap-2">
-                <div className="flex items-center gap-1 text-xs text-gray-600">
+                <div className="flex items-center gap-1 text-[11px] sm:text-xs text-gray-600">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 24 24"
@@ -64,11 +64,11 @@ const Page = () => {
                   </svg>
                   4.8
                 </div>
-                <Link href={""} className="text-xs text-gray-600">
+                <Link href={""} className="text-[11px] sm:text-xs text-gray-600">
                   (44 reviews)
                 </Link>
               </div>
-              <p className="text-gray-600 text-xs">
+              <p className="text-gray-600 text-[11px] sm:text-xs">
                 20A, Alaba Lawson, Lekki, Lagos
               </p>
             </div>
