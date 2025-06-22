@@ -3,7 +3,7 @@ import React from "react";
 const Amenities = () => {
   return (
     <div>
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
         <div className="flex items-center gap-2">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -20,7 +20,7 @@ const Amenities = () => {
             />
           </svg>
 
-          <span className="text-gray-600 text-xs">Swimming pool</span>
+          <span className="text-gray-600 text-xs font-medium">Swimming pool</span>
         </div>
         <div className="flex items-center gap-2">
           <svg
@@ -38,7 +38,7 @@ const Amenities = () => {
             />
           </svg>
 
-          <span className="text-gray-600 text-xs">Washing machine</span>
+          <span className="text-gray-600 text-xs font-medium">Washing machine</span>
         </div>
         <div className="flex items-center gap-2">
           <svg
@@ -56,7 +56,7 @@ const Amenities = () => {
             />
           </svg>
 
-          <span className="text-gray-600 text-xs">WiFi</span>
+          <span className="text-gray-600 text-xs font-medium">WiFi</span>
         </div>
       </div>
     </div>

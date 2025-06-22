@@ -34,29 +34,29 @@ const Details = () => {
           What this space offers
         </h3>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-4 mt-4 mb-4">
-          <div className="flex flex-col items-center justify-center gap-1.5 border rounded-lg p-6">
-            <div className="bg-gray-100 size-10 sm:size-12 flex items-center justify-center rounded-full">
+          <div className="flex flex-col items-center justify-center gap-1.5 bg-gray-100 rounded-lg p-6">
+            <div className="bg-white size-10 sm:size-12 flex items-center justify-center rounded-full">
               <LuBedDouble className="text-gray-600 text-lg sm:text-xl" />
             </div>
-            <p className="text-xs mt-2">4 beds</p>
+            <p className="text-gray-600 text-xs font-medium mt-2">4 beds</p>
           </div>
-          <div className="flex flex-col items-center justify-center gap-1.5 border rounded-lg p-6">
-            <div className="bg-gray-100 size-10 sm:size-12 flex items-center justify-center rounded-full">
+          <div className="flex flex-col items-center justify-center gap-1.5 bg-gray-100 rounded-lg p-6">
+            <div className="bg-white size-10 sm:size-12 flex items-center justify-center rounded-full">
               <LuBath className="text-gray-600 text-lg sm:text-xl" />
             </div>
-            <p className="text-xs mt-2">2 bath</p>
+            <p className="text-gray-600 text-xs font-medium mt-2">2 bath</p>
           </div>
-          <div className="flex flex-col items-center justify-center gap-1.5 border rounded-lg p-6">
-            <div className="bg-gray-100 size-10 sm:size-12 flex items-center justify-center rounded-full">
-              <IoCarOutline className="text-gray-600 text-lg sm:text-xl" />
+          <div className="flex flex-col items-center justify-center gap-1.5 bg-gray-100 rounded-lg p-6">
+            <div className="bg-white size-10 sm:size-12 flex items-center justify-center rounded-full">
+              <IoCarOutline className="text-gray-600 text-xl sm:text-[22px]" />
             </div>
-            <p className="text-xs mt-2">2 parking</p>
+            <p className="text-gray-600 text-xs font-medium mt-2">2 parking</p>
           </div>
-          <div className="flex flex-col items-center justify-center gap-1.5 border rounded-lg p-6">
-            <div className="bg-gray-100 size-10 sm:size-12 flex items-center justify-center rounded-full">
-              <BsPerson className="text-gray-600 text-lg sm:text-xl" />
+          <div className="flex flex-col items-center justify-center gap-1.5 bg-gray-100 rounded-lg p-6">
+            <div className="bg-white size-10 sm:size-12 flex items-center justify-center rounded-full">
+              <BsPerson className="text-gray-600 text-lg sm:text-[19px]" />
             </div>
-            <p className="text-xs mt-2">2 max guests</p>
+            <p className="text-gray-600 text-xs font-medium mt-2">2 max guests</p>
           </div>
         </div>
         {/* <Link
@@ -81,7 +81,7 @@ const Details = () => {
         </Link> */}
       </div>
 
-      <div>
+      <div className="mt-7 sm:mt-8">
         <h3 className="text-primary text-xs font-semibold">
           Where you&apos;ll be
         </h3>
