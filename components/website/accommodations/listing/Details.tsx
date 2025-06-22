@@ -33,7 +33,7 @@ const Details = () => {
         <h3 className="text-primary text-xs font-semibold">
           What this space offers
         </h3>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 mt-4 mb-4">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-4 mt-4 mb-4">
           <div className="flex flex-col items-center justify-center gap-1.5 border rounded-lg p-6">
             <h3 className="text-primary text-sm font-semibold">4</h3>
             <div className="flex items-center gap-1">

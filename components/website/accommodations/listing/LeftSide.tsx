@@ -11,7 +11,7 @@ import Reviews from "./Reviews";
 const LeftSide = () => {
   return (
     <div>
-      <div className="grid gap-3 lg:grid-cols-3">
+      <div className="grid gap-2 sm:gap-3 lg:grid-cols-3">
         {/* Large Image */}
         <div className="relative aspect-[4/3] rounded-lg overflow-hidden lg:col-span-2">
           <Image
@@ -24,7 +24,7 @@ const LeftSide = () => {
         </div>
 
         {/* Small Images */}
-        <div className="grid grid-cols-2 gap-3 lg:grid-cols-1">
+        <div className="grid grid-cols-2 gap-2 sm:gap-3 lg:grid-cols-1">
           <div className="relative aspect-[4/3] rounded-lg overflow-hidden">
             <Image
               src="https://cf.bstatic.com/xdata/images/hotel/max500/400905159.jpg?k=f9a6a23ac2b0d44564303f8c0441be3e2366de67cc1ad94118aa457a871d11b8&o="
@@ -46,9 +46,9 @@ const LeftSide = () => {
         </div>
       </div>
 
-      <div className="mt-6">
+      <div className="mt-4 sm:mt-6">
         <Tabs defaultValue="details">
-          <TabsList className="w-full space-x-4 block bg-white border-b rounded-none !py-0 mb-6">
+          <TabsList className="w-full space-x-4 block bg-white border-b rounded-none !py-0 mb-4 sm:mb-6">
             <TabsTrigger
               value="details"
               className="text-primary !text-xs md:!text-[13px] font-semibold !shadow-none data-[state=active]:!border-b-[2px] data-[state=active]:border-primary data-[state=active]:border-x-0 data-[state=active]:border-t-0 focus-visible:!border-b rounded-none cursor-pointer px-2 md:px-4"
