@@ -7,17 +7,17 @@ const Details = () => {
   return (
     <div className="space-y-5 md:space-y-8">
       <div>
-        <h1 className="text-primary text-sm font-semibold">
+        <h1 className="text-primary text-xs sm:text-sm font-semibold">
           De Aries Apartments
         </h1>
-        <p className="text-gray-600 text-xs mt-2">
+        <p className="text-gray-600 text-[11px] sm:text-xs mt-2">
           4 bedrooms | 2 bath | 3 parking | WiFi
         </p>
       </div>
 
       <div>
         <h3 className="text-primary text-xs font-semibold">Description</h3>
-        <p className="text-gray-600 text-xs/relaxed line-clamp-3 mt-2">
+        <p className="text-gray-600 text-[11px]/relaxed sm:text-xs/relaxed line-clamp-3 mt-2">
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Inventore
           exercitationem explicabo necessitatibus quos beatae dolore repudiandae
           corporis cupiditate. Perspiciatis consequuntur aliquid ipsa dicta
