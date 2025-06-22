@@ -5,10 +5,10 @@
 import { useMutation } from "@tanstack/react-query";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
-// import { toast } from "react-toastify";
+import { toast } from "sonner";
 
 type RegisterData = {
-  role: "explorer" | "merchant" | "super_admin" | "sub_admin";
+  role: "explorer" | "vendor" | "super_admin" | "sub_admin";
   firstName?: string;
   lastName?: string;
   businessName?: string;
@@ -40,7 +40,7 @@ export const useSignup = () => {
       return response.json();
     },
     onSuccess: async (data, variables) => {
-    //   toast.success(data?.message || "Account created successfully");
+      toast.success(data?.message || "Account created successfully");
 
       // After successful registration, sign in the user
       const result = await signIn("credentials", {
@@ -57,14 +57,14 @@ export const useSignup = () => {
       const redirectPath =
         variables.role === "explorer"
           ? "/"
-          : variables.role === "merchant"
-          ? "/merchant/dashboard"
+          : variables.role === "vendor"
+          ? "/vendor/dashboard"
           : "/back-office/dashboard";
       router.push(redirectPath);
       router.refresh();
     },
     onError: (error: any) => {
-      console.log(error.message || "Failed to create account");
+      toast.error(error.message || "Failed to create account");
     },
   });
 };

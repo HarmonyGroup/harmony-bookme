@@ -14,7 +14,7 @@ declare module "next-auth" {
       email: string;
       role:
         | "explorer"
-        | "merchant"
+        | "vendor"
         | "team_member"
         | "super_admin"
         | "sub_admin";
@@ -27,7 +27,7 @@ declare module "next-auth" {
 declare module "next-auth/jwt" {
   interface JWT {
     id: string;
-    role: "explorer" | "merchant" | "team_member" | "super_admin" | "sub_admin";
+    role: "explorer" | "vendor" | "team_member" | "super_admin" | "sub_admin";
     permissions: string[];
     avatar: string;
   }

@@ -20,7 +20,7 @@ import Image from "next/image";
 import BG from "@/public/assets/auth-bg.jpg";
 import Logo from "@/public/assets/logo-wordmark-light.png";
 
-import { useSignIn } from "@/services/website/login";
+import { useSignIn } from "@/services/auth/login";
 
 const FormSchema = z.object({
   email: z.string().email("Invalid email"),
@@ -49,7 +49,7 @@ const Page = () => {
       <div className="grid gap-0 md:h-screen md:grid-cols-3">
         <div className="flex items-center justify-center px-5 py-16 md:px-10 md:py-20 md:col-span-2">
           <div className="w-full mx-auto md:max-w-md ">
-            <h2 className="mb-2 text-xl md:text-xl font-semibold">
+            <h2 className="mb-2 text-primary text-xl md:text-xl font-semibold">
               Welcome Back
             </h2>
             <p className="text-gray-600 text-[12px] mb-8 md:mb-12 lg:mb-12">

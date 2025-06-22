@@ -5,7 +5,7 @@ import { BsPerson } from "react-icons/bs";
 
 const Details = () => {
   return (
-    <div className="space-y-5 md:space-y-8">
+    <div className="space-y-5 md:space-y-6">
       <div>
         <h1 className="text-primary text-xs sm:text-sm font-semibold">
           De Aries Apartments

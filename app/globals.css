@@ -238,3 +238,61 @@
   position: relative;
   z-index: 2;
 }
+
+@layer components {
+  .custom-success-toast svg {
+    @apply text-primary;
+    /* or any Tailwind color */
+  }
+}
+
+.loader {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: #fff;
+  box-shadow: 32px 0 #fff, -32px 0 #fff;
+  position: relative;
+  animation: flash 0.5s ease-out infinite alternate;
+}
+
+@keyframes flash {
+  0% {
+    background-color: #FFF2;
+    box-shadow: 16px 0 #FFF2, -16px 0 #FFF;
+  }
+
+  50% {
+    background-color: #FFF;
+    box-shadow: 16px 0 #FFF2, -16px 0 #FFF2;
+  }
+
+  100% {
+    background-color: #FFF2;
+    box-shadow: 16px 0 #FFF, -16px 0 #FFF2;
+  }
+}
+
+.auth-image-banner {
+  position: relative;
+  overflow: hidden;
+  height: 100%;
+  z-index: 0;
+}
+
+/* Background Image (z-index stays behind) */
+.auth-image {
+  z-index: 0;
+}
+
+/* Overlay gradient */
+.auth-image-banner::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(to bottom,
+      rgba(24, 50, 100, 0.85),
+      rgba(24, 50, 100, 0.65));
+}

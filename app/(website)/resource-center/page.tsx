@@ -88,7 +88,7 @@ const Page = () => {
               </Link>
             </div>
             <div className="bg-gray-100/70 rounded-lg p-5">
-              <h3 className="text-primary text-sm font-semibold">Merchant</h3>
+              <h3 className="text-primary text-sm font-semibold">Vendor</h3>
               <p className="text-gray-600 text-xs/relaxed line-clamp-3 mt-2 mb-6">
                 Lorem ipsum dolor sit amet consectetur adipisicing elit. Et,
                 illum similique? Provident, odit aliquam! Provident totam

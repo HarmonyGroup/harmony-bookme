@@ -2,7 +2,7 @@ import mongoose, { type Document } from "mongoose";
 import bcrypt from "bcryptjs";
 
 interface IUser extends Document {
-  role: "explorer" | "merchant" | "team_member" | "super_admin" | "sub_admin";
+  role: "explorer" | "vendor" | "team_member" | "super_admin" | "sub_admin";
   firstName?: string;
   lastName?: string;
   businessName?: string;
@@ -11,8 +11,6 @@ interface IUser extends Document {
   password: string;
   avatar?: string;
   status: "pending" | "active" | "suspended";
-  confirmationToken?: string;
-  confirmationTokenExpires?: Date;
   organizations: mongoose.Types.ObjectId[];
   permissions?: string[];
   onboarding?: boolean;
@@ -26,7 +24,7 @@ const UserSchema = new mongoose.Schema<IUser>(
   {
     role: {
       type: String,
-      enum: ["explorer", "merchant", "team_member", "super_admin", "sub_admin"],
+      enum: ["explorer", "vendor", "team_member", "super_admin", "sub_admin"],
       required: [true, "Role is required"],
     },
     firstName: {
@@ -50,14 +48,14 @@ const UserSchema = new mongoose.Schema<IUser>(
     businessName: {
       type: String,
       required: function () {
-        return this.role === "merchant";
+        return this.role === "vendor";
       },
       trim: true,
     },
     phone: {
       type: String,
       required: function () {
-        return ["merchant", "team_member"].includes(this.role);
+        return ["vendor", "team_member"].includes(this.role);
       },
       trim: true,
     },
@@ -94,18 +92,6 @@ const UserSchema = new mongoose.Schema<IUser>(
       enum: ["pending", "active", "suspended"],
       default: "pending",
     },
-    confirmationToken: {
-      type: String,
-      required: function () {
-        return this.status === "pending";
-      },
-    },
-    confirmationTokenExpires: {
-      type: Date,
-      required: function () {
-        return this.status === "pending";
-      },
-    },
     organizations: {
       type: [mongoose.Schema.Types.ObjectId],
       ref: "Organization",
@@ -121,10 +107,10 @@ const UserSchema = new mongoose.Schema<IUser>(
       validate: {
         validator: function (val: boolean) {
           return (
-            ["merchant", "team_member"].includes(this.role) || val === false
+            ["vendor", "team_member"].includes(this.role) || val === false
           );
         },
-        message: "Only merchants and team members can have onboarding status",
+        message: "Only vendors and team members can have onboarding status",
       },
     },
     interests: {
