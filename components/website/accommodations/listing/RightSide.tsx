@@ -27,12 +27,6 @@ import {
 import { Calendar } from "@/components/ui/calendar";
 import { format, parse } from "date-fns";
 import { cn } from "@/lib/utils";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
 
 const FormSchema = z
@@ -278,7 +272,7 @@ const RightSide = () => {
               <FormField
                 control={form.control}
                 name="numberOfGuests"
-                render={({ field }) => (
+                render={({  }) => (
                   <FormItem>
                     <FormLabel className="text-primary text-xs font-medium">
                       Number of guests

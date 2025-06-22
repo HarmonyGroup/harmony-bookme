@@ -1,5 +1,4 @@
 import React from "react";
-import Link from "next/link";
 import { LuBedDouble, LuBath } from "react-icons/lu";
 import { IoCarOutline } from "react-icons/io5";
 import { BsPerson } from "react-icons/bs";
