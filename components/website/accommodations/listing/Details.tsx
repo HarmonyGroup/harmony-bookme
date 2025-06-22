@@ -35,32 +35,28 @@ const Details = () => {
         </h3>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-4 mt-4 mb-4">
           <div className="flex flex-col items-center justify-center gap-1.5 border rounded-lg p-6">
-            <h3 className="text-primary text-sm font-semibold">4</h3>
-            <div className="flex items-center gap-1">
-              <LuBedDouble size={12} className="text-gray-600" />
-              <p className="text-gray-600 text-xs/relaxed">beds</p>
+            <div className="bg-gray-100 size-10 sm:size-12 flex items-center justify-center rounded-full">
+              <LuBedDouble className="text-gray-600 text-lg sm:text-xl" />
             </div>
+            <p className="text-xs mt-2">4 beds</p>
           </div>
           <div className="flex flex-col items-center justify-center gap-1.5 border rounded-lg p-6">
-            <h3 className="text-primary text-sm font-semibold">3</h3>
-            <div className="flex items-center gap-1">
-              <LuBath size={12} className="text-gray-600" />
-              <p className="text-gray-600 text-xs/relaxed">bath</p>
+            <div className="bg-gray-100 size-10 sm:size-12 flex items-center justify-center rounded-full">
+              <LuBath className="text-gray-600 text-lg sm:text-xl" />
             </div>
+            <p className="text-xs mt-2">2 bath</p>
           </div>
           <div className="flex flex-col items-center justify-center gap-1.5 border rounded-lg p-6">
-            <h3 className="text-primary text-sm font-semibold">2</h3>
-            <div className="flex items-center gap-1">
-              <IoCarOutline size={15} className="text-gray-600 mt-0.5" />
-              <p className="text-gray-600 text-xs/relaxed">parking</p>
+            <div className="bg-gray-100 size-10 sm:size-12 flex items-center justify-center rounded-full">
+              <IoCarOutline className="text-gray-600 text-lg sm:text-xl" />
             </div>
+            <p className="text-xs mt-2">2 parking</p>
           </div>
           <div className="flex flex-col items-center justify-center gap-1.5 border rounded-lg p-6">
-            <h3 className="text-primary text-sm font-semibold">5</h3>
-            <div className="flex items-center gap-1">
-              <BsPerson size={12} className="text-gray-800 mt-0.5" />
-              <p className="text-gray-600 text-xs/relaxed">max guests</p>
+            <div className="bg-gray-100 size-10 sm:size-12 flex items-center justify-center rounded-full">
+              <BsPerson className="text-gray-600 text-lg sm:text-xl" />
             </div>
+            <p className="text-xs mt-2">2 max guests</p>
           </div>
         </div>
         {/* <Link
