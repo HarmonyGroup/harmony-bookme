@@ -13,9 +13,7 @@ const Reviews = () => {
               <div className="bg-primary size-5 flex items-center justify-center text-white text-[11px] font-medium rounded-full">
                 A
               </div>
-              <span className="text-primary text-xs font-medium">
-                Ayo Alaba
-              </span>
+              <span className="text-primary text-xs font-medium">Ade Babs</span>
             </div>
           </div>
           <div className="col-span-3">
