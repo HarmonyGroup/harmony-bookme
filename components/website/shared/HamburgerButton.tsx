@@ -86,7 +86,7 @@ const HamburgerButton: React.FC<HamburgerButtonProps> = ({
     <button
       ref={buttonRef}
       onClick={onClick}
-      className={`p-1.5 rounded-lg hover:bg-gray-100 transition-colors duration-200 cursor-pointer ${className}`}
+      className={`p-1.5 rounded-lg transition-colors duration-200 cursor-pointer ${className}`}
       aria-label={isOpen ? "Close menu" : "Open menu"}
     >
       <svg
@@ -101,7 +101,7 @@ const HamburgerButton: React.FC<HamburgerButtonProps> = ({
           ref={line1Ref}
           x1="3"
           y1="6"
-          x2="18"
+          x2="16"
           y2="6"
           stroke="currentColor"
           strokeWidth="2.1"
@@ -111,7 +111,7 @@ const HamburgerButton: React.FC<HamburgerButtonProps> = ({
           ref={line2Ref}
           x1="3"
           y1="12"
-          x2="18"
+          x2="16"
           y2="12"
           stroke="currentColor"
           strokeWidth="2.1"
@@ -121,7 +121,7 @@ const HamburgerButton: React.FC<HamburgerButtonProps> = ({
           ref={line3Ref}
           x1="3"
           y1="18"
-          x2="18"
+          x2="16"
           y2="18"
           stroke="currentColor"
           strokeWidth="2.1"

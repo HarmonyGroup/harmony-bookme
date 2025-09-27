@@ -34,8 +34,7 @@ const Hero = () => {
             className="object-cover scale-105 transition-transform duration-[10s] ease-out hover:scale-110"
             sizes="100vw"
           />
-          <div className="absolute inset-0 bg-gradient-to-br from-primary/90 via-primary/80 to-primary/90" />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent" />
+          <div className="hero-gradient-overlay" />
         </div>
 
         {/* Floating Elements */}

@@ -134,7 +134,7 @@ const Navbar = () => {
                 >
                   <Image
                     src={Logo}
-                    className="w-40 md:w-48 shrink-0"
+                    className="w-44 md:w-48 shrink-0"
                     alt="HarmonyBookMe"
                   />
                 </Link>

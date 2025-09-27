@@ -39,7 +39,7 @@ const CustomMobileNav: React.FC<CustomMobileNavProps> = ({
     try {
       await signOut({ callbackUrl: "/" });
       toast.dismiss(toastId);
-      onClose();
+      handleClose();
     } catch (error) {
       toast.dismiss(toastId);
       toast.error("Failed to sign out", {
@@ -53,22 +53,38 @@ const CustomMobileNav: React.FC<CustomMobileNavProps> = ({
   useEffect(() => {
     if (!isOpen) return;
 
-    // Small delay to ensure DOM is ready
+    // Check if all refs are available immediately
+    if (
+      !overlayRef.current ||
+      !sidebarRef.current ||
+      !logoRef.current ||
+      !linksRef.current
+    ) {
+      console.log("Missing refs:", {
+        overlay: !!overlayRef.current,
+        sidebar: !!sidebarRef.current,
+        logo: !!logoRef.current,
+        links: !!linksRef.current,
+        userSection: !!userSectionRef.current,
+      });
+      return;
+    }
+
+    // Set initial states immediately
+    gsap.set(overlayRef.current, { opacity: 0 });
+    gsap.set(sidebarRef.current, { x: "-100%" });
+    gsap.set(logoRef.current, { opacity: 0, y: -20 });
+    gsap.set(linksRef.current, { opacity: 0, y: 20 });
+
+    // Small delay to ensure DOM is ready, then animate
     const timeoutId = setTimeout(() => {
       const tl = gsap.timeline();
-
-      // Set initial states
-      gsap.set(overlayRef.current, { opacity: 0 });
-      gsap.set(sidebarRef.current, { x: "-100%" });
-      gsap.set(logoRef.current, { opacity: 0, y: -20 });
-      gsap.set(linksRef.current, { opacity: 0, y: 20 });
-      gsap.set(userSectionRef.current, { opacity: 0, y: 20 });
 
       // Animate in sequence
       tl.to(overlayRef.current, {
         opacity: 1,
-        duration: 0.3,
-        ease: "power2.out",
+        duration: 0.6,
+        ease: "power1.out",
       })
         .to(
           sidebarRef.current,
@@ -98,21 +114,66 @@ const CustomMobileNav: React.FC<CustomMobileNavProps> = ({
             ease: "power2.out",
           },
           "-=0.2"
-        )
-        .to(
-          userSectionRef.current,
-          {
-            opacity: 1,
-            y: 0,
-            duration: 0.4,
-            ease: "power2.out",
-          },
-          "-=0.1"
         );
-    }, 50);
+    }, 100);
 
     return () => clearTimeout(timeoutId);
   }, [isOpen]);
+
+  // Close animation
+  const handleClose = () => {
+    if (
+      !overlayRef.current ||
+      !sidebarRef.current ||
+      !logoRef.current ||
+      !linksRef.current
+    ) {
+      onClose();
+      return;
+    }
+
+    const tl = gsap.timeline({
+      onComplete: () => {
+        onClose();
+      },
+    });
+
+    // Animate out in reverse
+    tl.to(linksRef.current, {
+      opacity: 0,
+      y: 20,
+      duration: 0.2,
+      ease: "power2.in",
+    })
+      .to(
+        logoRef.current,
+        {
+          opacity: 0,
+          y: -20,
+          duration: 0.2,
+          ease: "power2.in",
+        },
+        "-=0.1"
+      )
+      .to(
+        sidebarRef.current,
+        {
+          x: "-100%",
+          duration: 0.3,
+          ease: "power3.in",
+        },
+        "-=0.1"
+      )
+      .to(
+        overlayRef.current,
+        {
+          opacity: 0,
+          duration: 0.4,
+          ease: "power1.in",
+        },
+        "-=0.2"
+      );
+  };
 
   // Prevent body scroll when menu is open
   useEffect(() => {
@@ -127,6 +188,19 @@ const CustomMobileNav: React.FC<CustomMobileNavProps> = ({
     };
   }, [isOpen]);
 
+  // Cleanup GSAP animations on unmount
+  useEffect(() => {
+    return () => {
+      // Kill all GSAP animations for this component
+      gsap.killTweensOf([
+        overlayRef.current,
+        sidebarRef.current,
+        logoRef.current,
+        linksRef.current,
+      ]);
+    };
+  }, []);
+
   if (!isOpen) return null;
 
   return (
@@ -134,24 +208,29 @@ const CustomMobileNav: React.FC<CustomMobileNavProps> = ({
       {/* Overlay */}
       <div
         ref={overlayRef}
-        className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40"
-        onClick={onClose}
+        className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 opacity-0"
+        onClick={handleClose}
       />
 
       {/* Sidebar */}
       <div
         ref={sidebarRef}
-        className="fixed left-0 top-0 h-full w-80 max-w-[85vw] bg-white shadow-2xl z-50 overflow-y-auto"
+        className="fixed left-0 top-0 h-full w-80 max-w-[85vw] bg-white shadow-2xl z-50 overflow-y-auto -translate-x-full"
       >
         {/* Header */}
         <div className="flex items-center justify-between px-4 py-4 border-b border-gray-100">
           <div ref={logoRef}>
             <Link href="/" className="text-[#183264] text-base font-semibold">
-              <Image src={Logo} className="w-[150px]" alt="HarmonyBookMe" />
+              <Image
+                src={Logo}
+                className="w-[160px]"
+                alt="HarmonyBookMe"
+                loading="eager"
+              />
             </Link>
           </div>
           <button
-            onClick={onClose}
+            onClick={handleClose}
             className="p-2 rounded-lg text-primary hover:bg-muted/50 transition-colors duration-300 cursor-pointer"
           >
             <svg
@@ -179,7 +258,7 @@ const CustomMobileNav: React.FC<CustomMobileNavProps> = ({
               <Link
                 key={link.href}
                 href={link.href}
-                onClick={onClose}
+                onClick={handleClose}
                 className="flex items-center justify-between gap-3 px-4 py-5 text-primary hover:bg-muted/50 hover:text-primary transition-all duration-300 group border-muted border-b"
               >
                 <span className="font-medium text-[13px]">{link.label}</span>
@@ -205,7 +284,7 @@ const CustomMobileNav: React.FC<CustomMobileNavProps> = ({
               <>
                 <Link
                   href="/profile"
-                  onClick={onClose}
+                  onClick={handleClose}
                   className="flex items-center justify-between gap-3 px-4 py-5 text-primary hover:bg-muted/50 hover:text-primary transition-all duration-300 group border-muted border-b"
                 >
                   <span className="font-medium text-[13px]">Profile</span>
@@ -226,7 +305,7 @@ const CustomMobileNav: React.FC<CustomMobileNavProps> = ({
                 </Link>
                 <Link
                   href="/notifications"
-                  onClick={onClose}
+                  onClick={handleClose}
                   className="flex items-center justify-between gap-3 px-4 py-5 text-primary hover:bg-muted/50 hover:text-primary transition-all duration-300 group border-muted border-b"
                 >
                   <span className="font-medium text-[13px]">Notifications</span>
@@ -247,7 +326,7 @@ const CustomMobileNav: React.FC<CustomMobileNavProps> = ({
                 </Link>
                 <Link
                   href="/bookings"
-                  onClick={onClose}
+                  onClick={handleClose}
                   className="flex items-center justify-between gap-3 px-4 py-5 text-primary hover:bg-muted/50 hover:text-primary transition-all duration-300 group border-muted border-b"
                 >
                   <span className="font-medium text-[13px]">Bookings</span>
