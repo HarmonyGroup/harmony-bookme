@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Dialog,
   DialogContent,
@@ -55,9 +55,15 @@ const AuthModal = ({ showModal, toggleModal, redirectUrl }: AuthModalProps) => {
   
   const [view, setView] = useState("login");
   const [showPassword, setShowPassword] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
   const { signIn, isPending } = useSignIn();
   const { mutate: signup, isPending: signupPending } = useSignup();
   const router = useRouter();
+  
+  // Prevent hydration issues by only rendering on client
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
   
   // Prevent zoom on mobile when focusing inputs
   usePreventZoom();
@@ -104,6 +110,11 @@ const AuthModal = ({ showModal, toggleModal, redirectUrl }: AuthModalProps) => {
       },
     });
   };
+
+  // Don't render until mounted to prevent hydration mismatch
+  if (!isMounted) {
+    return null;
+  }
 
   return (
     <>
