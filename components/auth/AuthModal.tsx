@@ -1,13 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import React, { useState } from "react";
 import {
   Form,
   FormControl,
@@ -28,6 +21,7 @@ import { BsEye, BsEyeSlash } from "react-icons/bs";
 import { useSignup } from "@/services/auth/signup";
 import { useRouter } from "next/navigation";
 import { usePreventZoom } from "@/hooks/use-prevent-zoom";
+import CustomModal from "@/components/ui/custom-modal";
 
 interface AuthModalProps {
   showModal: boolean;
@@ -55,15 +49,9 @@ const AuthModal = ({ showModal, toggleModal, redirectUrl }: AuthModalProps) => {
   
   const [view, setView] = useState("login");
   const [showPassword, setShowPassword] = useState(false);
-  const [isMounted, setIsMounted] = useState(false);
   const { signIn, isPending } = useSignIn();
   const { mutate: signup, isPending: signupPending } = useSignup();
   const router = useRouter();
-  
-  // Prevent hydration issues by only rendering on client
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
   
   // Prevent zoom on mobile when focusing inputs
   usePreventZoom();
@@ -111,31 +99,26 @@ const AuthModal = ({ showModal, toggleModal, redirectUrl }: AuthModalProps) => {
     });
   };
 
-  // Don't render until mounted to prevent hydration mismatch
-  if (!isMounted) {
-    return null;
-  }
-
   return (
-    <>
-      <Dialog open={showModal} onOpenChange={toggleModal}>
-        <DialogContent className="p-4 md:p-6 py-8 rounded-3xl">
-          <DialogHeader className="gap-1">
-            <DialogTitle className="text-primary text-lg md:text-xl font-semibold !mb-0">
-              {view === "login" ? "Welcome Back!" : "Get Started"}
-            </DialogTitle>
-            <DialogDescription className="text-gray-600 text-xs/relaxed !mt-0">
-              {view === "login"
-                ? "Please enter your credentials to continue."
-                : "Please enter your information to create an account."}
-            </DialogDescription>
-          </DialogHeader>
+    <CustomModal isOpen={showModal} onClose={toggleModal} className="p-4 md:p-6 !py-10">
+      <div className="space-y-6">
+        {/* Header */}
+        <div className="text-center space-y-1">
+          <h2 className="text-primary text-lg md:text-xl font-semibold">
+            {view === "login" ? "Welcome Back!" : "Get Started"}
+          </h2>
+          <p className="text-gray-600 text-xs leading-relaxed">
+            {view === "login"
+              ? "Please enter your credentials to continue."
+              : "Please enter your information to create an account."}
+          </p>
+        </div>
 
           {view === "login" ? (
             <>
               <div>
                 <Form {...loginForm}>
-                  <div className="mt-4">
+                  <div className="!mt-8">
                     <form
                       onSubmit={loginForm.handleSubmit(onLoginSubmit)}
                       className="space-y-5"
@@ -225,7 +208,7 @@ const AuthModal = ({ showModal, toggleModal, redirectUrl }: AuthModalProps) => {
             <>
               <div>
                 <Form {...signupForm}>
-                  <div className="mt-4">
+                  <div className="!mt-8">
                     <form
                       onSubmit={signupForm.handleSubmit(onSignupSubmit)}
                       className="space-y-5"
@@ -281,7 +264,7 @@ const AuthModal = ({ showModal, toggleModal, redirectUrl }: AuthModalProps) => {
                             </FormLabel>
                             <FormControl>
                               <Input
-                                placeholder="Enter last name"
+                                placeholder="Enter email address"
                                 {...field}
                                 className="!py-6 !text-xs font-normal placeholder:text-gray-500 placeholder:text-xs placeholder:font-normal focus-visible:ring-0 focus-visible:border-primary transition-all ease-in-out duration-200"
                               />
@@ -352,9 +335,8 @@ const AuthModal = ({ showModal, toggleModal, redirectUrl }: AuthModalProps) => {
               </div>
             </>
           )}
-        </DialogContent>
-      </Dialog>
-    </>
+      </div>
+    </CustomModal>
   );
 };
 
