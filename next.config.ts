@@ -8,6 +8,14 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "*", // Allow images from all domains
       },
+      {
+                protocol: 'https',
+                hostname: 'harmony-bookme.s3.eu-north-1.amazonaws.com'
+            },
+            {
+                protocol: 'https',
+                hostname: 'harmony-bookme.s3.amazonaws.com'
+            }
     ],
   },
 

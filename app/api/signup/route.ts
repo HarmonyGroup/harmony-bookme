@@ -3,7 +3,8 @@ import { connectToDB } from "@/lib/mongoose";
 import User from "@/models/users";
 import bcrypt from "bcryptjs";
 import Organization from "@/models/organizations";
-import { generateOrganizationSlug } from "@/utils/generateSlug";
+import { generateUsername, generateOrganizationSlug } from "@/utils/usernameGenerator";
+
 
 export async function POST(req: NextRequest) {
   try {
@@ -16,7 +17,8 @@ export async function POST(req: NextRequest) {
       phone,
       email,
       password,
-      avatar = "", // Default to empty string if not provided
+      avatar = "",
+      vendorAccountPreference,
       permissions = [],
     } = body;
 
@@ -48,6 +50,14 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    // Generate unique username
+    const username = generateUsername({
+      role,
+      businessName,
+      firstName,
+      lastName,
+    });
+
     // Hash password
     const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -64,6 +74,7 @@ export async function POST(req: NextRequest) {
 
     // Prepare user data
     const userData = {
+      username, // Add generated username
       role,
       firstName: role === "explorer" ? firstName || "" : "",
       lastName: role === "explorer" ? lastName || "" : "",
@@ -71,8 +82,9 @@ export async function POST(req: NextRequest) {
       phone: role === "vendor" ? phone || "" : "",
       email,
       password: hashedPassword,
-      avatar, // Include avatar URL if provided
-      status: role === "explorer" || role === "vendor" ? "active" : "pending",
+      avatar,
+      vendorAccountPreference:
+        role === "vendor" ? vendorAccountPreference || "" : "",
       permissions: finalPermissions,
       organizations: [],
     };
@@ -83,7 +95,7 @@ export async function POST(req: NextRequest) {
 
     // Create organization for vendor
     if (role === "vendor") {
-      const orgSlug = await generateOrganizationSlug(businessName || email);
+      const orgSlug = generateOrganizationSlug(businessName || email);
       const organization = new Organization({
         name: businessName || email,
         slug: orgSlug,
@@ -102,6 +114,7 @@ export async function POST(req: NextRequest) {
         user: {
           id: newUser._id,
           email: newUser.email,
+          username: newUser.username,
           role: newUser.role,
           status: newUser.status,
           avatar: newUser.avatar,

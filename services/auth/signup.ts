@@ -19,52 +19,79 @@ type RegisterData = {
   permissions?: string[];
 };
 
-export const useSignup = () => {
-  const router = useRouter();
+// export const useSignup = () => {
+//   const router = useRouter();
 
+//   return useMutation({
+//     mutationFn: async (data: RegisterData) => {
+//       const response = await fetch("/api/signup", {
+//         method: "POST",
+//         headers: {
+//           "Content-Type": "application/json",
+//         },
+//         body: JSON.stringify(data),
+//       });
+
+//       if (!response.ok) {
+//         const error = await response.json();
+//         throw new Error(error.message || "Signup failed");
+//       }
+
+//       return response.json();
+//     },
+//     onSuccess: async (data, variables) => {
+//       toast.success(data?.message || "Account created successfully");
+
+//       // After successful registration, sign in the user
+//       const result = await signIn("credentials", {
+//         email: variables.email,
+//         password: variables.password,
+//         redirect: false,
+//       });
+
+//       if (result?.error) {
+//         throw new Error(result.error);
+//       }
+
+//       console.log(result?.error);
+      
+
+//       // Redirect to home or role-specific dashboard after successful login
+//       const redirectPath =
+//         variables.role === "explorer"
+//           ? "/"
+//           : variables.role === "vendor"
+//           ? "/vendor/dashboard"
+//           : "/back-office/dashboard";
+//       router.push(redirectPath);
+//       router.refresh();
+//     },
+//     onError: (error: any) => {
+//       toast.error(error.message || "Failed to create account");
+//     },
+//   });
+// };
+
+
+
+
+export const useSignup = () => {
   return useMutation({
     mutationFn: async (data: RegisterData) => {
       const response = await fetch("/api/signup", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-        },
+          },
         body: JSON.stringify(data),
       });
 
       if (!response.ok) {
         const error = await response.json();
-        throw new Error(error.message || "Signup failed");
+        throw new Error(error.message || "Failed to create account");
       }
 
       return response.json();
-    },
-    onSuccess: async (data, variables) => {
-      toast.success(data?.message || "Account created successfully");
-
-      // After successful registration, sign in the user
-      const result = await signIn("credentials", {
-        email: variables.email,
-        password: variables.password,
-        redirect: false,
-      });
-
-      if (result?.error) {
-        throw new Error(result.error);
-      }
-
-      // Redirect to home or role-specific dashboard after successful login
-      const redirectPath =
-        variables.role === "explorer"
-          ? "/"
-          : variables.role === "vendor"
-          ? "/vendor/dashboard"
-          : "/back-office/dashboard";
-      router.push(redirectPath);
-      router.refresh();
-    },
-    onError: (error: any) => {
-      toast.error(error.message || "Failed to create account");
     },
   });
 };

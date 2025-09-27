@@ -3,6 +3,7 @@
 import { useMutation } from "@tanstack/react-query";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 // import { toast } from "react-toastify";
 
 type LoginCredentials = {
@@ -27,13 +28,8 @@ export const useSignIn = () => {
 
       return result;
     },
-    onSuccess: () => {
-    //   toast.success("Successfully signed in");
-      router.push("/");
-      router.refresh();
-    },
     onError: (error) => {
-    //   toast.error(error.message || "Failed to sign in");
+      toast.error(error.message || "Failed to sign in");
     },
   });
 

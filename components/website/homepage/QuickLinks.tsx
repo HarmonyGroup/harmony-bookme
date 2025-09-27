@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "next/link";
+import Image from "next/image";
 
 const QuickLinks = () => {
   return (
@@ -67,10 +68,12 @@ const QuickLinks = () => {
           ].map((item, index) => (
             <Link href="/" key={index} className="cursor-pointer">
               <article className="quick-link-card group">
-                <img
+                <Image
                   alt={item.title}
                   src={item.image}
                   className="absolute inset-0 h-full w-full object-cover transition-transform duration-300 group-hover:scale-110"
+                  fill
+                  priority
                 />
                 <div className="relative pt-40">
                   <div className="p-4">

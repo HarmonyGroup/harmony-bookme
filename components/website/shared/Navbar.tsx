@@ -11,18 +11,30 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import Logo from "@/public/assets/logo-wordmark-dark.png";
 import { signOut } from "next-auth/react";
-import { IoMdArrowDropdown } from "react-icons/io";
-import ResponsiveSidebar from "./ResponsiveSidebar";
+import { toast } from "sonner";
+import CustomMobileNav from "./CustomMobileNav";
+import HamburgerButton from "./HamburgerButton";
+import {
+  StorefrontIcon,
+  TicketIcon,
+  TranslateIcon,
+  TrophyIcon,
+} from "@phosphor-icons/react";
+import NigerianFlag from "@/public/assets/nigerian-flag.svg";
+import { MdArrowDropDown } from "react-icons/md";
+import { Button } from "@/components/ui/button";
+import AuthModal from "@/components/auth/AuthModal";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const Navbar = () => {
   const { data: session, status } = useSession();
-
+  const [showAuthModal, setShowAuthModal] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
   const navbarRef = useRef(null);
   const logoRef = useRef(null);
   const linksRef = useRef([]);
@@ -33,6 +45,20 @@ const Navbar = () => {
   // Reset refs array
   linksRef.current = [];
   buttonsRef.current = [];
+
+  const handleSignOut = async (callbackUrl: string = "/") => {
+    const toastId = toast.loading("Please wait while we sign you out");
+
+    try {
+      await signOut({ callbackUrl });
+      toast.dismiss(toastId);
+    } catch (error) {
+      toast.dismiss(toastId);
+      toast.error("Failed to sign out", {
+        description: "An error occurred while signing out. Please try again.",
+      });
+    }
+  };
 
   // Handle scroll event
   useEffect(() => {
@@ -96,205 +122,260 @@ const Navbar = () => {
   }, []);
 
   return (
-    <header className="bg-white border-b">
-      <div className="mx-auto max-w-screen-xl px-5 py-6 md:py-6">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center md:gap-12">
-            <Link href={"/"} className="text-[#183264] text-base font-semibold">
-              <Image src={Logo} className="w-40 md:w-48" alt="HarmonyBookMe" />
-            </Link>
-          </div>
-
-          <div className="hidden lg:block">
-            <nav aria-label="Global">
-              <ul className="flex items-center gap-10 text-[13px] font-medium">
-                <li>
-                  <Link className="text-primary transition" href="/">
-                    {" "}
-                    Discover{" "}
-                  </Link>
-                </li>
-                <li>
-                  <Link className="text-primary transition" href="/events">
-                    {" "}
-                    Events{" "}
-                  </Link>
-                </li>
-                <li>
-                  <Link className="text-primary transition" href="/">
-                    {" "}
-                    Movies{" "}
-                  </Link>
-                </li>
-                <li>
-                  <Link className="text-primary transition" href="/">
-                    {" "}
-                    Recreation{" "}
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    className="text-primary transition"
-                    href="/accommodations"
-                  >
-                    {" "}
-                    Accommodations{" "}
-                  </Link>
-                </li>
-              </ul>
-            </nav>
-          </div>
-
-          <div className="hidden lg:block">
-            {status === "loading" || status === "unauthenticated" ? (
-              <div className="flex items-center gap-3">
+    <>
+      <header className="bg-white">
+        <div className="border-b border-gray-200/70">
+          <div className="mx-auto max-w-screen-xl px-5">
+            <div className="flex items-center justify-between py-4">
+              <div className="flex items-center gap-2">
                 <Link
-                  href={"/auth/explorer/login"}
-                  className="text-primary text-[13px] font-medium border border-primary rounded-full px-5 py-2"
+                  href={"/"}
+                  className="text-[#183264] text-base font-semibold"
                 >
-                  Login
-                </Link>
-                <Link
-                  href={"/auth/explorer/signup"}
-                  className="bg-primary text-white text-[13px] font-medium rounded-full px-5 py-2.5 hover:bg-primary/90 transition ease-in-out duration-300"
-                >
-                  Get started
+                  <Image
+                    src={Logo}
+                    className="w-40 md:w-48 shrink-0"
+                    alt="HarmonyBookMe"
+                  />
                 </Link>
               </div>
-            ) : (
-              <DropdownMenu>
-                <DropdownMenuTrigger className="flex items-center gap-1.5 cursor-pointer !ring-0 !outline-none">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    fill="currentColor"
-                    className="text-primary size-5 md:size-[13px]"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M7.5 6a4.5 4.5 0 1 1 9 0 4.5 4.5 0 0 1-9 0ZM3.751 20.105a8.25 8.25 0 0 1 16.498 0 .75.75 0 0 1-.437.695A18.683 18.683 0 0 1 12 22.5c-2.786 0-5.433-.608-7.812-1.7a.75.75 0 0 1-.437-.695Z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                  <span className="text-primary text-[13px] font-medium hidden md:block">
-                    {session?.user?.name}
-                  </span>
-                  <IoMdArrowDropdown size={18} className="text-primary" />
-                </DropdownMenuTrigger>
-                <DropdownMenuContent
-                  align="end"
-                  className="min-w-[160px] shadow-sm space-y-1 border-none rounded-t-none mt-9 p-3"
+
+              <div className="flex items-center gap-6">
+                <DropdownMenu>
+                  <DropdownMenuTrigger className="hidden md:flex items-center gap-3 text-primary text-[13px] font-medium cursor-pointer !outline-0 !ring-0">
+                    <div className="flex items-center gap-2 text-primary text-[13px]">
+                      <div className="relative size-4 rounded-full">
+                        <Image
+                          src={NigerianFlag}
+                          alt="Nigeria"
+                          className=""
+                          fill
+                          objectFit="cover"
+                          loading="eager"
+                        />
+                      </div>
+                      Nigeria
+                    </div>
+                    <MdArrowDropDown size={18} />
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent className="mt-4">
+                    <DropdownMenuItem className="flex items-center gap-2 text-primary text-[13px] font-medium cursor-pointer">
+                      <div className="relative size-4 rounded-full">
+                        <Image
+                          src={NigerianFlag}
+                          alt="Nigeria"
+                          className=""
+                          fill
+                          objectFit="cover"
+                          loading="eager"
+                        />
+                      </div>
+                      Nigeria
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+
+                <DropdownMenu>
+                  <DropdownMenuTrigger className="hidden md:flex items-center gap-3 text-primary text-[13px] font-medium cursor-pointer !outline-0 !ring-0">
+                    <div className="flex items-center gap-2 text-[13px]">
+                      <TranslateIcon size={17} />
+                      English
+                    </div>
+                    <MdArrowDropDown size={18} />
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent className="mt-4">
+                    <DropdownMenuItem className="flex items-center gap-2 text-primary text-[13px] font-medium cursor-pointer">
+                      <TranslateIcon size={17} weight="bold" />
+                      English
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+
+                <Link
+                  href={"/auth/vendor/login"}
+                  className="md:flex items-center gap-2 text-primary text-[13px] font-medium hidden"
                 >
-                  <div className="flex items-center gap-2 p-2 py-4 pr-8">
-                    <div className="size-8 flex items-center justify-center text-white text-sm font-medium bg-gradient-to-r from-primary to-primary rounded-full">
-                      {session?.user?.name?.[0]}
-                    </div>
-                    <div className="flex flex-col gap-0.5">
-                      <span className="text-primary text-[13px] font-medium">
-                        {session?.user?.name}
-                      </span>
-                      <span className="text-gray-500 text-[11px]">
-                        {session?.user?.email}
-                      </span>
-                    </div>
-                  </div>
-                  <DropdownMenuSeparator className="my-2" />
-                  <DropdownMenuItem>
-                    <Link
-                      href={"/account"}
-                      className="w-full flex items-center gap-2 text-primary !text-[12px] font-medium cursor-pointer px-2 py-1"
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        strokeWidth="2"
-                        stroke="currentColor"
-                        className="text-primary size-4"
+                  <StorefrontIcon size={17} />
+                  Vendor
+                </Link>
+
+                {/* <Link
+                  href={"/auth/explorer/login"}
+                  className="bg-primary text-white text-xs font-medium border border-primary rounded-md px-5 py-2 hover:bg-primary/90 transition-colors ease-in-out duration-300"
+                >
+                  Login
+                </Link> */}
+                {status === "loading" ? (
+                  <Skeleton className="bg-gray-200/80 w-24 h-8" />
+                ) : session ? (
+                  <DropdownMenu>
+                    <DropdownMenuTrigger className="outline-0 ring-0 cursor-pointer hidden md:block">
+                      <div className="bg-sky-700 size-8 rounded-md flex items-center justify-center">
+                        <span className="text-white text-[13px] font-semibold">
+                          {session.user?.firstName?.[0]}
+                          {/* {session.user?.lastName?.[0]} */}
+                        </span>
+                      </div>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end" className="mt-4">
+                      <DropdownMenuItem className="text-gray-600 text-xs font-medium">
+                        <Link
+                          href={"/profile"}
+                          className="flex items-center gap-2 text-gray-600 text-xs font-medium w-full cursor-pointer"
+                        >
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            strokeWidth="2"
+                            stroke="currentColor"
+                            className="size-[15px]"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z"
+                            />
+                          </svg>
+                          Profile
+                        </Link>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem className="text-gray-600 text-xs font-medium">
+                        <Link
+                          href={"/bookings"}
+                          className="flex items-center gap-2 text-gray-600 text-xs font-medium w-full cursor-pointer"
+                        >
+                          <TicketIcon size={15} />
+                          Bookings
+                        </Link>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem className="text-gray-600 text-xs font-medium">
+                        <Link
+                          href={"/notifications"}
+                          className="flex items-center gap-2 text-gray-600 text-xs font-medium w-full cursor-pointer"
+                        >
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            strokeWidth="2"
+                            stroke="currentColor"
+                            className="size-[16px]"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0M3.124 7.5A8.969 8.969 0 0 1 5.292 3m13.416 0a8.969 8.969 0 0 1 2.168 4.5"
+                            />
+                          </svg>
+                          Notifications
+                        </Link>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem
+                        onClick={() => handleSignOut("/")}
+                        className="flex items-center gap-2 text-gray-600 text-xs font-medium cursor-pointer"
                       >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z"
-                        />
-                      </svg>
-                      Account
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem>
-                    <Link
-                      href={"/account"}
-                      className="w-full flex items-center gap-2 text-primary !text-[12px] font-medium cursor-pointer px-2 py-1"
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        strokeWidth="2"
-                        stroke="currentColor"
-                        className="text-primary size-4"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M16.5 6v.75m0 3v.75m0 3v.75m0 3V18m-9-5.25h5.25M7.5 15h3M3.375 5.25c-.621 0-1.125.504-1.125 1.125v3.026a2.999 2.999 0 0 1 0 5.198v3.026c0 .621.504 1.125 1.125 1.125h17.25c.621 0 1.125-.504 1.125-1.125v-3.026a2.999 2.999 0 0 1 0-5.198V6.375c0-.621-.504-1.125-1.125-1.125H3.375Z"
-                        />
-                      </svg>
-                      Bookings
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem>
-                    <Link
-                      href={"/help-center"}
-                      className="w-full flex items-center gap-2 text-primary !text-[12px] font-medium cursor-pointer px-2 py-1"
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        strokeWidth="2"
-                        stroke="currentColor"
-                        className="text-primary size-4"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 5.25h.008v.008H12v-.008Z"
-                        />
-                      </svg>
-                      Help center
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem
-                    onClick={() => signOut({ callbackUrl: "/" })}
-                    className="w-full flex items-center gap-2 text-primary !text-[12px] font-medium cursor-pointer !px-4 !py-3"
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          strokeWidth="2"
+                          stroke="currentColor"
+                          className="size-[16px]"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M8.25 9V5.25A2.25 2.25 0 0 1 10.5 3h6a2.25 2.25 0 0 1 2.25 2.25v13.5A2.25 2.25 0 0 1 16.5 21h-6a2.25 2.25 0 0 1-2.25-2.25V15m-3 0-3-3m0 0 3-3m-3 3H15"
+                          />
+                        </svg>
+                        Logout
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                ) : (
+                  <Button
+                    onClick={() => setShowAuthModal(true)}
+                    className="bg-primary text-white rounded-md px-5 py-2 text-[13px] font-medium cursor-pointer"
                   >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      strokeWidth="2"
-                      stroke="currentColor"
-                      className="text-primary size-4"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M8.25 9V5.25A2.25 2.25 0 0 1 10.5 3h6a2.25 2.25 0 0 1 2.25 2.25v13.5A2.25 2.25 0 0 1 16.5 21h-6a2.25 2.25 0 0 1-2.25-2.25V15m-3 0-3-3m0 0 3-3m-3 3H15"
-                      />
-                    </svg>
-                    Sign out
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            )}
-          </div>
-          <div className="block lg:hidden">
-            <ResponsiveSidebar />
+                    Login
+                  </Button>
+                )}
+                <div className="block md:hidden">
+                  <HamburgerButton
+                    isOpen={isMobileNavOpen}
+                  onClick={() => setIsMobileNavOpen(!isMobileNavOpen)}
+                  />
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-    </header>
+
+        <div className="hidden md:block border-b border-gray-200/70">
+          <div className="mx-auto max-w-screen-xl px-5 py-4">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-8">
+                <Link
+                  href={"/"}
+                  className="text-primary text-[13px] font-medium"
+                >
+                  Home
+                </Link>
+                <Link
+                  href={"/events"}
+                  className="text-primary text-[13px] font-medium"
+                >
+                  Events
+                </Link>
+                <Link
+                  href={"/movies"}
+                  className="text-primary text-[13px] font-medium"
+                >
+                  Movies
+                </Link>
+                <Link
+                  href={"/leisure"}
+                  className="text-primary text-[13px] font-medium"
+                >
+                  Leisure
+                </Link>
+                <Link
+                  href={"/accommodations"}
+                  className="text-primary text-[13px] font-medium"
+                >
+                  Accommodations
+                </Link>
+                <Link
+                  href={"/travel"}
+                  className="text-primary text-[13px] font-medium"
+                >
+                  Travel
+                </Link>
+              </div>
+              <div className="flex items-center gap-2">
+                <Link
+                  href={"/"}
+                  className="flex items-center gap-2 text-primary text-[13px] font-medium"
+                >
+                  {/* <Image src={CoinIcon} alt="Coin" className="size-4" /> */}
+                  <TrophyIcon size={18} />
+                  Claim Rewards
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+      </header>
+      <AuthModal
+        showModal={showAuthModal}
+        toggleModal={() => setShowAuthModal(!showAuthModal)}
+      />
+      <CustomMobileNav
+        isOpen={isMobileNavOpen}
+        onClose={() => setIsMobileNavOpen(false)}
+      />
+    </>
   );
 };
 

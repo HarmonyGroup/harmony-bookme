@@ -8,16 +8,41 @@ interface IUser extends Document {
   businessName?: string;
   phone?: string;
   email: string;
+  username: string;
   password: string;
   avatar?: string;
-  status: "pending" | "active" | "suspended";
+  country?: string;
+  state?: string;
+  city?: string;
+  streetAddress?: string;
+  isActive: boolean;
+  vendorAccountPreference: "";
   organizations: mongoose.Types.ObjectId[];
   permissions?: string[];
   onboarding?: boolean;
   interests?: string[];
-  createdAt: Date;
-  updatedAt: Date;
   comparePassword(password: string): Promise<boolean>;
+  isNewsletterSubscribed?: boolean;
+  lastLogin: string | null;
+  // Bank details for payments (optional during registration, required during onboarding)
+  bankDetails?: {
+    accountNumber?: string;
+    bankCode?: string;
+    accountName?: string;
+    bankName?: string;
+  };
+  // Custom commission rate for vendors (optional, used for partnerships)
+  // If null, uses platform's default rate based on vendor's account preference
+  commissionRate?: number | null;
+  // Paystack subaccount fields (optional during registration, required during onboarding)
+  paystackSubaccount?: {
+    subaccountId?: string;
+    status: "pending" | "active" | "inactive" | "suspended";
+    settlementBank?: string;
+    createdAt?: Date;
+    updatedAt?: Date;
+    lastVerifiedAt?: Date;
+  };
 }
 
 const UserSchema = new mongoose.Schema<IUser>(
@@ -67,11 +92,13 @@ const UserSchema = new mongoose.Schema<IUser>(
       trim: true,
       match: [/^\S+@\S+\.\S+$/, "Please enter a valid email address"],
     },
+    username: {
+      type: String,
+      required: true,
+      unique: true,
+    },
     password: {
       type: String,
-      required: function () {
-        return this.status === "active";
-      },
     },
     avatar: {
       type: String,
@@ -87,10 +114,27 @@ const UserSchema = new mongoose.Schema<IUser>(
         message: "Invalid URL format for avatar",
       },
     },
-    status: {
+    country: {
       type: String,
-      enum: ["pending", "active", "suspended"],
-      default: "pending",
+    },
+    state: {
+      type: String,
+    },
+    city: {
+      type: String,
+    },
+    streetAddress: {
+      type: String,
+    },
+    isActive: {
+      type: Boolean,
+      default: true,
+    },
+    vendorAccountPreference: {
+      type: String,
+      required: function () {
+        return this.role === "vendor";
+      },
     },
     organizations: {
       type: [mongoose.Schema.Types.ObjectId],
@@ -106,9 +150,7 @@ const UserSchema = new mongoose.Schema<IUser>(
       default: false,
       validate: {
         validator: function (val: boolean) {
-          return (
-            ["vendor", "team_member"].includes(this.role) || val === false
-          );
+          return ["vendor", "team_member"].includes(this.role) || val === false;
         },
         message: "Only vendors and team members can have onboarding status",
       },
@@ -121,6 +163,68 @@ const UserSchema = new mongoose.Schema<IUser>(
           return this.role === "explorer" || val.length === 0;
         },
         message: "Interests are applicable only to explorers",
+      },
+    },
+    isNewsletterSubscribed: {
+      type: Boolean,
+      default: false,
+    },
+    lastLogin: { type: String, default: null },
+    // Bank details for payments
+    bankDetails: {
+      accountNumber: {
+        type: String,
+        required: function () {
+          return this.role === "vendor" && this.onboarding === true;
+        },
+      },
+      bankCode: {
+        type: String,
+        required: function () {
+          return this.role === "vendor" && this.onboarding === true;
+        },
+      },
+      accountName: {
+        type: String,
+        required: function () {
+          return this.role === "vendor" && this.onboarding === true;
+        },
+      },
+      bankName: {
+        type: String,
+      },
+    },
+    // Custom commission rate for vendors (optional, used for partnerships)
+    // If null, uses platform's default rate based on vendor's account preference
+    commissionRate: {
+      type: Number,
+      default: null, // Default null - uses platform's configuration rate
+      min: 0,
+      max: 100,
+    },
+    // Paystack subaccount fields
+    paystackSubaccount: {
+      subaccountId: {
+        type: String,
+        unique: true,
+        sparse: true, // Allows multiple null values
+        required: function () {
+          return this.role === "vendor" && this.onboarding === true;
+        },
+      },
+      status: {
+        type: String,
+        enum: ["pending", "active", "inactive", "suspended"],
+        default: "pending",
+      },
+      settlementBank: {
+        type: String,
+        required: function () {
+          return this.role === "vendor" && this.onboarding === true;
+        },
+      },
+      lastVerifiedAt: {
+        type: Date,
       },
     },
   },

@@ -21,7 +21,7 @@ const ExploreAccommodations = () => {
   };
 
   return (
-    <section className="bg-white py-16">
+    <section className="bg-white pb-16">
       <div className="mx-auto w-full max-w-7xl px-5 md:px-10">
         <div className="flex items-center justify-center md:justify-between">
           <h1 className="text-[#183264] text-center text-base md:text-xl/tight font-semibold">
@@ -30,7 +30,7 @@ const ExploreAccommodations = () => {
           <div className="hidden md:flex items-center gap-2">
             <Button
               onClick={scrollPrev}
-              className="bg-white text-[#183264] hover:bg-[#183264] hover:text-white size-8 md:size-9 border border-[#183264] rounded-full cursor-pointer transition-all duration-300"
+              className="bg-white text-[#183264] hover:bg-[#183264] hover:text-white size-8 border border-[#183264] rounded-full cursor-pointer transition-all duration-300"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -49,7 +49,7 @@ const ExploreAccommodations = () => {
             </Button>
             <Button
               onClick={scrollNext}
-              className="bg-white text-[#183264] hover:bg-[#183264] hover:text-white size-8 md:size-9 border border-[#183264] rounded-full cursor-pointer transition-all duration-300"
+              className="bg-white text-[#183264] hover:bg-[#183264] hover:text-white size-8 border border-[#183264] rounded-full cursor-pointer transition-all duration-300"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -75,7 +75,7 @@ const ExploreAccommodations = () => {
             align: "start",
             loop: true,
           }}
-          className="w-full mt-10 md:mt-12"
+          className="w-full mt-8 md:mt-8"
         >
           <CarouselContent className="-ml-2 md:-ml-4">
             <CarouselItem className="pl-2 md:pl-6 basis-full lg:basis-1/3">

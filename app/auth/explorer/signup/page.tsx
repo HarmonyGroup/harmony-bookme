@@ -29,6 +29,7 @@ const FormSchema = z.object({
 });
 
 const Page = () => {
+  
   const { mutate, isPending } = useSignup();
 
   const form = useForm<z.infer<typeof FormSchema>>({
@@ -52,7 +53,7 @@ const Page = () => {
         <div className="flex items-center justify-center px-5 py-16 md:px-10 md:py-20 md:col-span-2">
           <div className="w-full mx-auto md:max-w-md ">
             <h2 className="mb-1.5 md:mb-2 text-primary text-lg md:text-xl font-semibold">
-              Get Started
+              Explorer Signup
             </h2>
             <p className="text-gray-600 text-xs mb-8 md:mb-12 lg:mb-12">
               Fill the form below to create an explorer account

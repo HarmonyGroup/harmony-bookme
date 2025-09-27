@@ -36,7 +36,6 @@ export default function RootLayout({
           <div>{children}</div>
           <Toaster
             position="top-right"
-            toastOptions={{ className: "custom-success-toast" }}
           />
         </Providers>
       </body>

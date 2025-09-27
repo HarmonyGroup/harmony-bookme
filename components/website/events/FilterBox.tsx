@@ -1,131 +1,353 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+
 "use client";
 
 import React, { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Slider } from "@/components/ui/slider";
 import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import bookingServices from "@/constants/services";
+import { EVENT_CATEGORIES } from "@/constants/events";
+import { Button } from "@/components/ui/button";
+import { TrashIcon } from "@phosphor-icons/react";
+import { Separator } from "@/components/ui/separator";
+interface FilterBoxProps {
+  search: string;
+  setSearch: React.Dispatch<React.SetStateAction<string>>;
+  category: string;
+  setCategory: React.Dispatch<React.SetStateAction<string>>;
+  pricingType: string;
+  setPricingType: React.Dispatch<React.SetStateAction<string>>;
+  eventFormat: string;
+  setEventFormat: React.Dispatch<React.SetStateAction<string>>;
+  date: Date | undefined;
+  setDate: React.Dispatch<React.SetStateAction<Date | undefined>>;
+}
 
-const FilterBox = () => {
-  const [range, setRange] = useState<number[]>([20, 80]);
+const FilterBox: React.FC<FilterBoxProps> = ({
+  search,
+  setSearch,
+  category,
+  setCategory,
+  pricingType,
+  setPricingType,
+  eventFormat,
+  setEventFormat,
+  date,
+  setDate,
+}) => {
+  const [showAllCategories, setShowAllCategories] = useState(false);
+  const CATEGORIES_TO_SHOW = 5;
+
+  const handleClear = () => {
+    setSearch("");
+    setCategory("");
+    setPricingType("");
+    setEventFormat("");
+    setDate(undefined);
+  };
+
+  const handleCategoryToggle = (categoryName: string) => {
+    setCategory(category === categoryName ? "" : categoryName);
+  };
+
+  const toggleShowAllCategories = () => {
+    setShowAllCategories(!showAllCategories);
+  };
+
+  const displayedCategories = showAllCategories
+    ? EVENT_CATEGORIES
+    : EVENT_CATEGORIES.slice(0, CATEGORIES_TO_SHOW);
 
   return (
-    <div className="h-full">
-      <div className="flex items-center justify-between bg-white border-b border-gray-200 pb-6 rounded-t-lg">
-        <h4 className="text-primary text-sm font-semibold">Filter</h4>
-        <Button className="h-fit bg-inherit text-gray-600 text-[11px] gap-1.5 shadow-none cursor-pointer p-0 hover:bg-inherit hover:text-gray-900 !px-0">
+    // <div className="">
+    //   <div className="space-y-6">
+    //     <div>
+    //       <h3 className="text-primary text-xs font-semibold">Search Events</h3>
+    //       <div className="mt-4">
+    //         <Input
+    //           type="text"
+    //           placeholder="Search by event title"
+    //           value={search}
+    //           onChange={(e) => setSearch(e.target.value)}
+    //           className="!py-5 !text-xs font-normal placeholder:text-gray-600 placeholder:text-xs placeholder:font-normal focus-visible:ring-0 focus-visible:border-primary shadow-none transition-all ease-in-out duration-300"
+    //         />
+    //       </div>
+    //     </div>
+    //     <Separator className="my-4" />
+    //     <div>
+    //       <h3 className="text-primary text-xs font-semibold">Event Category</h3>
+    //       <div className="mt-4">
+    //         <Select
+    //           value={category || "all"}
+    //           onValueChange={(value) =>
+    //             setCategory(value === "all" ? "" : value)
+    //           }
+    //         >
+    //           <SelectTrigger className="w-full text-xs font-medium shadow-none cursor-pointer !py-5">
+    //             <SelectValue placeholder="Select event category" />
+    //           </SelectTrigger>
+    //           <SelectContent>
+    //             <SelectItem
+    //               value="all"
+    //               className="text-gray-600 text-xs cursor-pointer px-2 py-2.5"
+    //             >
+    //               All Categories
+    //             </SelectItem>
+    //             {EVENT_CATEGORIES?.map((cat, index) => (
+    //               <SelectItem
+    //                 key={index}
+    //                 value={cat}
+    //                 className="text-gray-600 text-xs cursor-pointer px-2 py-2.5"
+    //               >
+    //                 {cat}
+    //               </SelectItem>
+    //             ))}
+    //           </SelectContent>
+    //         </Select>
+    //       </div>
+    //     </div>
+    //     <Separator className="my-4" />
+    //     <div>
+    //       <h3 className="text-primary text-xs font-semibold">Event Pricing</h3>
+    //       <div className="space-y-4 mt-4">
+    //         <div className="flex items-center gap-2">
+    //           <Checkbox
+    //             id="free"
+    //             checked={pricingType === "free"}
+    //             onCheckedChange={(checked) =>
+    //               setPricingType(checked ? "free" : "")
+    //             }
+    //           />
+    //           <Label
+    //             htmlFor="free"
+    //             className="text-gray-600 text-xs font-medium"
+    //           >
+    //             Free
+    //           </Label>
+    //         </div>
+    //         <div className="flex items-center gap-2">
+    //           <Checkbox
+    //             id="paid"
+    //             checked={pricingType === "paid"}
+    //             onCheckedChange={(checked) =>
+    //               setPricingType(checked ? "paid" : "")
+    //             }
+    //           />
+    //           <Label
+    //             htmlFor="paid"
+    //             className="text-gray-600 text-xs font-medium"
+    //           >
+    //             Paid
+    //           </Label>
+    //         </div>
+    //       </div>
+    //     </div>
+    //     <Separator className="my-4" />
+    //     <div>
+    //       <h3 className="text-primary text-xs font-semibold">Event Format</h3>
+    //       <div className="space-y-4 mt-4">
+    //         <div className="flex items-center gap-2">
+    //           <Checkbox
+    //             id="in-person"
+    //             checked={eventFormat === "in-person"}
+    //             onCheckedChange={(checked) =>
+    //               setEventFormat(checked ? "in-person" : "")
+    //             }
+    //           />
+    //           <Label
+    //             htmlFor="in-person"
+    //             className="text-gray-600 text-xs font-medium"
+    //           >
+    //             In-Person
+    //           </Label>
+    //         </div>
+    //         <div className="flex items-center gap-2">
+    //           <Checkbox
+    //             id="virtual"
+    //             checked={eventFormat === "virtual"}
+    //             onCheckedChange={(checked) =>
+    //               setEventFormat(checked ? "virtual" : "")
+    //             }
+    //           />
+    //           <Label
+    //             htmlFor="virtual"
+    //             className="text-gray-600 text-xs font-medium"
+    //           >
+    //             Virtual
+    //           </Label>
+    //         </div>
+    //         <div className="flex items-center gap-2">
+    //           <Checkbox
+    //             id="hybrid"
+    //             checked={eventFormat === "hybrid"}
+    //             onCheckedChange={(checked) =>
+    //               setEventFormat(checked ? "hybrid" : "")
+    //             }
+    //           />
+    //           <Label
+    //             htmlFor="hybrid"
+    //             className="text-gray-600 text-xs font-medium"
+    //           >
+    //             Hybrid
+    //           </Label>
+    //         </div>
+    //       </div>
+    //     </div>
+    //     <Separator className="my-4" />
+    //     <div>
+    //       <h3 className="text-primary text-xs font-semibold">Event Date</h3>
+    //       <div className="mt-4">
+    //         <Calendar
+    //           mode="single"
+    //           selected={date}
+    //           onSelect={setDate}
+    //           className="text-xs w-full !p-0"
+    //         />
+    //       </div>
+    //     </div>
+    //   </div>
+    // </div>
+    <div className="space-y-6">
+      <div className="space-y-3">
+        <Label className="text-primary text-[13px]">Quick search</Label>
+        <div className="relative w-full">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
-            strokeWidth="1.7"
+            strokeWidth="2.4"
             stroke="currentColor"
-            className="size-[15px]"
+            className="absolute left-[14px] top-1/2 -translate-y-1/2 size-[12px] text-gray-500"
           >
             <path
               strokeLinecap="round"
               strokeLinejoin="round"
-              d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"
+              d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
             />
           </svg>
-          Clear all filters (3)
-        </Button>
+          <Input
+            type="search"
+            className="bg-white !text-xs placeholder:text-xs shadow-none outline-none ring-0 focus:shadow-xs px-4 !py-5 ps-[32px] border focus-visible:ring-0 focus-visible:border-primary transition-all ease-in-out duration-200"
+            placeholder="Search events here..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+        </div>
       </div>
-      <div className="bg-white rounded-b-lg py-4">
-        <h4 className="text-primary text-xs font-semibold">Price Range</h4>
-        <Slider
-          defaultValue={range}
-          value={range}
-          onValueChange={setRange}
-          min={0}
-          max={100}
-          step={1}
-          className="w-full mt-4"
-        />
-        <div className="w-full flex items-center gap-2.5 mt-6">
-          <div className="w-full space-y-2">
-            <Label htmlFor="email" className="text-primary text-xs">
-              Minimum
-            </Label>
-            <Input
-              type="email"
-              id="email"
-              placeholder="0"
-              className="placeholder:text-xs focus-visible:ring-0 focus-visible:border-primary transition-all ease-in-out duration-200 !py-5"
-            />
-          </div>
-          <div className="w-full space-y-2">
-            <Label htmlFor="email" className="text-primary text-xs">
-              Maximum
-            </Label>
-            <Input
-              type="email"
-              id="email"
-              placeholder="0"
-              className="placeholder:text-xs focus-visible:ring-0 focus-visible:border-primary transition-all ease-in-out duration-200 !py-5"
-            />
-          </div>
-        </div>
 
-        <div className="mt-4">
-          <Label htmlFor="email" className="text-primary text-xs mb-2">
-            Category
-          </Label>
-          <Select>
-            <SelectTrigger className="w-full text-xs shadow-none cursor-pointer !py-5">
-              <SelectValue placeholder="Select event category" />
-            </SelectTrigger>
-            <SelectContent>
-              {bookingServices
-                .find((service) => service.key === "events")
-                ?.subtypes.map((subtype) => (
-                  <SelectItem
-                    key={subtype.key}
-                    value={subtype.key}
-                    className="text-gray-600 text-xs cursor-pointer px-2 py-2.5"
-                  >
-                    {subtype.value}
-                  </SelectItem>
-                ))}
-            </SelectContent>
-          </Select>
-        </div>
+      <Separator className="my-4" />
 
-        <div className="mt-4">
-          <Label htmlFor="email" className="text-primary text-xs mb-2">
-            Pricing
-          </Label>
-          <Select>
-            <SelectTrigger className="w-full text-xs shadow-none cursor-pointer !py-5">
-              <SelectValue placeholder="Select event pricing" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem
-                value="free"
-                className="text-gray-600 text-xs cursor-pointer"
+      <div className="space-y-3">
+        <Label className="text-primary text-[13px]">Event Category</Label>
+        <div className="flex flex-col gap-3">
+          {displayedCategories.map((categoryName) => (
+            <div key={categoryName} className="flex items-center gap-2">
+              <Checkbox
+                id={categoryName}
+                checked={category === categoryName}
+                onCheckedChange={() => handleCategoryToggle(categoryName)}
+              />
+              <Label
+                htmlFor={categoryName}
+                className="text-gray-600 text-[13px] font-normal"
               >
-                Free
-              </SelectItem>
-              <SelectItem
-                value="paid"
-                className="text-gray-600 text-xs cursor-pointer px-2 py-2.5"
-              >
-                Paid
-              </SelectItem>
-            </SelectContent>
-          </Select>
+                {categoryName}
+              </Label>
+            </div>
+          ))}
+          {EVENT_CATEGORIES.length > CATEGORIES_TO_SHOW && (
+            <Button
+              variant="ghost"
+              onClick={toggleShowAllCategories}
+              className="text-primary text-[12px] font-medium p-0 h-auto hover:bg-transparent hover:text-primary/80 self-start cursor-pointer"
+            >
+              {showAllCategories
+                ? "Show Less"
+                : `Show More (${
+                    EVENT_CATEGORIES.length - CATEGORIES_TO_SHOW
+                  } more)`}
+            </Button>
+          )}
         </div>
+      </div>
 
-        <Button className="w-full bg-primary text-white text-xs font-medium rounded-lg hover:bg-primary/90 cursor-pointer duration-300 mt-6 !py-5">
-          Apply Filter
+      <Separator className="my-4" />
+
+      <div className="space-y-3">
+        <Label className="text-primary text-[13px]">Event Pricing</Label>
+        <div className="flex items-center gap-2">
+          <Checkbox
+            id="free"
+            checked={pricingType === "free"}
+            onCheckedChange={(checked) => setPricingType(checked ? "free" : "")}
+          />
+          <Label
+            htmlFor="free"
+            className="text-gray-500 text-[13px] font-normal"
+          >
+            Free
+          </Label>
+        </div>
+        <div className="flex items-center gap-2">
+          <Checkbox
+            id="paid"
+            checked={pricingType === "paid"}
+            onCheckedChange={(checked) => setPricingType(checked ? "paid" : "")}
+          />
+          <Label
+            htmlFor="paid"
+            className="text-gray-500 text-[13px] font-normal"
+          >
+            Paid
+          </Label>
+        </div>
+      </div>
+
+      <Separator className="my-4" />
+
+      <div className="space-y-3">
+        <Label className="text-primary text-xs">Event Format</Label>
+        <div className="flex items-center gap-2">
+          <Checkbox
+            id="in-person"
+            checked={eventFormat === "in-person"}
+            onCheckedChange={(checked) =>
+              setEventFormat(checked ? "in-person" : "")
+            }
+          />
+          <Label
+            htmlFor="in-person"
+            className="text-gray-600 text-[13px] font-normal"
+          >
+            In-Person
+          </Label>
+        </div>
+        <div className="flex items-center gap-2">
+          <Checkbox
+            id="virtual"
+            checked={eventFormat === "virtual"}
+            onCheckedChange={(checked) =>
+              setEventFormat(checked ? "virtual" : "")
+            }
+          />
+          <Label
+            htmlFor="virtual"
+            className="text-gray-600 text-[13px] font-normal"
+          >
+            Virtual
+          </Label>
+        </div>
+      </div>
+
+      <Separator className="my-4" />
+
+      <div className="w-full">
+        <Button
+          onClick={handleClear}
+          className="w-full bg-muted text-primary text-xs font-medium rounded-lg cursor-pointer transition-colors ease-in-out duration-300 !py-5 hover:bg-muted/80"
+        >
+         <TrashIcon className="text-primary" />
+          Clear Filters
         </Button>
       </div>
     </div>

@@ -5,7 +5,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
-
 import {
   Form,
   FormControl,
@@ -17,10 +16,11 @@ import {
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import Image from "next/image";
-import BG from "@/public/assets/auth-bg.jpg";
+import BG from "@/public/assets/dreamy-atmosphere-pastel-colored-scene-travel-content.jpg";
 import Logo from "@/public/assets/logo-wordmark-light.png";
-
 import { useSignIn } from "@/services/auth/login";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 const FormSchema = z.object({
   email: z.string().email("Invalid email"),
@@ -30,6 +30,7 @@ const FormSchema = z.object({
 });
 
 const Page = () => {
+  const router = useRouter();
   const { signIn, isPending } = useSignIn();
 
   const form = useForm<z.infer<typeof FormSchema>>({
@@ -41,7 +42,12 @@ const Page = () => {
   });
 
   const onSubmit = (data: z.infer<typeof FormSchema>) => {
-    signIn(data);
+    signIn(data, {
+      onSuccess: () => {
+        toast.success("Signed in successfully");
+        router.push("/");
+      },
+    });
   };
 
   return (
@@ -50,7 +56,7 @@ const Page = () => {
         <div className="flex items-center justify-center px-5 py-16 md:px-10 md:py-20 md:col-span-2">
           <div className="w-full mx-auto md:max-w-md ">
             <h2 className="mb-2 text-primary text-xl md:text-xl font-semibold">
-              Welcome Back
+              Explorer Login
             </h2>
             <p className="text-gray-600 text-[12px] mb-8 md:mb-12 lg:mb-12">
               Enter your credentials in the form below
@@ -104,11 +110,11 @@ const Page = () => {
                   />
                   <Button
                     type="submit"
-                    className="flex items-center justify-center bg-[#183264] w-full text-xs font-semibold !py-6 cursor-pointer hover:bg-[#183264]/90 transition-all ease-in-out duration-300"
+                    className="flex items-center justify-center bg-primary w-full text-xs font-semibold !py-6 cursor-pointer hover:bg-primary/90 transition-all ease-in-out duration-300"
                     disabled={isPending}
                   >
                     {isPending ? (
-                      <span className="loader -mt-3.5"></span>
+                      <span className="loader"></span>
                     ) : (
                       <span>Login</span>
                     )}
@@ -128,18 +134,34 @@ const Page = () => {
           </div>
         </div>
 
-        <div className="relative h-full overflow-hidden -order-1">
-          <Image
-            src={BG}
-            layout="fill"
-            objectFit="cover"
-            alt="Harmony BookMe"
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-[#183264]/60 to-[#183264]/75"></div>
-          <div className="relative p-6">
-            <Link href={"/"}>
-              <Image src={Logo} className="w-[240px]" alt="Harmony BookMe" />
-            </Link>
+        <div className="-order-1 h-full relative p-1.5">
+          <div className="relative h-full overflow-hidden rounded-xl p-4">
+            <Image
+              src={BG}
+              layout="fill"
+              objectFit="cover"
+              alt="Harmony BookMe"
+            />
+            <div className="absolute inset-0 bg-gradient-to-b from-primary/90 to-primary/75"></div>
+            <div className="relative p-4">
+              <Link href={"/"}>
+                <Image src={Logo} className="w-[200px]" alt="Harmony BookMe" />
+              </Link>
+            </div>
+
+            <div className="absolute bottom-4 left-4 right-4">
+              <div className="bg-white/20 rounded-lg p-4 border border-white/20">
+                <p className="text-white text-xs/relaxed">
+                  Lorem ipsum dolor, sit amet consectetur adipisicing elit.
+                  Harum et magni repudiandae commodi, vero suscipit architecto
+                  aut autem illum rem porro perferendis blanditiis ipsum sint,
+                  nam aspernatur ad alias. Amet.
+                </p>
+
+                <p className="text-white text-[13px] font-semibold mt-6">Olusegun Adebayo</p>
+                <p className="text-white text-xs font-medium mt-1">Harmony Group</p>
+              </div>
+            </div>
           </div>
         </div>
       </div>

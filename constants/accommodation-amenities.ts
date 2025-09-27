@@ -1,0 +1,62 @@
+export const AMENITIES = [
+  { key: "wifi", label: "Wi-Fi", category: "connectivity" },
+  { key: "airConditioning", label: "Air Conditioning", category: "climate" },
+  { key: "heating", label: "Heating", category: "climate" },
+  { key: "television", label: "Television", category: "entertainment" },
+  { key: "cableSatelliteTV", label: "Cable/Satellite TV", category: "entertainment" },
+  { key: "refrigerator", label: "Refrigerator", category: "kitchen" },
+  { key: "microwave", label: "Microwave", category: "kitchen" },
+  { key: "kitchenette", label: "Kitchenette", category: "kitchen" },
+  { key: "washingMachine", label: "Washing Machine", category: "laundry" },
+  { key: "deskWorkspace", label: "Desk/Workspace", category: "workspace" },
+  { key: "housekeeping", label: "Housekeeping", category: "services" },
+  { key: "roomService", label: "Room Service", category: "services" },
+  { key: "concierge", label: "Concierge", category: "services" },
+  { key: "parking", label: "Parking", category: "accessibility" },
+  { key: "swimmingPool", label: "Swimming Pool", category: "recreation" },
+  { key: "hotTubJacuzzi", label: "Hot Tub/Jacuzzi", category: "recreation" },
+  { key: "spa", label: "Spa", category: "recreation" },
+  { key: "gym", label: "Gym/Fitness Center", category: "recreation" },
+  { key: "balcony", label: "Balcony/Terrace", category: "outdoor" },
+  { key: "complimentaryBreakfast", label: "Complimentary Breakfast", category: "dining" },
+  { key: "laundryService", label: "Laundry Service", category: "services" },
+  { key: "elevator", label: "Elevator", category: "accessibility" },
+  { key: "wheelchairAccessibility", label: "Wheelchair Accessible", category: "accessibility" },
+  { key: "smokingArea", label: "Designated Smoking Area", category: "policies" },
+] as const
+
+export const AMENITY_CATEGORIES = {
+  connectivity: "Internet & Connectivity",
+  climate: "Climate Control",
+  entertainment: "Entertainment",
+  kitchen: "Kitchen & Dining",
+  laundry: "Laundry",
+  workspace: "Work & Business",
+  services: "Services",
+  accessibility: "Accessibility",
+  recreation: "Recreation & Wellness",
+  outdoor: "Outdoor Spaces",
+  dining: "Dining",
+  policies: "Special Areas",
+} as const
+
+export const PROPERTY_TYPES = [
+  "Apartment",
+  "House",
+  "Villa",
+  "Condo",
+  "Studio",
+  "Loft",
+  "Townhouse",
+  // "Cabin",
+  // "Cottage",
+  // "Hotel Room",
+  // "Hostel",
+  // "Bed & Breakfast",
+  // "Resort",
+  "Other",
+] as const
+
+export const COUNTRIES = [
+  "Nigeria",
+] as const

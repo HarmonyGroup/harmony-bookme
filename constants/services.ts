@@ -1,3 +1,16 @@
+export type BookingSubtype = {
+  key: string;
+  value: string;
+  description: string;
+};
+
+export type BookingService = {
+  key: string;
+  value: string;
+  description: string;
+  subtypes: BookingSubtype[];
+};
+
 const bookingServices = [
   {
     key: "events",
@@ -64,6 +77,13 @@ const bookingServices = [
   {
     key: "movies_and_cinema",
     value: "Movie and cinema",
+    description:
+      "Provide flights, buses, or car rentals for seamless movement. Specify schedules to connect explorers.",
+    subtypes: [],
+  },
+  {
+    key: "leisure",
+    value: "Leisure",
     description:
       "Provide flights, buses, or car rentals for seamless movement. Specify schedules to connect explorers.",
     subtypes: [],
