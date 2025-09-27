@@ -17,7 +17,7 @@ import Logo from "@/public/assets/logo-wordmark-dark.png";
 import { signOut } from "next-auth/react";
 import { toast } from "sonner";
 import CustomMobileNav from "./CustomMobileNav";
-import HamburgerButton from "./HamburgerButton";
+// import HamburgerButton from "./HamburgerButton";
 import {
   StorefrontIcon,
   TicketIcon,
@@ -136,11 +136,12 @@ const Navbar = () => {
                     src={Logo}
                     className="w-44 md:w-48 shrink-0"
                     alt="HarmonyBookMe"
+                    loading="eager"
                   />
                 </Link>
               </div>
 
-              <div className="flex items-center gap-6">
+              <div className="flex items-center gap-3 md:gap-6">
                 <DropdownMenu>
                   <DropdownMenuTrigger className="hidden md:flex items-center gap-3 text-primary text-[13px] font-medium cursor-pointer !outline-0 !ring-0">
                     <div className="flex items-center gap-2 text-primary text-[13px]">
@@ -296,16 +297,32 @@ const Navbar = () => {
                 ) : (
                   <Button
                     onClick={() => setShowAuthModal(true)}
-                    className="bg-primary text-white rounded-md px-5 py-2 text-[13px] font-medium cursor-pointer"
+                    className="bg-primary text-white rounded-md px-5 py-2 text-xs md:text-[13px] font-medium cursor-pointer"
                   >
                     Login
                   </Button>
                 )}
                 <div className="block md:hidden">
-                  <HamburgerButton
+                  <button onClick={() => setIsMobileNavOpen(!isMobileNavOpen)}>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth="2"
+                      stroke="currentColor"
+                      className="size-[20px] text-primary"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
+                      />
+                    </svg>
+                  </button>
+                  {/* <HamburgerButton
                     isOpen={isMobileNavOpen}
-                  onClick={() => setIsMobileNavOpen(!isMobileNavOpen)}
-                  />
+                    onClick={() => setIsMobileNavOpen(!isMobileNavOpen)}
+                  /> */}
                 </div>
               </div>
             </div>

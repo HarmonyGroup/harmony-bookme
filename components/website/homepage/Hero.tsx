@@ -54,7 +54,7 @@ const Hero = () => {
 
             <p className="text-[13px]/relaxed md:text-sm/relaxed text-white/80 font-medium mb-8 max-w-3xl mx-auto">
               Find and book events, accommodations, movies, leisure activities{" "}
-              <br /> and travel in one seamless platform
+              <br className="hidden md:block" /> and travel in one seamless platform
             </p>
           </div>
 
