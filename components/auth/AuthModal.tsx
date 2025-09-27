@@ -27,6 +27,7 @@ import { Loader2 } from "lucide-react";
 import { BsEye, BsEyeSlash } from "react-icons/bs";
 import { useSignup } from "@/services/auth/signup";
 import { useRouter } from "next/navigation";
+import { usePreventZoom } from "@/hooks/use-prevent-zoom";
 
 interface AuthModalProps {
   showModal: boolean;
@@ -57,6 +58,9 @@ const AuthModal = ({ showModal, toggleModal, redirectUrl }: AuthModalProps) => {
   const { signIn, isPending } = useSignIn();
   const { mutate: signup, isPending: signupPending } = useSignup();
   const router = useRouter();
+  
+  // Prevent zoom on mobile when focusing inputs
+  usePreventZoom();
 
   const loginForm = useForm<z.infer<typeof LoginFormSchema>>({
     resolver: zodResolver(LoginFormSchema),
@@ -104,9 +108,9 @@ const AuthModal = ({ showModal, toggleModal, redirectUrl }: AuthModalProps) => {
   return (
     <>
       <Dialog open={showModal} onOpenChange={toggleModal}>
-        <DialogContent className="p-7">
-          <DialogHeader>
-            <DialogTitle className="text-primary text-xl font-semibold !mb-0">
+        <DialogContent className="p-4 md:p-6 py-8 !rounded-3xl">
+          <DialogHeader className="gap-1">
+            <DialogTitle className="text-primary text-lg md:text-xl font-semibold !mb-0">
               {view === "login" ? "Welcome Back!" : "Get Started"}
             </DialogTitle>
             <DialogDescription className="text-gray-600 text-xs/relaxed !mt-0">
