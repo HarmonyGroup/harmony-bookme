@@ -182,7 +182,7 @@ const CustomMobileNav: React.FC<CustomMobileNavProps> = ({
                 onClick={onClose}
                 className="flex items-center justify-between gap-3 px-4 py-5 text-primary hover:bg-muted/50 hover:text-primary transition-all duration-300 group border-muted border-b"
               >
-                <span className="font-medium text-xs">{link.label}</span>
+                <span className="font-medium text-[13px]">{link.label}</span>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -208,7 +208,7 @@ const CustomMobileNav: React.FC<CustomMobileNavProps> = ({
                   onClick={onClose}
                   className="flex items-center justify-between gap-3 px-4 py-5 text-primary hover:bg-muted/50 hover:text-primary transition-all duration-300 group border-muted border-b"
                 >
-                  <span className="font-medium text-xs">Profile</span>
+                  <span className="font-medium text-[13px]">Profile</span>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
@@ -229,7 +229,7 @@ const CustomMobileNav: React.FC<CustomMobileNavProps> = ({
                   onClick={onClose}
                   className="flex items-center justify-between gap-3 px-4 py-5 text-primary hover:bg-muted/50 hover:text-primary transition-all duration-300 group border-muted border-b"
                 >
-                  <span className="font-medium text-xs">Notifications</span>
+                  <span className="font-medium text-[13px]">Notifications</span>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
@@ -250,7 +250,7 @@ const CustomMobileNav: React.FC<CustomMobileNavProps> = ({
                   onClick={onClose}
                   className="flex items-center justify-between gap-3 px-4 py-5 text-primary hover:bg-muted/50 hover:text-primary transition-all duration-300 group border-muted border-b"
                 >
-                  <span className="font-medium text-xs">Bookings</span>
+                  <span className="font-medium text-[13px]">Bookings</span>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
@@ -272,7 +272,7 @@ const CustomMobileNav: React.FC<CustomMobileNavProps> = ({
                   onClick={handleSignOut}
                   className="flex items-center justify-between gap-3 px-4 py-5 text-red-600 hover:bg-red-50 hover:text-red-700 transition-all duration-300 group border-muted border-b w-full text-left"
                 >
-                  <span className="font-medium text-xs">Sign Out</span>
+                  <span className="font-medium text-[13px]">Sign Out</span>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
