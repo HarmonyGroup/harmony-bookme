@@ -134,6 +134,18 @@
   select {
     font-size: 16px !important;
   }
+
+  /* Ensure smooth dialog animations */
+  [data-slot="dialog-content"] {
+    will-change: transform, opacity;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+  }
+
+  /* Prevent layout shifts during animations */
+  [data-slot="dialog-overlay"] {
+    will-change: opacity;
+  }
 }
 
 

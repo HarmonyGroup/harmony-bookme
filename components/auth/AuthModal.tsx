@@ -108,7 +108,7 @@ const AuthModal = ({ showModal, toggleModal, redirectUrl }: AuthModalProps) => {
   return (
     <>
       <Dialog open={showModal} onOpenChange={toggleModal}>
-        <DialogContent className="p-4 md:p-6 py-8 !rounded-3xl">
+        <DialogContent className="p-4 md:p-6 py-8 rounded-3xl">
           <DialogHeader className="gap-1">
             <DialogTitle className="text-primary text-lg md:text-xl font-semibold !mb-0">
               {view === "login" ? "Welcome Back!" : "Get Started"}
