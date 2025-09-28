@@ -384,7 +384,8 @@ const Page = ({ params }: EventPageProps) => {
                 <h1 className="text-primary text-base/relaxed md:text-xl/relaxed font-semibold">
                   {event.title}
                 </h1>
-                <div className="flex items-center gap-2.5">
+                {/* <span className="bg-sky-100 text-rose-600 text-[11px] rounded-lg px-4 py-2">{event?.category}</span> */}
+                {/* <div className="flex items-center gap-2.5">
                   <div className="flex items-center gap-1">
                     <StarIcon
                       weight="fill"
@@ -398,7 +399,7 @@ const Page = ({ params }: EventPageProps) => {
                   <p className="text-gray-600 text-xs font-medium">
                     (<span>20</span> reviews)
                   </p>
-                </div>
+                </div> */}
               </div>
 
               <Separator className="bg-gray-200/60" />
@@ -409,7 +410,7 @@ const Page = ({ params }: EventPageProps) => {
                   About this event
                 </h4>
                 <div>
-                  <p className="text-gray-700 text-[11px] md:text-xs/relaxed">
+                  <p className="text-gray-600 text-[11px] md:text-xs/relaxed">
                     {event.description &&
                     event.description.length > 300 &&
                     !isDescriptionExpanded
