@@ -267,16 +267,16 @@ const Page = ({ params }: LeisurePageProps) => {
         
         <Breadcrumb>
           <BreadcrumbList>
-            <BreadcrumbItem className="text-gray-700 text-xs">
+            <BreadcrumbItem className="text-gray-600 text-[11px] md:text-xs">
               <BreadcrumbLink href="/">Home</BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
-            <BreadcrumbItem className="text-gray-700 text-xs">
+            <BreadcrumbItem className="text-gray-600 text-[11px] md:text-xs">
               <BreadcrumbLink href="/leisure">Leisure</BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
-            <BreadcrumbItem className="!text-primary text-xs">
-              <BreadcrumbPage className="!text-primary text-xs font-medium">
+            <BreadcrumbItem className="!text-primary text-[11px] md:text-xs">
+              <BreadcrumbPage className="!text-primary text-[11px] md:text-xs font-medium">
                 {leisure.title}
               </BreadcrumbPage>
             </BreadcrumbItem>
