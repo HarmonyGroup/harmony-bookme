@@ -145,7 +145,7 @@ const Page = () => {
             <h1 className="text-primary text-sm md:text-base font-semibold">
               Found {data?.pagination?.total || 0} events
             </h1>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mt-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-5 mt-6 md:mt-8">
             {isLoading ? (
                 [...Array(6)].map((_, index) => (
                   <EventCardSkeleton key={index} />
@@ -172,7 +172,7 @@ const Page = () => {
             {/* Pagination */}
             {data?.data?.length && (
               <div className="mt-6 w-full flex items-center justify-between">
-                <div className="text-[13px] text-gray-700 whitespace-nowrap">
+                <div className="text-xs md:text-[13px] text-gray-700 whitespace-nowrap">
                   Showing results {(page - 1) * limit + 1} to{" "}
                   {Math.min(page * limit, data.pagination.total)} of{" "}
                   {data.pagination.total}
@@ -184,8 +184,8 @@ const Page = () => {
                         onClick={handlePrevPage}
                         className={
                           !data?.pagination.hasPrev
-                            ? "pointer-events-none opacity-50 text-[13px]"
-                            : "cursor-pointer text-[13px] text-gray-600 hover:bg-transparent"
+                            ? "pointer-events-none opacity-50 text-xs md:text-[13px]"
+                            : "cursor-pointer text-xs md:text-[13px] text-gray-600 hover:bg-transparent"
                         }
                       />
                     </PaginationItem>
@@ -198,7 +198,7 @@ const Page = () => {
                           <PaginationLink
                             onClick={() => handlePageChange(pageNum as number)}
                             isActive={pageNum === data?.pagination.page}
-                            className="cursor-pointer text-[13px]"
+                            className="cursor-pointer text-xs md:text-[13px]"
                             size="sm"
                           >
                             {pageNum}
@@ -212,8 +212,8 @@ const Page = () => {
                         onClick={handleNextPage}
                         className={
                           !data?.pagination.hasNext
-                            ? "pointer-events-none opacity-50 text-[13px]"
-                            : "cursor-pointer text-[13px] text-gray-600 hover:bg-transparent"
+                            ? "pointer-events-none opacity-50 text-xs md:text-[13px]"
+                            : "cursor-pointer text-xs md:text-[13px] text-gray-600 hover:bg-transparent"
                         }
                       />
                     </PaginationItem>

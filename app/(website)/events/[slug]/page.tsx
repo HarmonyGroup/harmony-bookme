@@ -278,16 +278,16 @@ const Page = ({ params }: EventPageProps) => {
         
         <Breadcrumb>
           <BreadcrumbList>
-            <BreadcrumbItem className="text-gray-700 text-xs">
+            <BreadcrumbItem className="text-gray-700 text-[11px] md:text-xs">
               <BreadcrumbLink href="/">Home</BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
-            <BreadcrumbItem className="text-gray-700 text-xs">
+            <BreadcrumbItem className="text-gray-700 text-[11px] md:text-xs">
               <BreadcrumbLink href="/events">Events</BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
-            <BreadcrumbItem className="!text-primary text-xs">
-              <BreadcrumbPage className="!text-primary text-xs font-medium">
+            <BreadcrumbItem className="!text-primary text-[11px] md:text-xs">
+              <BreadcrumbPage className="!text-primary text-[11px] md:text-xs font-medium">
                 {event.title}
               </BreadcrumbPage>
             </BreadcrumbItem>
@@ -405,11 +405,11 @@ const Page = ({ params }: EventPageProps) => {
 
               {/* Event Description */}
               <div className="bg-white space-y-2">
-                <h4 className="text-[15px] font-semibold text-primary">
+                <h4 className="text-[13px] md:text-[15px] font-semibold text-primary">
                   About this event
                 </h4>
                 <div>
-                  <p className="text-gray-700 text-xs/relaxed">
+                  <p className="text-gray-700 text-[11px] md:text-xs/relaxed">
                     {event.description &&
                     event.description.length > 300 &&
                     !isDescriptionExpanded
@@ -424,7 +424,7 @@ const Page = ({ params }: EventPageProps) => {
                       onClick={() =>
                         setIsDescriptionExpanded(!isDescriptionExpanded)
                       }
-                      className="text-xs font-semibold mt-3 p-0 h-fit w-fit text-primary hover:text-primary/80 hover:bg-inherit cursor-pointer"
+                      className="text-[11px] md:text-xs font-semibold mt-3 p-0 h-fit w-fit text-primary hover:text-primary/80 hover:bg-inherit cursor-pointer"
                     >
                       {isDescriptionExpanded ? "Show less" : "Read more"}
                     </Button>
@@ -436,7 +436,7 @@ const Page = ({ params }: EventPageProps) => {
 
               {/* Event Details */}
               <div className="bg-white space-y-6">
-                <h4 className="text-[15px] font-semibold text-primary">
+                <h4 className="text-[13px] md:text-[15px] font-semibold text-primary">
                   Event Details
                 </h4>
                 <div className="space-y-4">
@@ -450,10 +450,10 @@ const Page = ({ params }: EventPageProps) => {
                         />
                       </div>
                       <div>
-                        <h3 className="text-[13px] font-semibold text-primary">
+                        <h3 className="text-xs md:text-[13px] font-semibold text-primary">
                           Date & Time
                         </h3>
-                        <p className="text-[13px] text-gray-600 mt-1">
+                        <p className="text-[11px] md:text-[13px] text-gray-600 mt-1">
                           {formatDate(event.startDate)} at{" "}
                           {formatTime(event.startDate)}
                         </p>
@@ -469,10 +469,10 @@ const Page = ({ params }: EventPageProps) => {
                         />
                       </div>
                       <div>
-                        <h3 className="text-[13px] font-semibold text-primary">
+                        <h3 className="text-xs md:text-[13px] font-semibold text-primary">
                           Location
                         </h3>
-                        <p className="text-[13px] text-gray-600 mt-1">
+                        <p className="text-[11px] md:text-[13px] text-gray-600 mt-1">
                           {event?.venueName}, {event?.city}
                         </p>
                       </div>
