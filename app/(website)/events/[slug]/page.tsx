@@ -17,14 +17,10 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Label } from "@/components/ui/label";
-import {
-  CalendarDotsIcon,
-  MapPinLineIcon,
-} from "@phosphor-icons/react";
+import { CalendarDotsIcon, MapPinLineIcon } from "@phosphor-icons/react";
 import {
   calculateTicketPrice,
   calculateTicketTotal,
-  formatPrice as formatTicketPrice,
 } from "@/utils/ticket-pricing";
 import {
   Breadcrumb,
@@ -274,7 +270,6 @@ const Page = ({ params }: EventPageProps) => {
     <section className="bg-white py-6">
       <style dangerouslySetInnerHTML={{ __html: customStyles }} />
       <div className="min-h-screen bg-white max-w-7xl mx-auto px-5">
-        
         <Breadcrumb>
           <BreadcrumbList>
             <BreadcrumbItem className="text-gray-700 text-[11px] md:text-xs">
@@ -542,21 +537,21 @@ const Page = ({ params }: EventPageProps) => {
               {/* Booking Card */}
               <Card
                 id="booking-section"
-                className="border-none !bg-white backdrop-blur-sm sticky top-4 light-shadow z-10"
+                className="border-none !bg-white !shadow-none md:!shadow-sm md:backdrop-blur-sm sticky top-4 md:light-shadow z-10 !py-4 md:!py-6"
               >
-                <CardHeader className="">
-                  <CardTitle className="text-[15px] font-semibold text-primary">
+                <CardHeader className="!px-0 md:!px-6">
+                  <CardTitle className="text-[13px] md:text-[15px] font-semibold text-primary">
                     {event.pricingType === "free"
                       ? "Get Your Free Ticket"
                       : "Ticket Options"}
                   </CardTitle>
-                  <p className="text-gray-700 text-xs font-medium">
+                  <p className="text-gray-600 text-[11px] md:text-xs">
                     {event.pricingType === "free"
                       ? "Register for this free event"
                       : "You can select multiple ticket options"}
                   </p>
                 </CardHeader>
-                <CardContent className="space-y-4">
+                <CardContent className="space-y-4 !px-0 md:!px-6">
                   {event.pricingType === "free" ? (
                     <div className="space-y-4">
                       <div className="text-center p-6 bg-green-50 rounded-lg">
@@ -581,14 +576,14 @@ const Page = ({ params }: EventPageProps) => {
                       <div className="space-y-2">
                         <Label
                           htmlFor="ticket-type"
-                          className="text-gray-700 text-xs font-medium"
+                          className="text-gray-600 text-[11px] md:text-xs font-normal"
                         >
                           Select options
                         </Label>
                         <DropdownMenu>
                           <DropdownMenuTrigger asChild>
-                            <Button 
-                              variant="outline" 
+                            <Button
+                              variant="outline"
                               className="w-full text-gray-500 text-xs !py-6 cursor-pointer justify-between hover:bg-muted/50 transition-all duration-300 ease-in-out"
                             >
                               Select options
@@ -610,16 +605,29 @@ const Page = ({ params }: EventPageProps) => {
                                     className="cursor-pointer !px-2.5 !py-3"
                                   >
                                     <div className="flex items-center justify-between w-full">
-                                      <span className="text-gray-700 text-[13px] font-medium">{ticket.name}</span>
+                                      <span className="text-gray-700 text-[13px] font-medium">
+                                        {ticket.name}
+                                      </span>
                                       <div className="flex flex-col gap-1">
                                         <span className="text-[13px] font-semibold text-primary">
-                                          {hasDiscount ? `NGN ${formatPrice(discountedPrice)}` : `NGN ${formatPrice(ticket.basePrice)}`}
+                                          {hasDiscount
+                                            ? `NGN ${formatPrice(
+                                                discountedPrice
+                                              )}`
+                                            : `NGN ${formatPrice(
+                                                ticket.basePrice
+                                              )}`}
                                         </span>
-                                        {hasDiscount && <span className="text-xs text-gray-500 line-through">NGN ${formatPrice(ticket.basePrice)}</span>}
+                                        {hasDiscount && (
+                                          <span className="text-xs text-gray-500 line-through">
+                                            NGN {formatPrice(ticket.basePrice)}
+                                          </span>
+                                        )}
                                       </div>
                                     </div>
                                   </DropdownMenuItem>
-                                  {index !== (event.tickets?.length || 0) - 1 && (
+                                  {index !==
+                                    (event.tickets?.length || 0) - 1 && (
                                     <Separator className="my-1" />
                                   )}
                                 </Fragment>
@@ -715,11 +723,12 @@ const Page = ({ params }: EventPageProps) => {
                                 </div>
                                 <div className="text-right space-y-1">
                                   <p className="text-[13px] font-semibold text-primary">
-                                    {formatTicketPrice(totalPrice)}
+                                    NGN {formatPrice(totalPrice)}
                                   </p>
                                   {hasDiscount && (
                                     <p className="text-xs text-gray-500 line-through">
-                                      {formatTicketPrice(
+                                      NGN{" "}
+                                      {formatPrice(
                                         (ticketData?.basePrice || 0) *
                                           ticket.quantity
                                       )}
@@ -741,7 +750,7 @@ const Page = ({ params }: EventPageProps) => {
                                 Total
                               </span>
                               <span className="text-primary font-semibold text-sm">
-                                {formatTicketPrice(totalPrice)}
+                                NGN {formatPrice(totalPrice)}
                               </span>
                             </div>
                           </div>
@@ -755,7 +764,7 @@ const Page = ({ params }: EventPageProps) => {
                         className="bg-primary text-[13px] font-semibold w-full cursor-pointer !py-6 disabled:bg-primary/90"
                       >
                         {selectedTickets.length > 0
-                          ? `Book Now - ${formatTicketPrice(totalPrice)}`
+                          ? `Book Now - NGN ${formatPrice(totalPrice)}`
                           : "Book Now"}
                       </Button>
                     </>
