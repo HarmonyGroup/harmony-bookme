@@ -111,10 +111,11 @@ const Page = () => {
             className=""
             loading="eager"
           />
-          <div 
+          <div
             className="absolute inset-0"
             style={{
-              background: 'linear-gradient(to right, rgba(7, 89, 133, 0.8), rgba(59, 130, 246, 0.4))'
+              background:
+                "linear-gradient(to right, rgba(7, 89, 133, 0.8), rgba(59, 130, 246, 0.4))",
             }}
           ></div>
           <div className="relative flex">
@@ -146,7 +147,7 @@ const Page = () => {
               Found {data?.pagination?.total || 0} events
             </h1>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-5 mt-6 md:mt-8">
-            {isLoading ? (
+              {isLoading ? (
                 [...Array(6)].map((_, index) => (
                   <EventCardSkeleton key={index} />
                 ))
@@ -168,7 +169,7 @@ const Page = () => {
                 </div>
               )}
             </div>
-            
+
             {/* Pagination */}
             {data?.data?.length && (
               <div className="mt-6 w-full flex items-center justify-between">
@@ -189,7 +190,7 @@ const Page = () => {
                         }
                       />
                     </PaginationItem>
-                    
+
                     {generatePageNumbers().map((pageNum, index) => (
                       <PaginationItem key={index}>
                         {pageNum === "ellipsis" ? (
@@ -206,7 +207,7 @@ const Page = () => {
                         )}
                       </PaginationItem>
                     ))}
-                    
+
                     <PaginationItem>
                       <PaginationNext
                         onClick={handleNextPage}
@@ -227,6 +228,5 @@ const Page = () => {
     </section>
   );
 };
-
 
 export default Page;

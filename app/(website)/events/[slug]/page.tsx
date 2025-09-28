@@ -269,7 +269,7 @@ const Page = ({ params }: EventPageProps) => {
   return (
     <section className="bg-white py-6">
       <style dangerouslySetInnerHTML={{ __html: customStyles }} />
-      <div className="min-h-screen bg-white max-w-7xl mx-auto px-5">
+      <div className="min-h-screen bg-white max-w-7xl mx-auto px-4">
         <Breadcrumb>
           <BreadcrumbList>
             <BreadcrumbItem className="text-gray-600 text-[11px] md:text-xs">

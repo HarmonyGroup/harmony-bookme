@@ -3,44 +3,41 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 const LeisureCardSkeleton = () => {
   return (
-    <div className="grid grid-cols-3 border border-gray-200/45 rounded-lg overflow-hidden bg-white">
-      <div className="relative col-span-1 h-52 bg-muted overflow-hidden">
-        <Skeleton className="w-full h-full" />
-        <div className="absolute top-2 left-2 bg-white flex items-center gap-1 rounded-sm px-2 py-1">
-          <Skeleton className="w-6 h-4 bg-muted" />
-          <Skeleton className="w-3 h-3 rounded-full bg-muted" />
-        </div>
-        <div className="absolute left-2 top-1/2 -translate-y-1/2 bg-white/80 rounded-full">
-          <Skeleton className="w-8 h-8 rounded-full" />
-        </div>
-        <div className="absolute right-2 top-1/2 -translate-y-1/2 bg-white/80 rounded-full">
-          <Skeleton className="w-8 h-8 rounded-full" />
-        </div>
-      </div>
-      <div className="col-span-2 flex flex-col justify-between p-4">
-        <div>
-          <div className="flex items-center justify-between">
-            <Skeleton className="h-6 w-3/4 bg-muted" />
-            <Skeleton className="w-9 h-9 rounded-full bg-gray-200/60" />
+    <div className="rounded-3xl p-4 bg-white border border-muted transition-all duration-300">
+      <div className="flex flex-col">
+        {/* Image Carousel Section */}
+        <div className="relative h-48 bg-gray-50 rounded-t-2xl overflow-hidden">
+          <Skeleton className="w-full h-full" />
+          {/* Carousel navigation buttons */}
+          <div className="absolute left-2 top-1/2 -translate-y-1/2 bg-white rounded-full">
+            <Skeleton className="w-8 h-8 rounded-full" />
           </div>
-          <div className="flex items-center gap-2.5 mt-2.5">
-            <Skeleton className="h-4 w-16 bg-muted" />
-            <Skeleton className="h-4 w-2 bg-muted" />
-            <Skeleton className="h-4 w-16 bg-muted" />
-            <Skeleton className="h-4 w-2 bg-muted" />
-            <Skeleton className="h-4 w-16 bg-muted" />
+          <div className="absolute right-2 top-1/2 -translate-y-1/2 bg-white rounded-full">
+            <Skeleton className="w-8 h-8 rounded-full" />
           </div>
-          <div className="mt-2.5 space-y-1">
-            <Skeleton className="h-3 w-full" />
-            <Skeleton className="h-3 w-2/3" />
+          {/* Dot indicators */}
+          <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex items-center gap-1.5">
+            <Skeleton className="w-1.5 h-1.5 rounded-full" />
+            <Skeleton className="w-1.5 h-1.5 rounded-full" />
+            <Skeleton className="w-1.5 h-1.5 rounded-full" />
           </div>
         </div>
-        <div className="flex items-center justify-between">
+
+        {/* Content Section */}
+        <div className="mt-4 space-y-2.5">
+          {/* Title */}
+          <Skeleton className="h-4 w-3/4 bg-muted" />
+          {/* Venue */}
+          <Skeleton className="h-3 w-1/2 bg-muted" />
+        </div>
+
+        {/* Footer Section */}
+        <div className="flex items-center justify-between mt-4 border-muted border-t pt-4">
           <div className="flex items-center gap-1">
-            <Skeleton className="w-3 h-3 rounded-full" />
-            <Skeleton className="h-3 w-24" />
+            <Skeleton className="h-3 w-8 bg-muted" />
+            <Skeleton className="h-4 w-16 bg-muted" />
           </div>
-          <Skeleton className="h-8 w-20 rounded-md bg-gray-200/60" />
+          <Skeleton className="h-8 w-20 rounded-lg bg-muted" />
         </div>
       </div>
     </div>

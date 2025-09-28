@@ -20,6 +20,7 @@ import {
   // WashingMachine,
   // ParkingCircle,
   CheckCircle,
+  Loader2,
   XCircle,
 } from "lucide-react";
 import Image from "next/image";
@@ -46,7 +47,6 @@ import {
   BathtubIcon,
   BedIcon,
   ClockIcon,
-  StarIcon,
 } from "@phosphor-icons/react";
 import {
   Breadcrumb,
@@ -377,23 +377,23 @@ const Page = ({ params }: AccommodationPageProps) => {
         showModal={showSuccessModal}
         toggleModal={() => setShowSuccessModal(!showSuccessModal)}
       />
-      <section className="bg-white">
-        <div className="mx-auto w-full max-w-7xl px-5 py-6">
+      <section className="bg-white py-6">
+        <div className="min-h-screen bg-white max-w-7xl mx-auto px-4">
           {/* Breadcrumb */}
           <Breadcrumb>
             <BreadcrumbList>
-              <BreadcrumbItem className="text-gray-700 text-xs">
+              <BreadcrumbItem className="text-gray-600 text-[11px] md:text-xs">
                 <BreadcrumbLink href="/">Home</BreadcrumbLink>
               </BreadcrumbItem>
               <BreadcrumbSeparator />
-              <BreadcrumbItem className="text-gray-700 text-xs">
+              <BreadcrumbItem className="text-gray-600 text-[11px] md:text-xs">
                 <BreadcrumbLink href="/accommodations">
                   Accommodations
                 </BreadcrumbLink>
               </BreadcrumbItem>
               <BreadcrumbSeparator />
-              <BreadcrumbItem className="!text-primary text-xs">
-                <BreadcrumbPage className="!text-primary text-xs font-medium">
+              <BreadcrumbItem className="!text-primary text-[11px] md:text-xs">
+                <BreadcrumbPage className="!text-primary text-[11px] md:text-xs font-medium">
                   {accommodation.title}
                 </BreadcrumbPage>
               </BreadcrumbItem>
@@ -490,32 +490,17 @@ const Page = ({ params }: AccommodationPageProps) => {
                   <h1 className="text-primary text-base/relaxed md:text-xl/relaxed font-semibold">
                     {accommodation.title}
                   </h1>
-                  <div className="flex items-center gap-2.5">
-                    <div className="flex items-center gap-1">
-                      <StarIcon
-                        weight="fill"
-                        size={18}
-                        className="text-yellow-500"
-                      />
-                      <span className="text-gray-600 text-xs font-medium">
-                        4.8
-                      </span>
-                    </div>
-                    <p className="text-gray-600 text-xs font-medium">
-                      (<span>20</span> reviews)
-                    </p>
-                  </div>
                 </div>
 
                 <Separator className="bg-gray-200/60" />
 
                 {/* Accommodation Description */}
                 <div className="bg-white space-y-2">
-                  <h4 className="text-[15px] font-semibold text-primary">
+                  <h4 className="text-[13px] md:text-[15px] font-semibold text-primary">
                     About this place
                   </h4>
                   <div>
-                    <p className="text-gray-700 text-[13px]/relaxed">
+                    <p className="text-gray-600 text-[11px] md:text-xs/relaxed">
                       {accommodation.description}
                     </p>
                   </div>
@@ -525,8 +510,8 @@ const Page = ({ params }: AccommodationPageProps) => {
 
                 {/* Property Details */}
                 <div className="bg-white space-y-6">
-                  <h4 className="text-[15px] font-semibold text-primary">
-                    Property details
+                  <h4 className="text-[13px] md:text-[15px] font-semibold text-primary">
+                    Accommodation details
                   </h4>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4 gap-y-6">
@@ -539,10 +524,10 @@ const Page = ({ params }: AccommodationPageProps) => {
                         />
                       </div>
                       <div>
-                        <h3 className="text-[13px] font-semibold text-primary">
+                        <h3 className="text-xs md:text-[13px] font-semibold text-primary">
                           Bedrooms
                         </h3>
-                        <p className="text-[13px] text-gray-600 mt-1">
+                        <p className="text-[11px] md:text-[13px] text-gray-600 mt-1">
                           {accommodation?.bedrooms} bedrooms
                         </p>
                       </div>
@@ -557,10 +542,10 @@ const Page = ({ params }: AccommodationPageProps) => {
                         />
                       </div>
                       <div>
-                        <h3 className="text-[13px] font-semibold text-primary">
+                        <h3 className="text-xs md:text-[13px] font-semibold text-primary">
                           Bathrooms
                         </h3>
-                        <p className="text-[13px] text-gray-600 mt-1">
+                        <p className="text-[11px] md:text-[13px] text-gray-600 mt-1">
                           {accommodation?.bathrooms} bathrooms
                         </p>
                       </div>
@@ -575,10 +560,10 @@ const Page = ({ params }: AccommodationPageProps) => {
                         />
                       </div>
                       <div>
-                        <h3 className="text-[13px] font-semibold text-primary">
+                        <h3 className="text-xs md:text-[13px] font-semibold text-primary">
                           Check In
                         </h3>
-                        <p className="text-[13px] text-gray-600 mt-1">
+                        <p className="text-[11px] md:text-[13px] text-gray-600 mt-1">
                           {accommodation?.checkInTime}
                         </p>
                       </div>
@@ -593,10 +578,10 @@ const Page = ({ params }: AccommodationPageProps) => {
                         />
                       </div>
                       <div>
-                        <h3 className="text-[13px] font-semibold text-primary">
+                        <h3 className="text-xs md:text-[13px] font-semibold text-primary">
                           Check Out
                         </h3>
-                        <p className="text-[13px] text-gray-600 mt-1">
+                        <p className="text-[11px] md:text-[13px] text-gray-600 mt-1">
                           {accommodation?.checkOutTime}
                         </p>
                       </div>
@@ -741,13 +726,13 @@ const Page = ({ params }: AccommodationPageProps) => {
 
                 {/* Policies */}
                 <div className="bg-white space-y-6">
-                  <h4 className="text-[15px] font-semibold text-primary">
+                  <h4 className="text-[13px] md:text-[15px] font-semibold text-primary">
                     House rules
                   </h4>
                   <div className="space-y-4">
                     <div className="flex items-center gap-3">
                       {getPolicyIcon(accommodation.smokingPolicy)}
-                      <span className="text-gray-700 text-[13px]/relaxed">
+                      <span className="text-gray-600 text-[11px] md:text-xs/relaxed">
                         Smoking{" "}
                         {accommodation.smokingPolicy === "allowed"
                           ? "allowed"
@@ -756,7 +741,7 @@ const Page = ({ params }: AccommodationPageProps) => {
                     </div>
                     <div className="flex items-center gap-3">
                       {getPolicyIcon(accommodation.petPolicy)}
-                      <span className="text-gray-700 text-[13px]/relaxed">
+                      <span className="text-gray-600 text-[11px] md:text-xs/relaxed">
                         Pets{" "}
                         {accommodation.petPolicy === "allowed"
                           ? "allowed"
@@ -765,7 +750,7 @@ const Page = ({ params }: AccommodationPageProps) => {
                     </div>
                     <div className="flex items-center gap-3">
                       {getPolicyIcon(accommodation.childrenPolicy)}
-                      <span className="text-gray-700 text-[13px]/relaxed">
+                      <span className="text-gray-600 text-[11px] md:text-xs/relaxed">
                         Children{" "}
                         {accommodation.childrenPolicy === "allowed"
                           ? "allowed"
@@ -774,7 +759,7 @@ const Page = ({ params }: AccommodationPageProps) => {
                     </div>
                     {accommodation.houseRules && (
                       <div className="mt-4 p-4 bg-gray-50 rounded-lg">
-                        <p className="text-[13px] text-gray-700">
+                        <p className="text-[11px] md:text-[13px] text-gray-600">
                           {accommodation.houseRules}
                         </p>
                       </div>
@@ -788,17 +773,17 @@ const Page = ({ params }: AccommodationPageProps) => {
                 {/* Booking Card */}
                 <Card
                   id="booking-section"
-                  className="border-none !bg-white backdrop-blur-sm sticky top-4 light-shadow z-10"
+                  className="border-none !bg-white !shadow-none md:!shadow-sm md:backdrop-blur-sm sticky top-4 md:light-shadow z-10 !py-2 md:!py-6"
                 >
-                  <CardHeader className="">
-                    <CardTitle className="text-[15px] font-semibold text-primary">
+                  <CardHeader className="!px-0 md:!px-6">
+                    <CardTitle className="text-[13px] md:text-[15px] font-semibold text-primary">
                       Make Reservation
                     </CardTitle>
-                    <p className="text-gray-700 text-xs font-medium">
+                    <p className="text-gray-600 text-[11px] md:text-xs">
                       Select your dates and preferences
                     </p>
                   </CardHeader>
-                  <CardContent className="space-y-4">
+                  <CardContent className="space-y-4 !px-0 md:!px-6">
                     {/* Pricing Display */}
                     {/* <div className="text-center p-4 bg-gray-50 rounded-lg">
                     <div className="text-2xl font-bold text-primary mb-1">
@@ -816,7 +801,7 @@ const Page = ({ params }: AccommodationPageProps) => {
 
                     {/* Check-in Date */}
                     <div className="space-y-2">
-                      <Label className="text-gray-700 text-xs font-medium">
+                      <Label className="text-gray-600 text-[11px] md:text-xs font-normal">
                         Check-in Date
                       </Label>
                       <Popover>
@@ -845,7 +830,7 @@ const Page = ({ params }: AccommodationPageProps) => {
 
                     {/* Check-out Date */}
                     <div className="space-y-2">
-                      <Label className="text-gray-700 text-xs font-medium">
+                      <Label className="text-gray-600 text-[11px] md:text-xs font-normal">
                         Check-out Date
                       </Label>
                       <Popover>
@@ -877,7 +862,7 @@ const Page = ({ params }: AccommodationPageProps) => {
 
                     {/* Guests */}
                     <div className="space-y-2">
-                      <Label className="text-gray-700 text-xs font-medium">
+                      <Label className="text-gray-600 text-[11px] md:text-xs font-normal">
                         Number of Guests
                       </Label>
                       <Input
@@ -911,7 +896,7 @@ const Page = ({ params }: AccommodationPageProps) => {
                     {/* Room Type Selection (for hotels) */}
                     {accommodation.accommodationType === "hotel" && (
                       <div className="space-y-2">
-                        <Label className="text-gray-700 text-xs font-medium">
+                        <Label className="text-gray-600 text-[11px] md:text-xs font-normal">
                           Room Type
                         </Label>
                         <Select
@@ -925,7 +910,9 @@ const Page = ({ params }: AccommodationPageProps) => {
                             {accommodation.rooms?.map((room, index) => (
                               <SelectItem
                                 key={(room as RoomWithId)._id || index}
-                                value={(room as RoomWithId)._id || index.toString()}
+                                value={
+                                  (room as RoomWithId)._id || index.toString()
+                                }
                               >
                                 {room.name} - {formatPrice(room.basePrice || 0)}
                                 /night
@@ -936,7 +923,7 @@ const Page = ({ params }: AccommodationPageProps) => {
                       </div>
                     )}
 
-                    <Separator />
+                    <Separator className="my-4 bg-gray-200/60" />
 
                     {/* Price Summary */}
                     {checkIn && checkOut && (
@@ -951,7 +938,7 @@ const Page = ({ params }: AccommodationPageProps) => {
                             </span>
                             <span>{formatPrice(totalPrice)}</span>
                           </div> */}
-                          <Separator />
+                          <Separator className="my-4 bg-gray-200/60" />
 
                           {/* <div className="flex justify-between font-semibold text-sm">
                             <span>Total</span>
@@ -960,7 +947,7 @@ const Page = ({ params }: AccommodationPageProps) => {
 
                           <div className="bg-muted border border-dashed border-gray-200 rounded-lg shadow-xs p-4 space-y-2">
                             <div className="flex justify-between text-sm">
-                              <span className="text-gray-700 text-xs font-medium">
+                              <span className="text-gray-600 text-xs md:text-[13px] font-medium">
                                 Total
                               </span>
                               <span className="text-primary font-semibold text-sm">
@@ -974,11 +961,13 @@ const Page = ({ params }: AccommodationPageProps) => {
 
                     <Button
                       onClick={handleBookNow}
-                      className="bg-primary text-[13px] font-semibold w-full cursor-pointer !py-6 disabled:bg-primary/90"
+                      className="bg-primary text-[13px] font-semibold w-full cursor-pointer !py-6 disabled:bg-primary/90 transition-all duration-300 ease-in-out"
                       disabled={isBookNowDisabled}
                     >
                       {createBookingMutation.isPending ? (
-                        <>Please Wait...</>
+                        <>
+                          <Loader2 className="animate-spin size-5" />
+                        </>
                       ) : (
                         "Make Reservation"
                       )}
