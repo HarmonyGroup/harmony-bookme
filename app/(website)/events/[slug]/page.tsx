@@ -20,7 +20,6 @@ import { Label } from "@/components/ui/label";
 import {
   CalendarDotsIcon,
   MapPinLineIcon,
-  StarIcon,
 } from "@phosphor-icons/react";
 import {
   calculateTicketPrice,
