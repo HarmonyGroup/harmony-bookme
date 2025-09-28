@@ -108,19 +108,24 @@ const Page = () => {
             layout="fill"
             objectFit="cover"
             alt="Harmony BookMe"
-            className="blur-[1px]"
+            className=""
             loading="eager"
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-sky-800/80 to-primary/40"></div>
+          <div 
+            className="absolute inset-0"
+            style={{
+              background: 'linear-gradient(to right, rgba(7, 89, 133, 0.8), rgba(59, 130, 246, 0.4))'
+            }}
+          ></div>
           <div className="relative flex">
-            <h1 className="text-white text-left text-base font-bold md:text-xl/snug max-w-xl">
+            <h1 className="text-white text-left text-[15px] font-bold md:text-xl/snug max-w-xl">
               Find events happening near you
             </h1>
           </div>
         </div>
       </section>
 
-      <section className="mx-auto w-full max-w-7xl px-4 py-10 md:py-16">
+      <section className="mx-auto w-full max-w-7xl px-4 pt-8 md:pt-16 py-10 md:py-16">
         <div className="w-full h-full grid grid-cols-1 lg:grid-cols-3 gap-28">
           <div className="w-full h-full col-span-1 hidden lg:block">
             <FilterBox
@@ -137,7 +142,7 @@ const Page = () => {
             />
           </div>
           <div className="w-full h-full col-span-1 lg:col-span-2">
-            <h1 className="text-primary text-base font-semibold">
+            <h1 className="text-primary text-sm md:text-base font-semibold">
               Found {data?.pagination?.total || 0} events
             </h1>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mt-8">

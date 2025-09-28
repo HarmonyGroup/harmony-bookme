@@ -102,19 +102,19 @@ const EventCard = ({ event }: { event?: EventListing }) => {
         </div>
 
         {/* Original Content */}
-        <span className="text-primary text-[15px] font-semibold mt-4">
+        <span className="text-primary text-[13px] md:text-[15px] font-semibold mt-4">
           {event?.title}
         </span>
-        <span className="text-gray-700 text-xs mt-2.5">
+        <span className="text-gray-700 text-[11px] md:text-xs mt-2.5">
           {moment(event?.startDate).format("dddd, MMMM Do, YYYY [|] h:mm A")}
         </span>
-        <span className="text-gray-700 text-xs mt-2.5">
+        <span className="text-gray-700 text-[11px] md:text-xs mt-2.5">
           {event?.streetAddress}
         </span>
         <div className="flex items-center justify-between mt-4 border-muted border-t pt-4">
-          <p className="text-gray-700 text-xs">
+          <p className="text-gray-700 text-[11px] md:text-xs">
             From{" "}
-            <span className="text-primary text-sm font-semibold">
+            <span className="text-primary text-[13px] md:text-sm font-semibold">
               NGN {formatPrice(event?.tickets?.[0]?.basePrice || 0)}
             </span>
           </p>
