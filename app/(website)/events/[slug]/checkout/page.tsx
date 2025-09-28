@@ -3,7 +3,6 @@
 import React, { useRef, useEffect, useState } from "react";
 import Image from "next/image";
 import { Separator } from "@/components/ui/separator";
-import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useSession } from "next-auth/react";
@@ -18,7 +17,6 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Checkbox } from "@/components/ui/checkbox";
 import { useCreateBooking } from "@/services/explorer/booking";
 import { CreateBookingRequest } from "@/types/booking";
 import { toast } from "sonner";
@@ -70,9 +68,6 @@ const FormSchema = z.object({
       (val) => !val || /^\+?\d{10,15}$/.test(val),
       "Please enter a valid phone number."
     ),
-  termsAccepted: z
-    .boolean()
-    .refine((val) => val === true, "You must accept the terms and conditions."),
   couponCode: z.string().optional(),
 });
 
@@ -162,7 +157,6 @@ const Page = ({ params, searchParams }: PageProps) => {
       lastName: "",
       email: "",
       phone: "",
-      termsAccepted: true,
       couponCode: "",
     },
   });
@@ -357,7 +351,7 @@ const Page = ({ params, searchParams }: PageProps) => {
 
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="mt-8">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 lg:gap-24">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 lg:gap-24">
                 {/* Left side */}
                 <div className="col-span-1 md:col-span-1 space-y-4">
                   <div ref={formRef}>
@@ -379,7 +373,8 @@ const Page = ({ params, searchParams }: PageProps) => {
                                   placeholder="Enter first name"
                                   {...field}
                                   disabled={status === "authenticated"}
-                                  className="!py-5 !text-xs !font-normal placeholder:text-gray-500 placeholder:!text-xs placeholder:!font-normal focus-visible:ring-0 focus-visible:border-primary shadow-none transition-all ease-in-out duration-200 disabled:bg-muted"
+                                  className="checkout-form !py-5 !text-xs !font-normal placeholder:text-gray-500 placeholder:!text-xs placeholder:!font-normal focus-visible:ring-0 focus-visible:border-primary shadow-none transition-all ease-in-out duration-200 disabled:!bg-muted"
+                                  style={{ fontSize: '12px' }}
                                   aria-required="true"
                                 />
                               </FormControl>
@@ -400,7 +395,8 @@ const Page = ({ params, searchParams }: PageProps) => {
                                   placeholder="Enter last name"
                                   {...field}
                                   disabled={status === "authenticated"}
-                                  className="!py-5 !text-xs !font-normal placeholder:text-gray-500 placeholder:!text-xs placeholder:!font-normal focus-visible:ring-0 focus-visible:border-primary shadow-none transition-all ease-in-out duration-200 disabled:bg-muted"
+                                  className="checkout-form !py-5 !text-xs !font-normal placeholder:text-gray-500 placeholder:!text-xs placeholder:!font-normal focus-visible:ring-0 focus-visible:border-primary shadow-none transition-all ease-in-out duration-200 disabled:!bg-muted"
+                                  style={{ fontSize: '12px' }}
                                   aria-required="true"
                                 />
                               </FormControl>
@@ -423,7 +419,8 @@ const Page = ({ params, searchParams }: PageProps) => {
                                 type="email"
                                 {...field}
                                 disabled={status === "authenticated"}
-                                className="!py-5 !text-xs !font-normal placeholder:text-gray-500 placeholder:!text-xs placeholder:!font-normal focus-visible:ring-0 focus-visible:border-primary shadow-none transition-all ease-in-out duration-200 disabled:bg-muted"
+                                className="checkout-form !py-5 !text-xs !font-normal placeholder:text-gray-500 placeholder:!text-xs placeholder:!font-normal focus-visible:ring-0 focus-visible:border-primary shadow-none transition-all ease-in-out duration-200 disabled:!bg-muted"
+                                style={{ fontSize: '12px' }}
                                 aria-required="true"
                               />
                             </FormControl>
@@ -440,50 +437,27 @@ const Page = ({ params, searchParams }: PageProps) => {
                               Phone Number
                             </FormLabel>
                             <FormControl>
-                              <Input
-                                placeholder="Enter phone number"
-                                type="tel"
-                                {...field}
-                                disabled={
-                                  status === "authenticated" &&
-                                  !!session?.user?.phone
-                                }
-                                className="!py-5 !text-xs !font-normal placeholder:text-gray-500 placeholder:!text-xs placeholder:!font-normal focus-visible:ring-0 focus-visible:border-primary shadow-none transition-all ease-in-out duration-200 disabled:bg-muted"
-                              />
+                                <Input
+                                  placeholder="Enter phone number"
+                                  type="tel"
+                                  {...field}
+                                  disabled={
+                                    status === "authenticated" &&
+                                    !!session?.user?.phone
+                                  }
+                                  className="checkout-form !py-5 !text-xs !font-normal placeholder:text-gray-500 placeholder:!text-xs placeholder:!font-normal focus-visible:ring-0 focus-visible:border-primary shadow-none transition-all ease-in-out duration-200 disabled:!bg-muted"
+                                  style={{ fontSize: '12px' }}
+                                />
                             </FormControl>
                             <FormMessage className="text-xs" />
-                          </FormItem>
-                        )}
-                      />
-                      <FormField
-                        control={form.control}
-                        name="termsAccepted"
-                        render={({ field }) => (
-                          <FormItem className="form-field">
-                            <div className="flex items-center gap-3">
-                              <FormControl>
-                                <Checkbox
-                                  id="terms"
-                                  checked={field.value}
-                                  onCheckedChange={field.onChange}
-                                  aria-required="true"
-                                />
-                              </FormControl>
-                              <Label
-                                htmlFor="terms"
-                                className="text-gray-600 text-[11px] md:text-xs font-normal leading-relaxed"
-                              >
-                                I agree to the terms and conditions and
-                                understand that this booking is non-refundable.
-                              </Label>
-                            </div>
-                            <FormMessage className="text-xs mt-2" />
                           </FormItem>
                         )}
                       />
                     </div>
                   </div>
                 </div>
+
+                <Separator className="bg-gray-200/60 block md:hidden" />
 
                 {/* Right side */}
                 <div className="col-span-1 space-y-4">
@@ -598,19 +572,19 @@ const Page = ({ params, searchParams }: PageProps) => {
                         />
                       </div>
                       <div className="space-y-2">
-                        <h4 className="text-primary text-[13px] md:text-[15px] font-semibold">
+                        <h4 className="text-primary text-[13px] md:text-[15px] font-semibold line-clamp-1">
                           {event.title}
                         </h4>
-                        <p className="text-gray-600 text-[11px] md:text-xs">
+                        <p className="text-gray-600 text-[11px] md:text-xs line-clamp-1">
                           {event?.streetAddress}
                         </p>
-                        <p className="text-gray-600 text-[11px] md:text-xs">
+                        <p className="text-gray-600 text-[11px] md:text-xs line-clamp-1">
                           {moment(event.startDate).format("dddd, MMMM Do, YYYY [|] h:mm A")}
                         </p>
                       </div>
                     </div>
 
-                    <div className="mt-6 space-y-4">
+                    <div className="mt-8 space-y-4">
                       {tickets.map((ticket, index) => {
                         const ticketData = event.tickets?.find(
                           (t) => t._id === ticket.type
@@ -659,7 +633,7 @@ const Page = ({ params, searchParams }: PageProps) => {
                     <Separator className="my-4 bg-gray-200/60"/>
                     <div className="flex items-start justify-between summary-item">
                       <div>
-                        <p className="text-xs md:text-[13px] font-medium">Total</p>
+                        <p className="text-gray-600 text-xs md:text-[13px] font- font-medium">Total</p>
                       </div>
                       <p className="text-primary text-[13px] font-semibold">
                         NGN {formatPrice(displayTotal)}
@@ -667,8 +641,8 @@ const Page = ({ params, searchParams }: PageProps) => {
                     </div>
                     <Separator className="my-4 bg-gray-200/60"/>
                     <div className="space-y-2.5 summary-item">
-                      <p className="text-gray-600 text-[11px] md:text-xs">
-                        Use coupon or promo code
+                      <p className="text-gray-600 text-xs">
+                        Have coupon or promo code?
                       </p>
                       <FormField
                         control={form.control}
@@ -677,7 +651,8 @@ const Page = ({ params, searchParams }: PageProps) => {
                           <FormItem>
                             <FormControl>
                               <Input
-                                className="!py-5 !text-xs !font-normal placeholder:text-gray-500 placeholder:!text-xs placeholder:!font-normal focus-visible:ring-0 focus-visible:border-primary shadow-none transition-all ease-in-out duration-200"
+                                className="checkout-form !py-5 !text-xs !font-normal placeholder:text-gray-500 placeholder:!text-xs placeholder:!font-normal focus-visible:ring-0 focus-visible:border-primary shadow-none transition-all ease-in-out duration-200"
+                                style={{ fontSize: '12px' }}
                                 placeholder="Enter code here"
                                 {...field}
                                 value={couponCode}
@@ -697,8 +672,7 @@ const Page = ({ params, searchParams }: PageProps) => {
                       className="w-full text-[13px] font-medium transition-colors ease-in-out duration-300 cursor-pointer rounded-lg !py-6 checkout-button bg-primary hover:bg-primary/90"
                       disabled={
                         isPending ||
-                        isVerifyingPayment ||
-                        !form.watch("termsAccepted")
+                        isVerifyingPayment
                       }
                     >
                       {isPending || isVerifyingPayment ? (

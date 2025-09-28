@@ -122,16 +122,16 @@
     @apply bg-background text-foreground;
   }
 
-  /* Prevent iOS Safari zoom on input focus - exclude auth modal */
-  input[type="text"]:not([class*="auth-modal"]),
-  input[type="email"]:not([class*="auth-modal"]),
-  input[type="password"]:not([class*="auth-modal"]),
-  input[type="number"]:not([class*="auth-modal"]),
-  input[type="tel"]:not([class*="auth-modal"]),
-  input[type="url"]:not([class*="auth-modal"]),
-  input[type="search"]:not([class*="auth-modal"]),
-  textarea:not([class*="auth-modal"]),
-  select:not([class*="auth-modal"]) {
+  /* Prevent iOS Safari zoom on input focus - exclude auth modal and checkout forms */
+  input[type="text"]:not([class*="auth-modal"]):not([class*="checkout-form"]),
+  input[type="email"]:not([class*="auth-modal"]):not([class*="checkout-form"]),
+  input[type="password"]:not([class*="auth-modal"]):not([class*="checkout-form"]),
+  input[type="number"]:not([class*="auth-modal"]):not([class*="checkout-form"]),
+  input[type="tel"]:not([class*="auth-modal"]):not([class*="checkout-form"]),
+  input[type="url"]:not([class*="auth-modal"]):not([class*="checkout-form"]),
+  input[type="search"]:not([class*="auth-modal"]):not([class*="checkout-form"]),
+  textarea:not([class*="auth-modal"]):not([class*="checkout-form"]),
+  select:not([class*="auth-modal"]):not([class*="checkout-form"]) {
     font-size: 16px !important;
   }
 
