@@ -272,11 +272,11 @@ const Page = ({ params }: EventPageProps) => {
       <div className="min-h-screen bg-white max-w-7xl mx-auto px-5">
         <Breadcrumb>
           <BreadcrumbList>
-            <BreadcrumbItem className="text-gray-700 text-[11px] md:text-xs">
+            <BreadcrumbItem className="text-gray-600 text-[11px] md:text-xs">
               <BreadcrumbLink href="/">Home</BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
-            <BreadcrumbItem className="text-gray-700 text-[11px] md:text-xs">
+            <BreadcrumbItem className="text-gray-600 text-[11px] md:text-xs">
               <BreadcrumbLink href="/events">Events</BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
@@ -746,7 +746,7 @@ const Page = ({ params }: EventPageProps) => {
                         <div className="space-y-3">
                           <div className="bg-muted border border-dashed border-gray-200 rounded-lg shadow-xs p-4 space-y-2">
                             <div className="flex justify-between text-sm">
-                              <span className="text-gray-600 text-[11px] md:text-xs font-medium">
+                              <span className="text-gray-600 text-xs md:text-[13px] font-medium">
                                 Total
                               </span>
                               <span className="text-primary font-semibold text-sm">

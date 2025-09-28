@@ -43,6 +43,7 @@ import {
 } from "@/components/ui/breadcrumb";
 import AuthModal from "@/components/auth/AuthModal";
 import UnauthorizedIcon from "@/public/assets/unauthorized-icon-2.png";
+import { formatPrice } from "@/lib/utils";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -328,22 +329,22 @@ const Page = ({ params, searchParams }: PageProps) => {
         <div className="min-h-screen mx-auto w-full max-w-7xl px-5">
           <Breadcrumb>
             <BreadcrumbList>
-              <BreadcrumbItem className="text-gray-700 text-[13px]">
+              <BreadcrumbItem className="text-gray-600 text-[11px] md:text-xs">
                 <BreadcrumbLink href="/">Home</BreadcrumbLink>
               </BreadcrumbItem>
               <BreadcrumbSeparator />
-              <BreadcrumbItem className="text-gray-700 text-[13px]">
+              <BreadcrumbItem className="text-gray-600 text-[11px] md:text-xs">
                 <BreadcrumbLink href="/events">Events</BreadcrumbLink>
               </BreadcrumbItem>
               <BreadcrumbSeparator />
-              <BreadcrumbItem className="text-gray-700 text-[13px]">
+              <BreadcrumbItem className="text-gray-600 text-[11px] md:text-xs">
                 <BreadcrumbLink href={`/events/${slug}`}>
                   {event.title}
                 </BreadcrumbLink>
               </BreadcrumbItem>
               <BreadcrumbSeparator />
-              <BreadcrumbItem className="!text-primary text-[13px]">
-                <BreadcrumbPage className="!text-primary text-[13px] font-medium">
+              <BreadcrumbItem className="!text-primary text-[11px] md:text-xs">
+                <BreadcrumbPage className="!text-primary text-[11px] md:text-xs font-medium">
                   Checkout
                 </BreadcrumbPage>
               </BreadcrumbItem>
@@ -356,11 +357,11 @@ const Page = ({ params, searchParams }: PageProps) => {
 
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="mt-8">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 lg:gap-24">
                 {/* Left side */}
                 <div className="col-span-1 md:col-span-1 space-y-4">
                   <div ref={formRef}>
-                    <h1 className="text-primary text-base font-semibold">
+                    <h1 className="text-primary text-[13px] md:text-[15px] font-semibold">
                       Personal Information
                     </h1>
                     <div className="mt-6 space-y-6">
@@ -378,7 +379,7 @@ const Page = ({ params, searchParams }: PageProps) => {
                                   placeholder="Enter first name"
                                   {...field}
                                   disabled={status === "authenticated"}
-                                  className="!py-5 !text-xs font-normal placeholder:text-gray-500 placeholder:text-xs placeholder:font-normal focus-visible:ring-0 focus-visible:border-primary shadow-none transition-all ease-in-out duration-200 disabled:bg-muted"
+                                  className="!py-5 !text-xs !font-normal placeholder:text-gray-500 placeholder:!text-xs placeholder:!font-normal focus-visible:ring-0 focus-visible:border-primary shadow-none transition-all ease-in-out duration-200 disabled:bg-muted"
                                   aria-required="true"
                                 />
                               </FormControl>
@@ -399,7 +400,7 @@ const Page = ({ params, searchParams }: PageProps) => {
                                   placeholder="Enter last name"
                                   {...field}
                                   disabled={status === "authenticated"}
-                                  className="!py-5 !text-xs font-normal placeholder:text-gray-500 placeholder:text-xs placeholder:font-normal focus-visible:ring-0 focus-visible:border-primary shadow-none transition-all ease-in-out duration-200 disabled:bg-muted"
+                                  className="!py-5 !text-xs !font-normal placeholder:text-gray-500 placeholder:!text-xs placeholder:!font-normal focus-visible:ring-0 focus-visible:border-primary shadow-none transition-all ease-in-out duration-200 disabled:bg-muted"
                                   aria-required="true"
                                 />
                               </FormControl>
@@ -422,7 +423,7 @@ const Page = ({ params, searchParams }: PageProps) => {
                                 type="email"
                                 {...field}
                                 disabled={status === "authenticated"}
-                                className="!py-5 !text-xs font-normal placeholder:text-gray-500 placeholder:text-xs placeholder:font-normal focus-visible:ring-0 focus-visible:border-primary shadow-none transition-all ease-in-out duration-200 disabled:bg-muted"
+                                className="!py-5 !text-xs !font-normal placeholder:text-gray-500 placeholder:!text-xs placeholder:!font-normal focus-visible:ring-0 focus-visible:border-primary shadow-none transition-all ease-in-out duration-200 disabled:bg-muted"
                                 aria-required="true"
                               />
                             </FormControl>
@@ -447,7 +448,7 @@ const Page = ({ params, searchParams }: PageProps) => {
                                   status === "authenticated" &&
                                   !!session?.user?.phone
                                 }
-                                className="!py-5 !text-xs font-normal placeholder:text-gray-500 placeholder:text-xs placeholder:font-normal focus-visible:ring-0 focus-visible:border-primary shadow-none transition-all ease-in-out duration-200 disabled:bg-muted"
+                                className="!py-5 !text-xs !font-normal placeholder:text-gray-500 placeholder:!text-xs placeholder:!font-normal focus-visible:ring-0 focus-visible:border-primary shadow-none transition-all ease-in-out duration-200 disabled:bg-muted"
                               />
                             </FormControl>
                             <FormMessage className="text-xs" />
@@ -459,7 +460,7 @@ const Page = ({ params, searchParams }: PageProps) => {
                         name="termsAccepted"
                         render={({ field }) => (
                           <FormItem className="form-field">
-                            <div className="flex items-start gap-3">
+                            <div className="flex items-center gap-3">
                               <FormControl>
                                 <Checkbox
                                   id="terms"
@@ -470,7 +471,7 @@ const Page = ({ params, searchParams }: PageProps) => {
                               </FormControl>
                               <Label
                                 htmlFor="terms"
-                                className="text-gray-700 text-xs font-normal leading-relaxed"
+                                className="text-gray-600 text-[11px] md:text-xs font-normal leading-relaxed"
                               >
                                 I agree to the terms and conditions and
                                 understand that this booking is non-refundable.
@@ -582,7 +583,7 @@ const Page = ({ params, searchParams }: PageProps) => {
                   </div> */}
 
                   <div className="bg-white space-y-4" ref={summaryRef}>
-                    <h1 className="text-primary text-base font-semibold mb-6">
+                    <h1 className="text-primary text-[13px] md:text-[15px] font-semibold mb-6">
                       Order Details
                     </h1>
 
@@ -596,20 +597,20 @@ const Page = ({ params, searchParams }: PageProps) => {
                           loading="eager"
                         />
                       </div>
-                      <div className="space-y-1.5">
-                        <h4 className="text-primary text-[15px] font-semibold">
+                      <div className="space-y-2">
+                        <h4 className="text-primary text-[13px] md:text-[15px] font-semibold">
                           {event.title}
                         </h4>
-                        <p className="text-gray-700 text-xs">
+                        <p className="text-gray-600 text-[11px] md:text-xs">
                           {event?.streetAddress}
                         </p>
-                        <p className="text-gray-700 text-xs">
-                          {moment(event.startDate).format("MMM DD, YYYY")}
+                        <p className="text-gray-600 text-[11px] md:text-xs">
+                          {moment(event.startDate).format("dddd, MMMM Do, YYYY [|] h:mm A")}
                         </p>
                       </div>
                     </div>
 
-                    <div className="mt-4 space-y-4">
+                    <div className="mt-6 space-y-4">
                       {tickets.map((ticket, index) => {
                         const ticketData = event.tickets?.find(
                           (t) => t._id === ticket.type
@@ -634,7 +635,7 @@ const Page = ({ params, searchParams }: PageProps) => {
                                 {ticketData?.name} (x{ticket.quantity})
                               </p>
                               {hasDiscount && (
-                                <p className="text-xs text-green-600">
+                                <p className="text-xs text-green-600 mt-1">
                                   {ticketData.discountType === "percentage"
                                     ? `${ticketData.discountValue}% off`
                                     : `₦${ticketData.discountValue} off`}
@@ -642,11 +643,11 @@ const Page = ({ params, searchParams }: PageProps) => {
                               )}
                             </div>
                             <div className="text-right">
-                              <p className="text-[13px] font-semibold">
-                                {formatTicketPrice(totalPrice)}
+                              <p className="text-primary text-[13px] font-semibold">
+                                NGN {formatPrice(totalPrice)}
                               </p>
                               {hasDiscount && (
-                                <p className="text-xs text-gray-500 line-through">
+                                <p className="text-xs text-gray-500 line-through mt-1">
                                   {formatTicketPrice(originalTotal)}
                                 </p>
                               )}
@@ -655,18 +656,18 @@ const Page = ({ params, searchParams }: PageProps) => {
                         );
                       })}
                     </div>
-                    <Separator />
+                    <Separator className="my-4 bg-gray-200/60"/>
                     <div className="flex items-start justify-between summary-item">
                       <div>
-                        <p className="text-xs font-medium">Total</p>
+                        <p className="text-xs md:text-[13px] font-medium">Total</p>
                       </div>
-                      <p className="text-[13px] font-semibold">
-                        {formatTicketPrice(displayTotal)}
+                      <p className="text-primary text-[13px] font-semibold">
+                        NGN {formatPrice(displayTotal)}
                       </p>
                     </div>
-                    <Separator />
+                    <Separator className="my-4 bg-gray-200/60"/>
                     <div className="space-y-2.5 summary-item">
-                      <p className="!text-xs !font-medium">
+                      <p className="text-gray-600 text-[11px] md:text-xs">
                         Use coupon or promo code
                       </p>
                       <FormField
@@ -676,7 +677,7 @@ const Page = ({ params, searchParams }: PageProps) => {
                           <FormItem>
                             <FormControl>
                               <Input
-                                className="!py-5 !text-xs font-normal placeholder:text-gray-500 placeholder:text-xs placeholder:font-normal focus-visible:ring-0 focus-visible:border-primary shadow-none transition-all ease-in-out duration-200"
+                                className="!py-5 !text-xs !font-normal placeholder:text-gray-500 placeholder:!text-xs placeholder:!font-normal focus-visible:ring-0 focus-visible:border-primary shadow-none transition-all ease-in-out duration-200"
                                 placeholder="Enter code here"
                                 {...field}
                                 value={couponCode}
@@ -693,7 +694,7 @@ const Page = ({ params, searchParams }: PageProps) => {
                     </div>
                     <Button
                       type="submit"
-                      className="w-full text-[13px] font-medium transition-colors ease-in-out duration-300 cursor-pointer !py-6 checkout-button bg-primary hover:bg-primary/90"
+                      className="w-full text-[13px] font-medium transition-colors ease-in-out duration-300 cursor-pointer rounded-lg !py-6 checkout-button bg-primary hover:bg-primary/90"
                       disabled={
                         isPending ||
                         isVerifyingPayment ||
@@ -710,7 +711,7 @@ const Page = ({ params, searchParams }: PageProps) => {
                       ) : (
                         <span className="flex items-center gap-2">
                           {/* <CreditCard className="w-4 h-4" /> */}
-                          Complete Booking
+                          Pay Now
                         </span>
                       )}
                     </Button>
