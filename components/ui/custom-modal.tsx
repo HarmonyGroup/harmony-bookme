@@ -70,7 +70,12 @@ const CustomModal: React.FC<CustomModalProps> = ({
         style={{
           animation: "slideIn 200ms ease-out",
         }}
-        onClick={(e) => e.stopPropagation()}
+        onClick={(e) => {
+          // Only stop propagation if clicking on the modal container itself, not on form elements
+          if (e.target === modalRef.current) {
+            e.stopPropagation();
+          }
+        }}
       >
         {showCloseButton && (
           <button

@@ -136,7 +136,7 @@ const AuthModal = ({ showModal, toggleModal, redirectUrl }: AuthModalProps) => {
                               <Input
                                 placeholder="you@email.com"
                                 {...field}
-                                className="!py-6 !text-xs font-normal placeholder:text-gray-500 placeholder:text-xs placeholder:font-normal focus-visible:ring-0 focus-visible:border-primary transition-all ease-in-out duration-200"
+                                className="!py-6 !text-xs font-normal placeholder:text-gray-500 placeholder:text-xs placeholder:font-normal focus-visible:ring-0 focus-visible:border-primary transition-all ease-in-out duration-200 auth-modal"
                               />
                             </FormControl>
                             <FormMessage className="text-xs" />
@@ -157,7 +157,7 @@ const AuthModal = ({ showModal, toggleModal, redirectUrl }: AuthModalProps) => {
                                 <Input
                                   placeholder="Enter password"
                                   {...field}
-                                  className="!py-6 !text-xs font-normal placeholder:text-gray-500 placeholder:text-xs placeholder:font-normal focus-visible:ring-0 focus-visible:border-primary transition-all ease-in-out duration-200"
+                                  className="!py-6 !text-xs font-normal placeholder:text-gray-500 placeholder:text-xs placeholder:font-normal focus-visible:ring-0 focus-visible:border-primary transition-all ease-in-out duration-200 auth-modal"
                                   type={showPassword ? "text" : "password"}
                                 />
                                 <button
@@ -226,7 +226,7 @@ const AuthModal = ({ showModal, toggleModal, redirectUrl }: AuthModalProps) => {
                               <Input
                                 placeholder="Enter first name"
                                 {...field}
-                                className="!py-6 !text-xs font-normal placeholder:text-gray-500 placeholder:text-xs placeholder:font-normal focus-visible:ring-0 focus-visible:border-primary transition-all ease-in-out duration-200"
+                                className="!py-6 !text-xs font-normal placeholder:text-gray-500 placeholder:text-xs placeholder:font-normal focus-visible:ring-0 focus-visible:border-primary transition-all ease-in-out duration-200 auth-modal"
                               />
                             </FormControl>
                             <FormMessage className="text-xs" />
@@ -246,7 +246,7 @@ const AuthModal = ({ showModal, toggleModal, redirectUrl }: AuthModalProps) => {
                               <Input
                                 placeholder="Enter last name"
                                 {...field}
-                                className="!py-6 !text-xs font-normal placeholder:text-gray-500 placeholder:text-xs placeholder:font-normal focus-visible:ring-0 focus-visible:border-primary transition-all ease-in-out duration-200"
+                                className="!py-6 !text-xs font-normal placeholder:text-gray-500 placeholder:text-xs placeholder:font-normal focus-visible:ring-0 focus-visible:border-primary transition-all ease-in-out duration-200 auth-modal"
                               />
                             </FormControl>
                             <FormMessage className="text-xs" />
@@ -266,7 +266,7 @@ const AuthModal = ({ showModal, toggleModal, redirectUrl }: AuthModalProps) => {
                               <Input
                                 placeholder="Enter email address"
                                 {...field}
-                                className="!py-6 !text-xs font-normal placeholder:text-gray-500 placeholder:text-xs placeholder:font-normal focus-visible:ring-0 focus-visible:border-primary transition-all ease-in-out duration-200"
+                                className="!py-6 !text-xs font-normal placeholder:text-gray-500 placeholder:text-xs placeholder:font-normal focus-visible:ring-0 focus-visible:border-primary transition-all ease-in-out duration-200 auth-modal"
                               />
                             </FormControl>
                             <FormMessage className="text-xs" />
@@ -287,7 +287,7 @@ const AuthModal = ({ showModal, toggleModal, redirectUrl }: AuthModalProps) => {
                                 <Input
                                   placeholder="Enter password"
                                   {...field}
-                                  className="!py-6 !text-xs font-normal placeholder:text-gray-500 placeholder:text-xs placeholder:font-normal focus-visible:ring-0 focus-visible:border-primary transition-all ease-in-out duration-200"
+                                  className="!py-6 !text-xs font-normal placeholder:text-gray-500 placeholder:text-xs placeholder:font-normal focus-visible:ring-0 focus-visible:border-primary transition-all ease-in-out duration-200 auth-modal"
                                   type={showPassword ? "text" : "password"}
                                 />
                                 <button

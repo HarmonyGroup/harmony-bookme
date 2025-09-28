@@ -125,7 +125,7 @@ const Navbar = () => {
     <>
       <header className="bg-white">
         <div className="border-b border-gray-200/70">
-          <div className="mx-auto max-w-screen-xl px-5">
+          <div className="mx-auto max-w-screen-xl px-4">
             <div className="flex items-center justify-between py-4">
               <div className="flex items-center gap-2">
                 <Link
@@ -211,7 +211,7 @@ const Navbar = () => {
                 ) : session ? (
                   <DropdownMenu>
                     <DropdownMenuTrigger className="outline-0 ring-0 cursor-pointer hidden md:block">
-                      <div className="bg-sky-700 size-8 rounded-md flex items-center justify-center">
+                      <div className="bg-gradient-to-r from-sky-700 to-[#183264]/90 size-8 rounded-full flex items-center justify-center">
                         <span className="text-white text-[13px] font-semibold">
                           {session.user?.firstName?.[0]}
                           {/* {session.user?.lastName?.[0]} */}
@@ -297,7 +297,7 @@ const Navbar = () => {
                 ) : (
                   <Button
                     onClick={() => setShowAuthModal(true)}
-                    className="bg-primary text-white rounded-md px-5 py-2 text-xs md:text-[13px] font-medium cursor-pointer"
+                    className="bg-primary text-white rounded-lg px-5 py-2 text-xs md:text-[13px] font-medium cursor-pointer"
                   >
                     Login
                   </Button>

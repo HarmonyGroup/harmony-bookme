@@ -98,9 +98,9 @@ const Page = () => {
   }, [debouncedSearch, category, pricingType, eventFormat, date]);
 
   return (
-    <section className="bg-white">
-      <section className="relative h-[14vh] md:h-[10vh] w-full bg-primary flex flex-col items-center justify-center overflow-x-hidden">
-        <div className="mx-auto w-full max-w-7xl px-5">
+    <section className="bg-muted/50">
+      <section className="relative h-[8vh] md:h-[10vh] w-full bg-primary flex flex-col items-center justify-center overflow-x-hidden">
+        <div className="mx-auto w-full max-w-7xl px-4">
           <Image
             src={
               "https://img.freepik.com/free-photo/3d-house-model-with-modern-architecture_23-2151004039.jpg?uid=R137948985&ga=GA1.1.1977978369.1744267390&semt=ais_hybrid&w=740"
@@ -109,18 +109,19 @@ const Page = () => {
             objectFit="cover"
             alt="Harmony BookMe"
             className="blur-[1px]"
+            loading="eager"
           />
           <div className="absolute inset-0 bg-gradient-to-r from-sky-800/80 to-primary/40"></div>
           <div className="relative flex">
-            <h1 className="text-white text-left text-lg font-bold md:text-xl/snug max-w-xl">
+            <h1 className="text-white text-left text-base font-bold md:text-xl/snug max-w-xl">
               Find events happening near you
             </h1>
           </div>
         </div>
       </section>
 
-      <section className="mx-auto w-full max-w-7xl px-5 py-10 md:py-16">
-        <div className="w-full h-full grid grid-cols-1 lg:grid-cols-3 gap-14">
+      <section className="mx-auto w-full max-w-7xl px-4 py-10 md:py-16">
+        <div className="w-full h-full grid grid-cols-1 lg:grid-cols-3 gap-28">
           <div className="w-full h-full col-span-1 hidden lg:block">
             <FilterBox
               search={search}
@@ -139,9 +140,9 @@ const Page = () => {
             <h1 className="text-primary text-base font-semibold">
               Found {data?.pagination?.total || 0} events
             </h1>
-            <div className="flex flex-col gap-5 mt-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mt-8">
             {isLoading ? (
-                [...Array(7)].map((_, index) => (
+                [...Array(6)].map((_, index) => (
                   <EventCardSkeleton key={index} />
                 ))
               ) : data?.data?.length ? (
@@ -166,10 +167,10 @@ const Page = () => {
             {/* Pagination */}
             {data?.data?.length && (
               <div className="mt-6 w-full flex items-center justify-between">
-                <div className="text-xs text-gray-700 whitespace-nowrap">
-                  Showing {(page - 1) * limit + 1} to{" "}
+                <div className="text-[13px] text-gray-700 whitespace-nowrap">
+                  Showing results {(page - 1) * limit + 1} to{" "}
                   {Math.min(page * limit, data.pagination.total)} of{" "}
-                  {data.pagination.total} events
+                  {data.pagination.total}
                 </div>
                 <Pagination className="mx-0 w-auto justify-end">
                   <PaginationContent>
@@ -178,8 +179,8 @@ const Page = () => {
                         onClick={handlePrevPage}
                         className={
                           !data?.pagination.hasPrev
-                            ? "pointer-events-none opacity-50 text-xs"
-                            : "cursor-pointer text-xs text-gray-600 hover:bg-transparent"
+                            ? "pointer-events-none opacity-50 text-[13px]"
+                            : "cursor-pointer text-[13px] text-gray-600 hover:bg-transparent"
                         }
                       />
                     </PaginationItem>
@@ -192,7 +193,7 @@ const Page = () => {
                           <PaginationLink
                             onClick={() => handlePageChange(pageNum as number)}
                             isActive={pageNum === data?.pagination.page}
-                            className="cursor-pointer text-xs"
+                            className="cursor-pointer text-[13px]"
                             size="sm"
                           >
                             {pageNum}
@@ -206,8 +207,8 @@ const Page = () => {
                         onClick={handleNextPage}
                         className={
                           !data?.pagination.hasNext
-                            ? "pointer-events-none opacity-50 text-xs"
-                            : "cursor-pointer text-xs text-gray-600 hover:bg-transparent"
+                            ? "pointer-events-none opacity-50 text-[13px]"
+                            : "cursor-pointer text-[13px] text-gray-600 hover:bg-transparent"
                         }
                       />
                     </PaginationItem>

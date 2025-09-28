@@ -122,17 +122,22 @@
     @apply bg-background text-foreground;
   }
 
-  /* Prevent iOS Safari zoom on input focus */
-  input[type="text"],
-  input[type="email"],
-  input[type="password"],
-  input[type="number"],
-  input[type="tel"],
-  input[type="url"],
-  input[type="search"],
-  textarea,
-  select {
+  /* Prevent iOS Safari zoom on input focus - exclude auth modal */
+  input[type="text"]:not([class*="auth-modal"]),
+  input[type="email"]:not([class*="auth-modal"]),
+  input[type="password"]:not([class*="auth-modal"]),
+  input[type="number"]:not([class*="auth-modal"]),
+  input[type="tel"]:not([class*="auth-modal"]),
+  input[type="url"]:not([class*="auth-modal"]),
+  input[type="search"]:not([class*="auth-modal"]),
+  textarea:not([class*="auth-modal"]),
+  select:not([class*="auth-modal"]) {
     font-size: 16px !important;
+  }
+
+  /* Ensure auth modal inputs maintain small font size */
+  input.auth-modal {
+    font-size: 12px !important;
   }
 }
 
