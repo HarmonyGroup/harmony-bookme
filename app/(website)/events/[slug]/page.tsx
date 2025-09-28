@@ -537,7 +537,7 @@ const Page = ({ params }: EventPageProps) => {
               {/* Booking Card */}
               <Card
                 id="booking-section"
-                className="border-none !bg-white !shadow-none md:!shadow-sm md:backdrop-blur-sm sticky top-4 md:light-shadow z-10 !py-4 md:!py-6"
+                className="border-none !bg-white !shadow-none md:!shadow-sm md:backdrop-blur-sm sticky top-4 md:light-shadow z-10 !py-2 md:!py-6"
               >
                 <CardHeader className="!px-0 md:!px-6">
                   <CardTitle className="text-[13px] md:text-[15px] font-semibold text-primary">
@@ -637,12 +637,12 @@ const Page = ({ params }: EventPageProps) => {
                         </DropdownMenu>
                       </div>
 
-                      <Separator />
+                      <Separator className="!my-6 bg-gray-200/60"/>
 
                       {/* Selected Tickets List */}
                       {selectedTickets.length > 0 && (
                         <div className="space-y-2">
-                          <p className="text-gray-700 text-xs font-medium">
+                          <p className="text-gray-600 text-[11px] md:text-xs font-normal">
                             Selected options
                           </p>
                           {selectedTickets.map((ticket) => {
@@ -665,7 +665,7 @@ const Page = ({ params }: EventPageProps) => {
                                 className="flex items-center gap-2 border rounded-md shadow-xs p-2.5 hover:bg-muted/50 transition-colors duration-300"
                               >
                                 <div className="flex-1">
-                                  <p className="text-[13px] text-gray-700 font-medium">
+                                  <p className="text-xs md:text-[13px] text-gray-700 font-medium">
                                     {ticketData?.name ||
                                       `Ticket ${ticket.type}`}
                                   </p>
@@ -692,7 +692,7 @@ const Page = ({ params }: EventPageProps) => {
                                   >
                                     -
                                   </Button>
-                                  <div className="text-xs">
+                                  <div className="text-xs md:text-[13px] font-medium">
                                     {ticket.quantity}
                                   </div>
                                   <Button
@@ -746,7 +746,7 @@ const Page = ({ params }: EventPageProps) => {
                         <div className="space-y-3">
                           <div className="bg-muted border border-dashed border-gray-200 rounded-lg shadow-xs p-4 space-y-2">
                             <div className="flex justify-between text-sm">
-                              <span className="text-gray-700 text-xs font-medium">
+                              <span className="text-gray-600 text-[11px] md:text-xs font-medium">
                                 Total
                               </span>
                               <span className="text-primary font-semibold text-sm">
