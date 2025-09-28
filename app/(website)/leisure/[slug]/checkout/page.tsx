@@ -22,14 +22,12 @@ import { CreateBookingRequest } from "@/types/booking";
 import { toast } from "sonner";
 import { useGetLeisure } from "@/services/public/leisure";
 import { LeisureListing } from "@/types/vendor/leisure";
-import moment from "moment";
 import { Loader2 } from "lucide-react";
 import BookingConfirmation from "@/components/website/events/BookingConfirmation";
 import { useVerifyPayment } from "@/services/explorer/payment";
 import {
   // calculateTicketPrice,
   calculateTicketTotal,
-  formatPrice as formatTicketPrice,
 } from "@/utils/ticket-pricing";
 import PaystackPop from "@paystack/inline-js";
 import {
@@ -42,6 +40,7 @@ import {
 } from "@/components/ui/breadcrumb";
 import AuthModal from "@/components/auth/AuthModal";
 import UnauthorizedIcon from "@/public/assets/unauthorized-icon-2.png";
+import { formatPrice } from "@/lib/utils";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -241,43 +240,40 @@ const Page = ({ params, searchParams }: PageProps) => {
         if (paymentData) {
           // Open Paystack modal with access code
           const popup = new PaystackPop();
-          popup.resumeTransaction(
-            paymentData.access_code,
-            {
-              onSuccess: (response: { reference: string }) => {
-                console.log("Payment successful:", response);
-                // Verify payment
-                verifyPayment(response.reference, {
-                  onSuccess: (verifyResponse) => {
-                    console.log("Verification response:", verifyResponse);
-                    if (verifyResponse.data.status === "success") {
-                      // toast.success(
-                      //   "Payment successful! Your booking has been confirmed."
-                      // );
-                      setSuccessModal(true);
-                    } else {
-                      toast.error(
-                        "Payment verification failed. Please contact support."
-                      );
-                    }
-                  },
-                  onError: (error) => {
-                    console.error("Payment verification error:", error);
+          popup.resumeTransaction(paymentData.access_code, {
+            onSuccess: (response: { reference: string }) => {
+              console.log("Payment successful:", response);
+              // Verify payment
+              verifyPayment(response.reference, {
+                onSuccess: (verifyResponse) => {
+                  console.log("Verification response:", verifyResponse);
+                  if (verifyResponse.data.status === "success") {
+                    // toast.success(
+                    //   "Payment successful! Your booking has been confirmed."
+                    // );
+                    setSuccessModal(true);
+                  } else {
                     toast.error(
                       "Payment verification failed. Please contact support."
                     );
-                  },
-                });
-              },
-              onCancel: () => {
-                console.log("Payment cancelled");
-                toast.info("Payment cancelled. Your booking is still pending.");
-              },
-              onClose: () => {
-                console.log("Payment modal closed");
-              },
-            }
-          );
+                  }
+                },
+                onError: (error) => {
+                  console.error("Payment verification error:", error);
+                  toast.error(
+                    "Payment verification failed. Please contact support."
+                  );
+                },
+              });
+            },
+            onCancel: () => {
+              console.log("Payment cancelled");
+              toast.info("Payment cancelled. Your booking is still pending.");
+            },
+            onClose: () => {
+              console.log("Payment modal closed");
+            },
+          });
         } else {
           toast.error(
             "Booking created but payment initialization failed. Please contact support."
@@ -413,7 +409,7 @@ const Page = ({ params, searchParams }: PageProps) => {
                                   {...field}
                                   disabled={status === "authenticated"}
                                   className="checkout-form !py-5 !text-xs !font-normal placeholder:text-gray-500 placeholder:!text-xs placeholder:!font-normal focus-visible:ring-0 focus-visible:border-primary shadow-none transition-all ease-in-out duration-200 disabled:!bg-muted"
-                                  style={{ fontSize: '12px' }}
+                                  style={{ fontSize: "12px" }}
                                   aria-required="true"
                                 />
                               </FormControl>
@@ -435,7 +431,7 @@ const Page = ({ params, searchParams }: PageProps) => {
                                   {...field}
                                   disabled={status === "authenticated"}
                                   className="checkout-form !py-5 !text-xs !font-normal placeholder:text-gray-500 placeholder:!text-xs placeholder:!font-normal focus-visible:ring-0 focus-visible:border-primary shadow-none transition-all ease-in-out duration-200 disabled:!bg-muted"
-                                  style={{ fontSize: '12px' }}
+                                  style={{ fontSize: "12px" }}
                                   aria-required="true"
                                 />
                               </FormControl>
@@ -459,7 +455,7 @@ const Page = ({ params, searchParams }: PageProps) => {
                                 {...field}
                                 disabled={status === "authenticated"}
                                 className="checkout-form !py-5 !text-xs !font-normal placeholder:text-gray-500 placeholder:!text-xs placeholder:!font-normal focus-visible:ring-0 focus-visible:border-primary shadow-none transition-all ease-in-out duration-200 disabled:!bg-muted"
-                                style={{ fontSize: '12px' }}
+                                style={{ fontSize: "12px" }}
                                 aria-required="true"
                               />
                             </FormControl>
@@ -476,17 +472,17 @@ const Page = ({ params, searchParams }: PageProps) => {
                               Phone Number
                             </FormLabel>
                             <FormControl>
-                                <Input
-                                  placeholder="Enter phone number"
-                                  type="tel"
-                                  {...field}
-                                  disabled={
-                                    status === "authenticated" &&
-                                    !!session?.user?.phone
-                                  }
-                                  className="checkout-form !py-5 !text-xs !font-normal placeholder:text-gray-500 placeholder:!text-xs placeholder:!font-normal focus-visible:ring-0 focus-visible:border-primary shadow-none transition-all ease-in-out duration-200 disabled:!bg-muted"
-                                  style={{ fontSize: '12px' }}
-                                />
+                              <Input
+                                placeholder="Enter phone number"
+                                type="tel"
+                                {...field}
+                                disabled={
+                                  status === "authenticated" &&
+                                  !!session?.user?.phone
+                                }
+                                className="checkout-form !py-5 !text-xs !font-normal placeholder:text-gray-500 placeholder:!text-xs placeholder:!font-normal focus-visible:ring-0 focus-visible:border-primary shadow-none transition-all ease-in-out duration-200 disabled:!bg-muted"
+                                style={{ fontSize: "12px" }}
+                              />
                             </FormControl>
                             <FormMessage className="text-xs" />
                           </FormItem>
@@ -496,10 +492,12 @@ const Page = ({ params, searchParams }: PageProps) => {
                   </div>
                 </div>
 
+                <Separator className="bg-gray-200/60 block md:hidden" />
+
                 {/* Right side */}
                 <div className="col-span-1 space-y-4">
                   <div className="bg-white space-y-4" ref={summaryRef}>
-                    <h1 className="text-primary text-base font-semibold mb-6">
+                    <h1 className="text-primary text-[13px] md:text-[15px] font-semibold mb-6">
                       Order Details
                     </h1>
 
@@ -513,20 +511,17 @@ const Page = ({ params, searchParams }: PageProps) => {
                           loading="eager"
                         />
                       </div>
-                      <div className="space-y-1.5">
-                        <h4 className="text-primary text-[15px] font-semibold">
+                      <div className="space-y-2">
+                        <h4 className="text-primary text-[13px] md:text-[15px] font-semibold line-clamp-1">
                           {leisure.title}
                         </h4>
-                        <p className="text-gray-700 text-xs">
+                        <p className="text-gray-600 text-[11px] md:text-xs line-clamp-1">
                           {leisure?.addressDetails}
-                        </p>
-                        <p className="text-gray-700 text-xs">
-                          {moment(leisure.startDate).format("MMM DD, YYYY")}
                         </p>
                       </div>
                     </div>
 
-                    <div className="mt-4 space-y-4">
+                    <div className="mt-8 space-y-4">
                       {tickets.map((ticket, index) => {
                         const ticketData = leisure.tickets.find(
                           (t) => t._id === ticket.type
@@ -551,20 +546,20 @@ const Page = ({ params, searchParams }: PageProps) => {
                                 {ticketData?.name} (x{ticket.quantity})
                               </p>
                               {hasDiscount && (
-                                <p className="text-xs text-green-600">
+                                <p className="text-xs text-green-600 mt-1">
                                   {ticketData.discountType === "percentage"
                                     ? `${ticketData.discountValue}% off`
-                                    : `₦${ticketData.discountValue} off`}
+                                    : `NGN ${ticketData.discountValue} off`}
                                 </p>
                               )}
                             </div>
                             <div className="text-right">
-                              <p className="text-[13px] font-semibold">
-                                {formatTicketPrice(totalPrice)}
+                              <p className="text-primary text-[13px] font-semibold">
+                                NGN {formatPrice(totalPrice)}
                               </p>
                               {hasDiscount && (
-                                <p className="text-xs text-gray-500 line-through">
-                                  {formatTicketPrice(originalTotal)}
+                                <p className="text-xs text-gray-500 line-through mt-1">
+                                  NGN {formatPrice(originalTotal)}
                                 </p>
                               )}
                             </div>
@@ -572,18 +567,20 @@ const Page = ({ params, searchParams }: PageProps) => {
                         );
                       })}
                     </div>
-                    <Separator />
+                    <Separator className="my-4 bg-gray-200/60" />
                     <div className="flex items-start justify-between summary-item">
                       <div>
-                        <p className="text-xs font-medium">Total</p>
+                        <p className="text-gray-600 text-xs md:text-[13px] font- font-medium">
+                          Total
+                        </p>
                       </div>
-                      <p className="text-[13px] font-semibold">
-                        {formatTicketPrice(displayTotal)}
+                      <p className="text-primary text-[13px] font-semibold">
+                        NGN {formatPrice(displayTotal)}
                       </p>
                     </div>
-                    <Separator />
+                    <Separator className="my-4 bg-gray-200/60" />
                     <div className="space-y-2.5 summary-item">
-                      <p className="!text-xs !font-medium">
+                      <p className="text-gray-600 text-xs">
                         Use coupon or promo code
                       </p>
                       <FormField
@@ -594,7 +591,7 @@ const Page = ({ params, searchParams }: PageProps) => {
                             <FormControl>
                               <Input
                                 className="checkout-form !py-5 !text-xs !font-normal placeholder:text-gray-500 placeholder:!text-xs placeholder:!font-normal focus-visible:ring-0 focus-visible:border-primary shadow-none transition-all ease-in-out duration-200"
-                                style={{ fontSize: '12px' }}
+                                style={{ fontSize: "12px" }}
                                 placeholder="Enter code here"
                                 {...field}
                                 value={couponCode}
@@ -612,19 +609,14 @@ const Page = ({ params, searchParams }: PageProps) => {
                     <Button
                       type="submit"
                       className="w-full text-[13px] font-medium transition-colors ease-in-out duration-300 cursor-pointer !py-6 checkout-button bg-primary hover:bg-primary/90"
-                      disabled={
-                        isPending ||
-                        isVerifyingPayment
-                      }
+                      disabled={isPending || isVerifyingPayment}
                     >
                       {isPending || isVerifyingPayment ? (
                         <span className="flex items-center gap-2">
                           <Loader2 className="animate-spin size-5" />
                         </span>
                       ) : (
-                        <span className="flex items-center gap-2">
-                          Complete Booking
-                        </span>
+                        <span className="flex items-center gap-2">Pay Now</span>
                       )}
                     </Button>
                   </div>

@@ -378,22 +378,6 @@ const Page = ({ params }: EventPageProps) => {
                 <h1 className="text-primary text-base/relaxed md:text-xl/relaxed font-semibold">
                   {event.title}
                 </h1>
-                {/* <span className="bg-sky-100 text-rose-600 text-[11px] rounded-lg px-4 py-2">{event?.category}</span> */}
-                {/* <div className="flex items-center gap-2.5">
-                  <div className="flex items-center gap-1">
-                    <StarIcon
-                      weight="fill"
-                      size={18}
-                      className="text-yellow-500"
-                    />
-                    <span className="text-gray-600 text-xs font-medium">
-                      4.8
-                    </span>
-                  </div>
-                  <p className="text-gray-600 text-xs font-medium">
-                    (<span>20</span> reviews)
-                  </p>
-                </div> */}
               </div>
 
               <Separator className="bg-gray-200/60" />
@@ -637,7 +621,7 @@ const Page = ({ params }: EventPageProps) => {
                         </DropdownMenu>
                       </div>
 
-                      <Separator className="!my-6 bg-gray-200/60"/>
+                      <Separator className="!my-6 bg-gray-200/60" />
 
                       {/* Selected Tickets List */}
                       {selectedTickets.length > 0 && (
@@ -761,7 +745,7 @@ const Page = ({ params }: EventPageProps) => {
                       <Button
                         onClick={handleBooking}
                         disabled={selectedTickets.length === 0}
-                        className="bg-primary text-[13px] font-semibold w-full cursor-pointer !py-6 disabled:bg-primary/90"
+                        className="bg-primary text-[13px] font-semibold w-full cursor-pointer !py-6 disabled:bg-primary/90 transition-all duration-300 ease-in-out"
                       >
                         {selectedTickets.length > 0
                           ? `Book Now - NGN ${formatPrice(totalPrice)}`

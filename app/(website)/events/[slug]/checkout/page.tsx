@@ -26,10 +26,7 @@ import moment from "moment";
 import { Loader2 } from "lucide-react";
 import BookingConfirmation from "@/components/website/events/BookingConfirmation";
 import { useVerifyPayment } from "@/services/explorer/payment";
-import {
-  calculateTicketTotal,
-  formatPrice as formatTicketPrice,
-} from "@/utils/ticket-pricing";
+import { calculateTicketTotal } from "@/utils/ticket-pricing";
 import PaystackPop from "@paystack/inline-js";
 import {
   Breadcrumb,
@@ -374,7 +371,7 @@ const Page = ({ params, searchParams }: PageProps) => {
                                   {...field}
                                   disabled={status === "authenticated"}
                                   className="checkout-form !py-5 !text-xs !font-normal placeholder:text-gray-500 placeholder:!text-xs placeholder:!font-normal focus-visible:ring-0 focus-visible:border-primary shadow-none transition-all ease-in-out duration-200 disabled:!bg-muted"
-                                  style={{ fontSize: '12px' }}
+                                  style={{ fontSize: "12px" }}
                                   aria-required="true"
                                 />
                               </FormControl>
@@ -396,7 +393,7 @@ const Page = ({ params, searchParams }: PageProps) => {
                                   {...field}
                                   disabled={status === "authenticated"}
                                   className="checkout-form !py-5 !text-xs !font-normal placeholder:text-gray-500 placeholder:!text-xs placeholder:!font-normal focus-visible:ring-0 focus-visible:border-primary shadow-none transition-all ease-in-out duration-200 disabled:!bg-muted"
-                                  style={{ fontSize: '12px' }}
+                                  style={{ fontSize: "12px" }}
                                   aria-required="true"
                                 />
                               </FormControl>
@@ -420,7 +417,7 @@ const Page = ({ params, searchParams }: PageProps) => {
                                 {...field}
                                 disabled={status === "authenticated"}
                                 className="checkout-form !py-5 !text-xs !font-normal placeholder:text-gray-500 placeholder:!text-xs placeholder:!font-normal focus-visible:ring-0 focus-visible:border-primary shadow-none transition-all ease-in-out duration-200 disabled:!bg-muted"
-                                style={{ fontSize: '12px' }}
+                                style={{ fontSize: "12px" }}
                                 aria-required="true"
                               />
                             </FormControl>
@@ -437,17 +434,17 @@ const Page = ({ params, searchParams }: PageProps) => {
                               Phone Number
                             </FormLabel>
                             <FormControl>
-                                <Input
-                                  placeholder="Enter phone number"
-                                  type="tel"
-                                  {...field}
-                                  disabled={
-                                    status === "authenticated" &&
-                                    !!session?.user?.phone
-                                  }
-                                  className="checkout-form !py-5 !text-xs !font-normal placeholder:text-gray-500 placeholder:!text-xs placeholder:!font-normal focus-visible:ring-0 focus-visible:border-primary shadow-none transition-all ease-in-out duration-200 disabled:!bg-muted"
-                                  style={{ fontSize: '12px' }}
-                                />
+                              <Input
+                                placeholder="Enter phone number"
+                                type="tel"
+                                {...field}
+                                disabled={
+                                  status === "authenticated" &&
+                                  !!session?.user?.phone
+                                }
+                                className="checkout-form !py-5 !text-xs !font-normal placeholder:text-gray-500 placeholder:!text-xs placeholder:!font-normal focus-visible:ring-0 focus-visible:border-primary shadow-none transition-all ease-in-out duration-200 disabled:!bg-muted"
+                                style={{ fontSize: "12px" }}
+                              />
                             </FormControl>
                             <FormMessage className="text-xs" />
                           </FormItem>
@@ -579,7 +576,9 @@ const Page = ({ params, searchParams }: PageProps) => {
                           {event?.streetAddress}
                         </p>
                         <p className="text-gray-600 text-[11px] md:text-xs line-clamp-1">
-                          {moment(event.startDate).format("dddd, MMMM Do, YYYY [|] h:mm A")}
+                          {moment(event.startDate).format(
+                            "dddd, MMMM Do, YYYY [|] h:mm A"
+                          )}
                         </p>
                       </div>
                     </div>
@@ -612,7 +611,7 @@ const Page = ({ params, searchParams }: PageProps) => {
                                 <p className="text-xs text-green-600 mt-1">
                                   {ticketData.discountType === "percentage"
                                     ? `${ticketData.discountValue}% off`
-                                    : `₦${ticketData.discountValue} off`}
+                                    : `NGN ${ticketData.discountValue} off`}
                                 </p>
                               )}
                             </div>
@@ -622,7 +621,7 @@ const Page = ({ params, searchParams }: PageProps) => {
                               </p>
                               {hasDiscount && (
                                 <p className="text-xs text-gray-500 line-through mt-1">
-                                  {formatTicketPrice(originalTotal)}
+                                  NGN {formatPrice(originalTotal)}
                                 </p>
                               )}
                             </div>
@@ -630,16 +629,18 @@ const Page = ({ params, searchParams }: PageProps) => {
                         );
                       })}
                     </div>
-                    <Separator className="my-4 bg-gray-200/60"/>
+                    <Separator className="my-4 bg-gray-200/60" />
                     <div className="flex items-start justify-between summary-item">
                       <div>
-                        <p className="text-gray-600 text-xs md:text-[13px] font- font-medium">Total</p>
+                        <p className="text-gray-600 text-xs md:text-[13px] font- font-medium">
+                          Total
+                        </p>
                       </div>
                       <p className="text-primary text-[13px] font-semibold">
                         NGN {formatPrice(displayTotal)}
                       </p>
                     </div>
-                    <Separator className="my-4 bg-gray-200/60"/>
+                    <Separator className="my-4 bg-gray-200/60" />
                     <div className="space-y-2.5 summary-item">
                       <p className="text-gray-600 text-xs">
                         Have coupon or promo code?
@@ -652,7 +653,7 @@ const Page = ({ params, searchParams }: PageProps) => {
                             <FormControl>
                               <Input
                                 className="checkout-form !py-5 !text-xs !font-normal placeholder:text-gray-500 placeholder:!text-xs placeholder:!font-normal focus-visible:ring-0 focus-visible:border-primary shadow-none transition-all ease-in-out duration-200"
-                                style={{ fontSize: '12px' }}
+                                style={{ fontSize: "12px" }}
                                 placeholder="Enter code here"
                                 {...field}
                                 value={couponCode}
@@ -670,10 +671,7 @@ const Page = ({ params, searchParams }: PageProps) => {
                     <Button
                       type="submit"
                       className="w-full text-[13px] font-medium transition-colors ease-in-out duration-300 cursor-pointer rounded-lg !py-6 checkout-button bg-primary hover:bg-primary/90"
-                      disabled={
-                        isPending ||
-                        isVerifyingPayment
-                      }
+                      disabled={isPending || isVerifyingPayment}
                     >
                       {isPending || isVerifyingPayment ? (
                         <span className="flex items-center gap-2">

@@ -44,10 +44,10 @@ const LeisureCard = ({ leisure }: LeisureCardProps) => {
   }, [leisure?._id]);
 
   return (
-    <div className="rounded-xl p-4 bg-white border border-muted transition-all duration-300">
+    <div className="rounded-3xl p-4 bg-white border border-muted transition-all duration-300">
       <div className="flex flex-col">
         {/* Image Carousel Section */}
-        <div className="relative h-48 bg-gray-50 rounded-t-xl overflow-hidden">
+        <div className="relative h-48 bg-gray-50 rounded-t-2xl overflow-hidden">
           {leisure?.images && leisure.images.length > 0 ? (
             <>
               <Carousel className="w-full h-full" setApi={setApi}>
@@ -58,7 +58,7 @@ const LeisureCard = ({ leisure }: LeisureCardProps) => {
                         <Image
                           src={image}
                           alt={`${leisure?.title} - Image ${index + 1}`}
-                          className="object-cover rounded-t-xl"
+                          className="object-cover rounded-t-2xl"
                           fill
                           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                           onError={(e) => {
@@ -108,14 +108,11 @@ const LeisureCard = ({ leisure }: LeisureCardProps) => {
         <span className="text-primary text-[13px] md:text-[15px] font-semibold mt-4">
           {leisure?.title}
         </span>
-        <span className="text-gray-700 text-[11px] md:text-xs mt-2.5">
+        <span className="text-gray-500 text-[11px] md:text-xs mt-2.5">
           {leisure?.venueName}
         </span>
-        <span className="text-gray-700 text-[11px] md:text-xs mt-2.5">
-          {leisure?.shortSummary}
-        </span>
         <div className="flex items-center justify-between mt-4 border-muted border-t pt-4">
-          <p className="text-gray-700 text-[11px] md:text-xs">
+          <p className="text-gray-500 text-[11px] md:text-xs">
             From{" "}
             <span className="text-primary text-[13px] md:text-sm font-semibold">
               NGN {formatPrice(leisure?.tickets?.[0]?.basePrice || 0)}
@@ -123,7 +120,7 @@ const LeisureCard = ({ leisure }: LeisureCardProps) => {
           </p>
           <Link
             href={`/leisure/${leisure?.slug}`}
-            className="w-fit bg-primary text-white text-[13px] font-semibold rounded-md px-4 py-2 hover:bg-primary/90 transition-all ease-in-out duration-300 hover:scale-105"
+            className="w-fit bg-primary text-white text-[13px] font-semibold rounded-lg px-4 py-2 hover:bg-primary/90 transition-all ease-in-out duration-300 hover:scale-105"
           >
             Book Now
           </Link>

@@ -20,7 +20,6 @@ import { Label } from "@/components/ui/label";
 import {
   CalendarDotsIcon,
   MapPinLineIcon,
-  StarIcon,
 } from "@phosphor-icons/react";
 import {
   calculateTicketPrice,
@@ -264,7 +263,6 @@ const Page = ({ params }: LeisurePageProps) => {
     <section className="bg-white py-6">
       <style dangerouslySetInnerHTML={{ __html: customStyles }} />
       <div className="min-h-screen bg-white max-w-7xl mx-auto px-5">
-        
         <Breadcrumb>
           <BreadcrumbList>
             <BreadcrumbItem className="text-gray-600 text-[11px] md:text-xs">
@@ -373,32 +371,17 @@ const Page = ({ params }: LeisurePageProps) => {
                 <h1 className="text-primary text-base/relaxed md:text-xl/relaxed font-semibold">
                   {leisure.title}
                 </h1>
-                <div className="flex items-center gap-2.5">
-                  <div className="flex items-center gap-1">
-                    <StarIcon
-                      weight="fill"
-                      size={18}
-                      className="text-yellow-500"
-                    />
-                    <span className="text-gray-600 text-xs font-medium">
-                      4.8
-                    </span>
-                  </div>
-                  <p className="text-gray-600 text-xs font-medium">
-                    (<span>20</span> reviews)
-                  </p>
-                </div>
               </div>
 
               <Separator className="bg-gray-200/60" />
 
               {/* Leisure Description */}
               <div className="bg-white space-y-2">
-                <h4 className="text-[15px] font-semibold text-primary">
+                <h4 className="text-[13px] md:text-[15px] font-semibold text-primary">
                   About this activity
                 </h4>
                 <div>
-                  <p className="text-gray-700 text-xs/relaxed">
+                  <p className="text-gray-600 text-[11px] md:text-xs/relaxed">
                     {leisure.description &&
                     leisure.description.length > 300 &&
                     !isDescriptionExpanded
@@ -413,7 +396,7 @@ const Page = ({ params }: LeisurePageProps) => {
                       onClick={() =>
                         setIsDescriptionExpanded(!isDescriptionExpanded)
                       }
-                      className="text-xs font-semibold mt-3 p-0 h-fit w-fit text-primary hover:text-primary/80 hover:bg-inherit cursor-pointer"
+                      className="text-[11px] md:text-xs font-semibold mt-3 p-0 h-fit w-fit text-primary hover:text-primary/80 hover:bg-inherit cursor-pointer"
                     >
                       {isDescriptionExpanded ? "Show less" : "Read more"}
                     </Button>
@@ -425,7 +408,7 @@ const Page = ({ params }: LeisurePageProps) => {
 
               {/* Leisure Details */}
               <div className="bg-white space-y-6">
-                <h4 className="text-[15px] font-semibold text-primary">
+                <h4 className="text-[13px] md:text-[15px] font-semibold text-primary">
                   Activity Details
                 </h4>
                 <div className="space-y-4">
@@ -439,10 +422,10 @@ const Page = ({ params }: LeisurePageProps) => {
                         />
                       </div>
                       <div>
-                        <h3 className="text-[13px] font-semibold text-primary">
+                        <h3 className="text-xs md:text-[13px] font-semibold text-primary">
                           Date & Time
                         </h3>
-                        <p className="text-[13px] text-gray-600 mt-1">
+                        <p className="text-[11px] md:text-[13px] text-gray-600 mt-1">
                           {formatDate(leisure.startDate)} at{" "}
                           {formatTime(leisure.startTime)}
                         </p>
@@ -458,10 +441,10 @@ const Page = ({ params }: LeisurePageProps) => {
                         />
                       </div>
                       <div>
-                        <h3 className="text-[13px] font-semibold text-primary">
+                        <h3 className="text-xs md:text-[13px] font-semibold text-primary">
                           Location
                         </h3>
-                        <p className="text-[13px] text-gray-600 mt-1">
+                        <p className="text-[11px] md:text-[13px] text-gray-600 mt-1">
                           {leisure?.venueName}, {leisure?.city}
                         </p>
                       </div>
@@ -478,29 +461,29 @@ const Page = ({ params }: LeisurePageProps) => {
               {/* Booking Card */}
               <Card
                 id="booking-section"
-                className="border-none !bg-white backdrop-blur-sm sticky top-4 light-shadow z-10"
+                className="border-none !bg-white !shadow-none md:!shadow-sm md:backdrop-blur-sm sticky top-4 md:light-shadow z-10 !py-2 md:!py-6"
               >
-                <CardHeader className="">
-                  <CardTitle className="text-[15px] font-semibold text-primary">
+                <CardHeader className="!px-0 md:!px-6">
+                  <CardTitle className="text-[13px] md:text-[15px] font-semibold text-primary">
                     Ticket Options
                   </CardTitle>
-                  <p className="text-gray-700 text-xs font-medium">
+                  <p className="text-gray-600 text-[11px] md:text-xs">
                     You can select multiple ticket options
                   </p>
                 </CardHeader>
-                <CardContent className="space-y-4">
+                <CardContent className="space-y-4 !px-0 md:!px-6">
                   {/* Ticket Selection */}
                   <div className="space-y-2">
                     <Label
                       htmlFor="ticket-type"
-                      className="text-gray-700 text-xs font-medium"
+                      className="text-gray-600 text-[11px] md:text-xs font-normal"
                     >
                       Select options
                     </Label>
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
-                        <Button 
-                          variant="outline" 
+                        <Button
+                          variant="outline"
                           className="w-full text-gray-500 text-xs !py-6 cursor-pointer justify-between hover:bg-muted/50 transition-all duration-300 ease-in-out"
                         >
                           Select options
@@ -509,8 +492,7 @@ const Page = ({ params }: LeisurePageProps) => {
                       </DropdownMenuTrigger>
                       <DropdownMenuContent className="w-full min-w-[var(--radix-dropdown-menu-trigger-width)]">
                         {leisure.tickets?.map((ticket, index) => {
-                          const discountedPrice =
-                            calculateTicketPrice(ticket);
+                          const discountedPrice = calculateTicketPrice(ticket);
                           const hasDiscount =
                             ticket.hasDiscount &&
                             ticket.discountType &&
@@ -522,12 +504,22 @@ const Page = ({ params }: LeisurePageProps) => {
                                 className="cursor-pointer !px-2.5 !py-3"
                               >
                                 <div className="flex items-center justify-between w-full">
-                                  <span className="text-gray-700 text-[13px] font-medium">{ticket.name}</span>
+                                  <span className="text-gray-700 text-[13px] font-medium">
+                                    {ticket.name}
+                                  </span>
                                   <div className="flex flex-col gap-1">
                                     <span className="text-[13px] font-semibold text-primary">
-                                      {hasDiscount ? `NGN ${formatPrice(discountedPrice)}` : `NGN ${formatPrice(ticket.basePrice)}`}
+                                      {hasDiscount
+                                        ? `NGN ${formatPrice(discountedPrice)}`
+                                        : `NGN ${formatPrice(
+                                            ticket.basePrice
+                                          )}`}
                                     </span>
-                                    {hasDiscount && <span className="text-xs text-gray-500 line-through">NGN {formatPrice(ticket.basePrice)}</span>}
+                                    {hasDiscount && (
+                                      <span className="text-xs text-gray-500 line-through">
+                                        NGN {formatPrice(ticket.basePrice)}
+                                      </span>
+                                    )}
                                   </div>
                                 </div>
                               </DropdownMenuItem>
@@ -546,7 +538,7 @@ const Page = ({ params }: LeisurePageProps) => {
                   {/* Selected Tickets List */}
                   {selectedTickets.length > 0 && (
                     <div className="space-y-2">
-                      <p className="text-gray-700 text-xs font-medium">
+                      <p className="text-gray-600 text-[11px] md:text-xs font-normal">
                         Selected options
                       </p>
                       {selectedTickets.map((ticket) => {
@@ -558,10 +550,7 @@ const Page = ({ params }: LeisurePageProps) => {
                           ticketData?.discountType &&
                           ticketData?.discountValue;
                         const totalPrice = ticketData
-                          ? calculateTicketTotal(
-                              ticketData,
-                              ticket.quantity
-                            )
+                          ? calculateTicketTotal(ticketData, ticket.quantity)
                           : 0;
                         return (
                           <div
@@ -569,9 +558,8 @@ const Page = ({ params }: LeisurePageProps) => {
                             className="flex items-center gap-2 border rounded-md shadow-xs p-2.5 hover:bg-muted/50 transition-colors duration-300"
                           >
                             <div className="flex-1">
-                              <p className="text-[13px] text-gray-700 font-medium">
-                                {ticketData?.name ||
-                                  `Ticket ${ticket.type}`}
+                              <p className="text-xs md:text-[13px] text-gray-700 font-medium">
+                                {ticketData?.name || `Ticket ${ticket.type}`}
                               </p>
                             </div>
                             <div className="flex items-center gap-3">
@@ -589,7 +577,7 @@ const Page = ({ params }: LeisurePageProps) => {
                               >
                                 -
                               </Button>
-                              <div className="text-xs">
+                              <div className="text-xs md:text-[13px] font-medium">
                                 {ticket.quantity}
                               </div>
                               <Button
@@ -611,9 +599,7 @@ const Page = ({ params }: LeisurePageProps) => {
                                 variant="ghost"
                                 size="sm"
                                 className="h-6 w-6 p-0 text-xs text-red-500 hover:bg-red-50 hover:text-red-500 cursor-pointer"
-                                onClick={() =>
-                                  handleRemoveTicket(ticket.type)
-                                }
+                                onClick={() => handleRemoveTicket(ticket.type)}
                               >
                                 ✕
                               </Button>
@@ -624,7 +610,8 @@ const Page = ({ params }: LeisurePageProps) => {
                               </p>
                               {hasDiscount && (
                                 <p className="text-xs text-gray-500 line-through">
-                                  NGN {formatPrice(
+                                  NGN{" "}
+                                  {formatPrice(
                                     (ticketData?.basePrice || 0) *
                                       ticket.quantity
                                   )}
@@ -642,7 +629,7 @@ const Page = ({ params }: LeisurePageProps) => {
                     <div className="space-y-3">
                       <div className="bg-muted border border-dashed border-gray-200 rounded-lg shadow-xs p-4 space-y-2">
                         <div className="flex justify-between text-sm">
-                          <span className="text-gray-700 text-xs font-medium">
+                          <span className="text-gray-600 text-xs md:text-[13px] font-medium">
                             Total
                           </span>
                           <span className="text-primary font-semibold text-sm">
@@ -657,7 +644,7 @@ const Page = ({ params }: LeisurePageProps) => {
                   <Button
                     onClick={handleBooking}
                     disabled={selectedTickets.length === 0}
-                    className="bg-primary text-[13px] font-semibold w-full cursor-pointer !py-6 disabled:bg-primary/90"
+                    className="bg-primary text-[13px] font-semibold w-full cursor-pointer !py-6 disabled:bg-primary/90 transition-all duration-300 ease-in-out"
                   >
                     {selectedTickets.length > 0
                       ? `Book Now - NGN ${formatPrice(totalPrice)}`
