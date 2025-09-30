@@ -53,6 +53,7 @@ const Page = () => {
   const carouselRef = useRef(null);
   const progressRef = useRef(null);
   const logoRef = useRef(null);
+  const mobileLogoRef = useRef(null);
 
   // Carousel content for vendors
   const carouselContent = [
@@ -140,6 +141,19 @@ const Page = () => {
         }
       );
 
+      // Mobile logo animation - slides down and fades in
+      gsap.fromTo(
+        mobileLogoRef.current,
+        { opacity: 0, y: -20 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.6,
+          ease: "power2.out",
+          delay: 0.1,
+        }
+      );
+
       // Carousel initial animation - slides upwards
       gsap.fromTo(
         carouselRef.current,
@@ -216,11 +230,13 @@ const Page = () => {
     <section ref={pageRef}>
       <div className="grid gap-0 min-h-screen md:grid-cols-2">
         <div className="relative h-full flex items-center justify-center px-4 py-16 md:px-10 md:py-20">
-          <Image
-            src={DarkLogo}
-            alt="Harmony BookMe"
-            className="absolute !top-4 !left-4 block md:hidden w-[160px]"
-          />
+           <Image
+             ref={mobileLogoRef}
+             src={DarkLogo}
+             alt="Harmony BookMe"
+             className="absolute !top-4 !left-4 block md:hidden w-[160px]"
+             loading="eager"
+           />
           <div ref={formRef} className="w-full mx-auto md:max-w-md">
             <h2 className="mb-2.5 md:mb-2 text-primary text-xl md:text-2xl font-semibold">
               Welcome Back!
