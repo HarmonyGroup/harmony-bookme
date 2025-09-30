@@ -100,7 +100,7 @@ const AuthModal = ({ showModal, toggleModal, redirectUrl }: AuthModalProps) => {
   };
 
   return (
-    <CustomModal isOpen={showModal} onClose={toggleModal} className="p-4 md:p-6 !py-10">
+    <CustomModal isOpen={showModal} onClose={toggleModal} className="p-6 pt-10 md:p-8 md:!py-10">
       <div className="space-y-6">
         {/* Header */}
         <div className="text-center space-y-1">
@@ -118,7 +118,7 @@ const AuthModal = ({ showModal, toggleModal, redirectUrl }: AuthModalProps) => {
             <>
               <div>
                 <Form {...loginForm}>
-                  <div className="!mt-8">
+                  <div className="!mt-8 md:!mt-10">
                     <form
                       onSubmit={loginForm.handleSubmit(onLoginSubmit)}
                       className="space-y-5"
@@ -323,7 +323,7 @@ const AuthModal = ({ showModal, toggleModal, redirectUrl }: AuthModalProps) => {
                     </form>
                   </div>
                 </Form>
-                <p className="text-xs text-gray-600 mt-4">
+                <p className="text-[11px] md:text-xs text-gray-600 mt-4">
                   Already have an account?{" "}
                   <span
                     className="font-semibold text-primary hover:underline underline-offset-2 transition-all ease-in-out duration-300 cursor-pointer"
