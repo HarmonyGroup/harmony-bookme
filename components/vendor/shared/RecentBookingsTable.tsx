@@ -118,9 +118,9 @@ const RecentBookingsTable = ({ type }: RecentBookingsTableProps) => {
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
-            strokeWidth="2"
+            strokeWidth="2.1"
             stroke="currentColor"
-            className="absolute left-4 top-1/2 -translate-y-1/2 size-[13px] text-gray-500"
+            className="absolute left-4 top-1/2 -translate-y-1/2 size-[15px] text-gray-500 mt-[1px]"
           >
             <path
               strokeLinecap="round"
@@ -130,7 +130,7 @@ const RecentBookingsTable = ({ type }: RecentBookingsTableProps) => {
           </svg>
           <Input
             type="search"
-            className="w-[300px] bg-white !text-xs placeholder:text-gray-500 placeholder:text-xs placeholder:font-medium shadow-xs outline-none ring-0 focus:shadow-xs px-4 !py-5 ps-9 border focus-visible:ring-0 focus-visible:border-primary transition-all ease-in-out duration-200"
+            className="w-[300px] bg-muted/60 !text-xs placeholder:text-gray-500 placeholder:text-xs placeholder:font-medium shadow-none outline-none ring-0 focus:shadow-none px-4 !py-6 ps-9 border !border-muted focus-visible:ring-0 focus-visible:border-primary transition-all ease-in-out duration-200"
             placeholder="Search booking code here"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
@@ -143,7 +143,7 @@ const RecentBookingsTable = ({ type }: RecentBookingsTableProps) => {
           <TableHeader className="!px-10">
             <TableRow className="bg-muted/50 text-xs !px-10">
               <TableHead className="text-gray-700 font-medium py-5 pl-4">
-                Booking Code
+                Code
               </TableHead>
               <TableHead className="text-gray-700 font-medium">
                 Explorer
@@ -193,9 +193,9 @@ const RecentBookingsTable = ({ type }: RecentBookingsTableProps) => {
       ) : data?.data?.bookings?.length ? (
         <Table className="!px-10 mt-4">
           <TableHeader className="!px-10">
-            <TableRow className="bg-muted/80 border-muted text-xs !px-10">
+            <TableRow className="bg-muted/60 border-muted text-xs !px-10">
               <TableHead className="text-gray-800 font-medium py-6 pl-4">
-                Booking Code
+                Code
               </TableHead>
               <TableHead className="text-gray-800 font-medium">
                 Explorer
@@ -234,13 +234,13 @@ const RecentBookingsTable = ({ type }: RecentBookingsTableProps) => {
                     className={cn(
                       "text-[11px] capitalize font-medium rounded-md px-2 py-1",
                       booking?.status === "pending" &&
-                        "text-amber-700 bg-amber-50 border-amber-200",
+                        "text-amber-700 bg-amber-100/60 border-amber-200",
                       booking?.status === "confirmed" &&
-                        "text-emerald-700 bg-emerald-50 border-emerald-200",
+                        "text-emerald-700 bg-emerald-100/60 border-emerald-200",
                       booking?.status === "cancelled" &&
-                        "text-red-700 bg-red-50 border-red-200",
+                        "text-red-700 bg-red-100/60 border-red-200",
                       booking?.status === "failed" &&
-                        "text-rose-700 bg-rose-50 border-rose-200"
+                        "text-rose-700 bg-rose-100/60 border-rose-200"
                     )}
                   >
                     {booking?.status}
@@ -253,9 +253,9 @@ const RecentBookingsTable = ({ type }: RecentBookingsTableProps) => {
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"
                         viewBox="0 0 24 24"
-                        strokeWidth="1.5"
+                        strokeWidth="1.8"
                         stroke="currentColor"
-                        className="size-[20px] text-gray-500"
+                        className="size-[20px] text-gray-700"
                       >
                         <path
                           strokeLinecap="round"
@@ -302,7 +302,7 @@ const RecentBookingsTable = ({ type }: RecentBookingsTableProps) => {
 
       {/* Pagination */}
       {data?.data?.bookings?.length && totalPages > 1 && (
-        <div className="mt-6 w-full flex items-center justify-between">
+        <div className="mt-6 w-full flex flex-col md:flex-row items-center justify-between gap-4">
           <div className="text-xs text-gray-500 whitespace-nowrap">
             Showing {(currentPage - 1) * itemsPerPage + 1} to{" "}
             {Math.min(currentPage * itemsPerPage, data.data.total)} of{" "}
