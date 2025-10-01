@@ -12,7 +12,7 @@ const Header = () => {
       {/* Mobile Menu Button */}
       <div className="md:hidden flex items-center gap-2">
         <Image
-          className="w-[150px]"
+          className="w-[175px]"
           src={Logo}
           alt="HarmonyBookme"
           loading="eager"
