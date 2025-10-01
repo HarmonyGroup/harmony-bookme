@@ -516,7 +516,7 @@ const Page = () => {
                 <Image
                   ref={logoRef}
                   src={Logo}
-                  className="w-[180px] md:w-[170px]"
+                  className="w-[200px]"
                   alt="Harmony BookMe"
                   loading="eager"
                 />
@@ -524,7 +524,7 @@ const Page = () => {
             </div>
 
             <div className="h-full w-full flex flex-col items-center justify-center relative z-10 px-6">
-              <div ref={carouselRef} className="max-w-lg -mt-16">
+              <div ref={carouselRef} className="max-w-lg -mt-16 bg-white/5 rounded-xl p-12">
                 {/* Main Headline */}
                 <h1 className="text-white text-3xl font-semibold mb-4 leading-tight">
                   {carouselContent[displaySlide].title}
