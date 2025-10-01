@@ -108,7 +108,7 @@ const RecentBookingsTable = ({ type }: RecentBookingsTableProps) => {
   };
 
   return (
-    <div className="bg-white border border-gray-100/80 rounded-lg shadow-xs p-4">
+    <div className="bg-white border border-muted rounded-lg shadow-none p-4">
       <div className="flex items-center justify-between">
         <h3 className="text-primary text-[13px] font-semibold">
           Recent Bookings
@@ -141,7 +141,7 @@ const RecentBookingsTable = ({ type }: RecentBookingsTableProps) => {
       {isLoading ? (
         <Table className="!px-10 mt-4">
           <TableHeader className="!px-10">
-            <TableRow className="bg-muted/90 text-xs !px-10">
+            <TableRow className="bg-muted/50 text-xs !px-10">
               <TableHead className="text-gray-700 font-medium py-5 pl-4">
                 Booking Code
               </TableHead>
@@ -193,40 +193,40 @@ const RecentBookingsTable = ({ type }: RecentBookingsTableProps) => {
       ) : data?.data?.bookings?.length ? (
         <Table className="!px-10 mt-4">
           <TableHeader className="!px-10">
-            <TableRow className="bg-muted/90 text-xs !px-10">
-              <TableHead className="text-gray-700 font-medium py-6 pl-4">
+            <TableRow className="bg-muted/80 border-muted text-xs !px-10">
+              <TableHead className="text-gray-800 font-medium py-6 pl-4">
                 Booking Code
               </TableHead>
-              <TableHead className="text-gray-700 font-medium">
+              <TableHead className="text-gray-800 font-medium">
                 Explorer
               </TableHead>
-              <TableHead className="text-gray-700 font-medium">
+              <TableHead className="text-gray-800 font-medium">
                 Amount
               </TableHead>
-              <TableHead className="text-gray-700 font-medium">Date</TableHead>
-              <TableHead className="text-gray-700 font-medium">
+              <TableHead className="text-gray-800 font-medium">Date</TableHead>
+              <TableHead className="text-gray-800 font-medium">
                 Status
               </TableHead>
-              <TableHead className="text-gray-700 font-medium text-right pr-4">
+              <TableHead className="text-gray-800 font-medium text-right pr-4">
                 Action
               </TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {data?.data?.bookings?.map((booking) => (
-              <TableRow key={String(booking?._id)}>
-                <TableCell className="py-6 pl-4 align-middle">
-                  <span className="text-gray-700 text-xs font-semibold">
+              <TableRow key={String(booking?._id)} className="border-muted">
+                <TableCell className="py-7 pl-4 align-middle">
+                  <span className="text-gray-800 text-xs font-semibold">
                     {booking?.code}
                   </span>
                 </TableCell>
-                <TableCell className="text-gray-500 text-xs font-medium capitalize">
+                <TableCell className="text-gray-600 text-xs font-medium capitalize">
                   {booking?.explorer?.firstName} {booking?.explorer?.lastName}
                 </TableCell>
-                <TableCell className="text-gray-500 text-xs font-medium">
+                <TableCell className="text-gray-600 text-xs font-medium">
                   NGN {formatPrice(booking?.totalAmount)}
                 </TableCell>
-                <TableCell className="text-gray-500 text-xs font-medium">
+                <TableCell className="text-gray-600 text-xs font-medium">
                   {moment(booking?.createdAt).format("lll")}
                 </TableCell>
                 <TableCell className="">
@@ -234,13 +234,13 @@ const RecentBookingsTable = ({ type }: RecentBookingsTableProps) => {
                     className={cn(
                       "text-[11px] capitalize font-medium rounded-md px-2 py-1",
                       booking?.status === "pending" &&
-                        "text-amber-700 bg-amber-50 border border-amber-200",
+                        "text-amber-700 bg-amber-50 border-amber-200",
                       booking?.status === "confirmed" &&
-                        "text-emerald-700 bg-emerald-50 border border-emerald-200",
+                        "text-emerald-700 bg-emerald-50 border-emerald-200",
                       booking?.status === "cancelled" &&
-                        "text-red-700 bg-red-50 border border-red-200",
+                        "text-red-700 bg-red-50 border-red-200",
                       booking?.status === "failed" &&
-                        "text-rose-700 bg-rose-50 border border-rose-200"
+                        "text-rose-700 bg-rose-50 border-rose-200"
                     )}
                   >
                     {booking?.status}

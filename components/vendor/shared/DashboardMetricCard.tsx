@@ -18,7 +18,7 @@ const DashboardMetricCard = ({
   hasError,
 }: DashboardMetricCardProps) => {
   return (
-    <div className="bg-white border border-muted rounded-xl shadow-none p-4">
+    <div className="bg-white border border-muted rounded-lg shadow-none p-4">
       <p className="text-primary text-xs font-medium">{title}</p>
       {isLoading ? (
         <div className="space-y-2.5 mt-6">
