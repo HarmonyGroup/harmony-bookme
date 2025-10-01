@@ -283,11 +283,11 @@ const MobileSidebar = ({ open, onOpenChange }: MobileSidebarProps) => {
       >
         <div className="flex flex-col h-full">
           {/* Header with Logo and Close Button */}
-          <div className="flex items-center justify-between px-6 py-6 border-b border-gray-200/20">
+          <div className="flex items-center justify-between px-4 py-5 border-b border-gray-200/20">
             <Image
               src={Logo}
               alt="Harmony Bookme"
-              className="w-[140px] object-contain"
+              className="w-[150px] object-contain -ml-1"
               priority
             />
             <button
@@ -301,7 +301,7 @@ const MobileSidebar = ({ open, onOpenChange }: MobileSidebarProps) => {
                 viewBox="0 0 24 24"
                 strokeWidth="2"
                 stroke="currentColor"
-                className="size-5"
+                className="size-[15px]"
               >
                 <path
                   strokeLinecap="round"
@@ -316,7 +316,7 @@ const MobileSidebar = ({ open, onOpenChange }: MobileSidebarProps) => {
           <div className="flex flex-col flex-1 justify-between overflow-y-auto py-6">
             {/* Main Navigation */}
             <div>
-              <p className="px-6 text-[10px] font-semibold text-gray-300 uppercase tracking-wide">
+              <p className="px-4 text-[10px] font-semibold text-gray-300 uppercase tracking-wide">
                 MAIN
               </p>
               <ul className="mt-4 space-y-2 px-4">
@@ -332,7 +332,7 @@ const MobileSidebar = ({ open, onOpenChange }: MobileSidebarProps) => {
 
             {/* Support and Logout */}
             <div className="pb-6">
-              <p className="px-6 text-[10px] font-semibold text-gray-300 uppercase tracking-wide">
+              <p className="px-4 text-[10px] font-semibold text-gray-300 uppercase tracking-wide">
                 GENERAL
               </p>
               <ul className="mt-2 space-y-1 px-4">

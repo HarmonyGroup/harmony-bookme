@@ -190,14 +190,15 @@ const CustomMobileNav: React.FC<CustomMobileNavProps> = ({
 
   // Cleanup GSAP animations on unmount
   useEffect(() => {
+    // Capture current ref values
+    const overlay = overlayRef.current;
+    const sidebar = sidebarRef.current;
+    const logo = logoRef.current;
+    const links = linksRef.current;
+
     return () => {
       // Kill all GSAP animations for this component
-      gsap.killTweensOf([
-        overlayRef.current,
-        sidebarRef.current,
-        logoRef.current,
-        linksRef.current,
-      ]);
+      gsap.killTweensOf([overlay, sidebar, logo, links]);
     };
   }, []);
 

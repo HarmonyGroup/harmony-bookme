@@ -24,7 +24,7 @@ const Header = () => {
           />
         </div>
 
-      <div className="relative w-full max-w-[400px] hidden md:block">
+      <div className="relative w-full max-w-[400px] hidden lg:block">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
@@ -49,7 +49,7 @@ const Header = () => {
       <div className="flex items-center gap-2.5">
         <Link
           href={"/vendor/notification-center"}
-          className="relative bg-muted rounded-full p-1.5 hidden md:block"
+          className="relative bg-muted rounded-full p-1.5 hidden lg:block"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -69,7 +69,7 @@ const Header = () => {
 
         <Link
           href={"/vendor/settings"}
-          className="relative bg-muted rounded-full p-1.5 hidden md:block"
+          className="relative bg-muted rounded-full p-1.5 hidden lg:block"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"

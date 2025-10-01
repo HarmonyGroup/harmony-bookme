@@ -180,7 +180,7 @@ const Page = () => {
     }, 4000);
 
     return () => clearInterval(interval);
-  }, [isPaused]);
+  }, [isPaused, carouselContent.length]);
 
   // Progress bar animation
   useEffect(() => {
@@ -196,7 +196,7 @@ const Page = () => {
         }
       );
     }
-  }, [currentSlide]);
+  }, [currentSlide, progressRef]);
 
   // Carousel slide animation - slides upwards
   useEffect(() => {
@@ -224,7 +224,7 @@ const Page = () => {
         },
       });
     }
-  }, [currentSlide, displaySlide]);
+  }, [currentSlide, displaySlide, carouselRef]);
 
   return (
     <section ref={pageRef}>

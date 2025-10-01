@@ -12,12 +12,13 @@ interface DashboardMetricCardProps {
 const DashboardMetricCard = ({
   title,
   value,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   subtitle,
   isLoading,
   hasError,
 }: DashboardMetricCardProps) => {
   return (
-    <div className="bg-white rounded-lg shadow-xs p-4">
+    <div className="bg-white border border-muted rounded-xl shadow-none p-4">
       <p className="text-primary text-xs font-medium">{title}</p>
       {isLoading ? (
         <div className="space-y-2.5 mt-6">
@@ -33,8 +34,8 @@ const DashboardMetricCard = ({
         </>
       ) : (
         <>
-          <p className="text-sm font-semibold mt-6">{value}</p>
-          <p className="text-gray-500 text-[11px] mt-2.5">{subtitle}</p>
+          <p className="text-primary text-base font-semibold mt-6">{value}</p>
+          {/* <p className="text-gray-500 text-[11px] mt-2.5">{subtitle}</p> */}
         </>
       )}
     </div>
