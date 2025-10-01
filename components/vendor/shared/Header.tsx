@@ -1,23 +1,28 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Input } from "@/components/ui/input";
 import Logo from "@/public/assets/logo-wordmark-dark.png";
+import MobileSidebar from "./MobileSidebar";
 
 const Header = () => {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
   return (
-    <div className="flex items-center justify-between gap-6 border-b border-gray-200/80 px-4 py-5 z-10">
-      {/* Mobile Menu Button */}
-      <div className="md:hidden flex items-center gap-2">
-        <Image
-          className="w-[175px]"
-          src={Logo}
-          alt="HarmonyBookme"
-          loading="eager"
-        />
-      </div>
+    <>
+      <MobileSidebar open={mobileMenuOpen} onOpenChange={setMobileMenuOpen} />
+      <div className="flex items-center justify-between gap-6 border-b border-muted px-4 py-5 z-10">
+        {/* Mobile Menu Button */}
+        <div className="lg:hidden flex items-center gap-2">
+          <Image
+            className="w-[160px]"
+            src={Logo}
+            alt="HarmonyBookme"
+            loading="eager"
+          />
+        </div>
 
       <div className="relative w-full max-w-[400px] hidden md:block">
         <svg
@@ -87,7 +92,11 @@ const Header = () => {
           </svg>
         </Link>
 
-        <button>
+        <button
+          onClick={() => setMobileMenuOpen(true)}
+          className="lg:hidden"
+          aria-label="Open menu"
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -105,6 +114,7 @@ const Header = () => {
         </button>
       </div>
     </div>
+    </>
   );
 };
 
