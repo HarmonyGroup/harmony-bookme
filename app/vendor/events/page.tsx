@@ -5,7 +5,7 @@ import EventListingGrid from "@/components/vendor/events/EventListingGrid";
 
 const Page = () => {
   return (
-    <section className="h-full flex flex-col bg-muted/60 p-4 md:p-5 pt-8 md:pt-6">
+    <section className="min-h-full bg-muted/60 p-4 md:p-5">
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-primary text-lg md:text-xl font-semibold">
@@ -24,7 +24,7 @@ const Page = () => {
         </Link>
       </div>
 
-      <div className="py-4 pt-8 md:py-5">
+      <div className="mt-6">
         <EventListingGrid />
       </div>
     </section>
