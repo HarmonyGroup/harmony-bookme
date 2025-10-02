@@ -44,7 +44,7 @@ export default function RootLayout({
               <Sidebar />
               <div className="relative flex flex-1 flex-col overflow-hidden">
                 <Header />
-                <div className="h-full overflow-auto">{children}</div>
+                <div className="flex-1 overflow-auto">{children}</div>
               </div>
             </div>
           </VendorAuthWrapper>
