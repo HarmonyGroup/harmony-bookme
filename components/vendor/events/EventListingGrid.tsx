@@ -3,15 +3,20 @@
 "use client";
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
-import {
-  Calendar,
-  Plus,
-} from "lucide-react";
+import { Calendar, Plus } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useDebounce } from "use-debounce";
 import { useGetVendorEvents } from "@/services/vendor/event";
 import { Skeleton } from "@/components/ui/skeleton";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const EventListingGrid = () => {
   const [page] = useState(1);
@@ -31,31 +36,31 @@ const EventListingGrid = () => {
     pricingType: pricingTypeFilter !== "all" ? pricingTypeFilter : "",
   });
 
-//   const getStatusColor = (status: string) => {
-//     switch (status) {
-//       case "active":
-//         return "bg-green-100 text-green-800 border-green-200";
-//       case "draft":
-//         return "bg-yellow-100 text-yellow-800 border-yellow-200";
-//       case "inactive":
-//         return "bg-gray-100 text-gray-800 border-gray-200";
-//       default:
-//         return "bg-gray-100 text-gray-800 border-gray-200";
-//     }
-//   };
+  //   const getStatusColor = (status: string) => {
+  //     switch (status) {
+  //       case "active":
+  //         return "bg-green-100 text-green-800 border-green-200";
+  //       case "draft":
+  //         return "bg-yellow-100 text-yellow-800 border-yellow-200";
+  //       case "inactive":
+  //         return "bg-gray-100 text-gray-800 border-gray-200";
+  //       default:
+  //         return "bg-gray-100 text-gray-800 border-gray-200";
+  //     }
+  //   };
 
-//   const getStatusLabel = (status: string) => {
-//     switch (status) {
-//       case "active":
-//         return "Published";
-//       case "draft":
-//         return "Draft";
-//       case "inactive":
-//         return "Inactive";
-//       default:
-//         return status;
-//     }
-//   };
+  //   const getStatusLabel = (status: string) => {
+  //     switch (status) {
+  //       case "active":
+  //         return "Published";
+  //       case "draft":
+  //         return "Draft";
+  //       case "inactive":
+  //         return "Inactive";
+  //       default:
+  //         return status;
+  //     }
+  //   };
 
   const events = data?.data || [];
 
@@ -89,7 +94,7 @@ const EventListingGrid = () => {
       {Array.from({ length: 6 }).map((_, index) => (
         <div
           key={index}
-          className="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden"
+          className="bg-white border border-muted rounded-xl duration-200 overflow-hidden group"
         >
           <Skeleton className="h-48 w-full" />
           <div className="p-4 space-y-3">
@@ -209,7 +214,7 @@ const EventListingGrid = () => {
       ) : events.length === 0 ? (
         <EmptyState />
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2.5">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3.5">
           {events.map((event) => (
             <div
               key={event._id}
@@ -245,16 +250,62 @@ const EventListingGrid = () => {
                 </div> */}
 
                 {/* Action Menu */}
+
+                <div className="absolute top-3 right-3"></div>
               </div>
 
               {/* Event Content */}
               <div className="p-4">
                 <div className="space-y-2">
                   {/* Title and Category */}
-                  <div>
+                  <div className="flex items-center justify-between">
                     <h3 className="font-semibold text-primary text-[13px] line-clamp-1">
                       {event.title}
                     </h3>
+
+                    <DropdownMenu>
+                      <DropdownMenuTrigger className="cursor-pointer outline-none ring-0 focus:ring-0 focus:outline-none hover:bg-muted/70 rounded-md p-1">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          strokeWidth={2}
+                          stroke="currentColor"
+                          className="text-gray-600 size-[18px]"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M6.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM12.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM18.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z"
+                          />
+                        </svg>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end">
+                        <DropdownMenuItem>
+                          <Link
+                            className="w-full h-full flex items-center gap-2 text-gray-700 text-[12px]"
+                            href={`/vendor/events/${event.slug}/edit`}
+                          >
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              strokeWidth={1.5}
+                              stroke="currentColor"
+                              className="text-gray-700 size-[15px]"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"
+                              />
+                            </svg>
+                            Edit
+                          </Link>
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+
                     {/* <p className="text-xs text-gray-500">{event.category}</p> */}
                   </div>
 
@@ -338,8 +389,12 @@ const EventListingGrid = () => {
                     </svg>
                     Edit
                   </Link> */}
-                  <p className="text-gray-700 text-[11px] font-light">No attendees</p>
-                  <span className="bg-green-100/80 text-green-700 text-[11px] font-light rounded-md px-2 py-1">Upcoming</span>
+                  <p className="text-gray-700 text-[11px] font-light">
+                    No attendees
+                  </p>
+                  <span className="bg-green-100/80 text-green-700 text-[11px] font-light rounded-md px-2 py-1">
+                    Upcoming
+                  </span>
                 </div>
               </div>
             </div>

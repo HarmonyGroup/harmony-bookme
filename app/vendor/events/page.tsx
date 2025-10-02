@@ -24,7 +24,7 @@ const Page = () => {
         </Link>
       </div>
 
-      <div className="h-full mt-6">
+      <div className="py-4 pt-8 md:py-5">
         <EventListingGrid />
       </div>
     </section>
