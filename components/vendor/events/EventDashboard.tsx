@@ -30,7 +30,7 @@ const EventDashboard = () => {
       <div className="mt-6">
         <div className="grid grid-cols-3 gap-4">
           <div className="col-span-3 space-y-4 lg:col-span-2">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-2 md:gap-4">
               <DashboardMetricCard
                 title="Total Events"
                 value={performanceData?.data?.totalListings || 0}

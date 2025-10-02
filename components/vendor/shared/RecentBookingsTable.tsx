@@ -118,9 +118,9 @@ const RecentBookingsTable = ({ type }: RecentBookingsTableProps) => {
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
-            strokeWidth="2.1"
+            strokeWidth="2.2"
             stroke="currentColor"
-            className="absolute left-4 top-1/2 -translate-y-1/2 size-[15px] text-gray-500 mt-[1px]"
+            className="absolute left-4 top-1/2 -translate-y-1/2 size-[14px] text-gray-400 mt-[1.5px]"
           >
             <path
               strokeLinecap="round"
@@ -130,7 +130,7 @@ const RecentBookingsTable = ({ type }: RecentBookingsTableProps) => {
           </svg>
           <Input
             type="search"
-            className="w-[300px] bg-muted/60 !text-xs placeholder:text-gray-500 placeholder:text-xs placeholder:font-medium shadow-none outline-none ring-0 focus:shadow-none px-4 !py-6 ps-9 border !border-muted focus-visible:ring-0 focus-visible:border-primary transition-all ease-in-out duration-200"
+            className="w-[300px] bg-muted/60 !text-xs placeholder:text-gray-400 placeholder:text-xs placeholder:font-medium shadow-none outline-none ring-0 focus:shadow-none px-4 !py-5 ps-9 border !border-muted focus-visible:ring-0 focus-visible:border-primary transition-all ease-in-out duration-200"
             placeholder="Search booking code here"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
@@ -141,29 +141,29 @@ const RecentBookingsTable = ({ type }: RecentBookingsTableProps) => {
       {isLoading ? (
         <Table className="!px-10 mt-4">
           <TableHeader className="!px-10">
-            <TableRow className="bg-muted/50 text-xs !px-10">
-              <TableHead className="text-gray-700 font-medium py-5 pl-4">
+            <TableRow className="bg-muted/60 border-muted text-xs !px-10">
+              <TableHead className="text-gray-800 font-medium py-5 pl-4">
                 Code
               </TableHead>
-              <TableHead className="text-gray-700 font-medium">
+              <TableHead className="text-gray-800 font-medium">
                 Explorer
               </TableHead>
-              <TableHead className="text-gray-700 font-medium">
+              <TableHead className="text-gray-800 font-medium">
                 Amount
               </TableHead>
-              <TableHead className="text-gray-700 font-medium">Date</TableHead>
-              <TableHead className="text-gray-700 font-medium">
+              <TableHead className="text-gray-800 font-medium">Date</TableHead>
+              <TableHead className="text-gray-800 font-medium">
                 Status
               </TableHead>
-              <TableHead className="text-gray-700 font-medium text-right pr-4">
+              <TableHead className="text-gray-800 font-medium text-right pr-4">
                 Action
               </TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {[...Array(7)].map((_, index) => (
-              <TableRow key={index}>
-                <TableCell className="pl-4 py-6">
+              <TableRow key={index} className="border-muted">
+                <TableCell className="pl-4 py-7">
                   <div className="flex items-center gap-2.5">
                     {/* <Skeleton className="h-6 w-6 bg-gray-200 rounded-sm" /> */}
                     <Skeleton className="h-6 w-[120px] bg-gray-200 rounded-sm" />
@@ -198,7 +198,7 @@ const RecentBookingsTable = ({ type }: RecentBookingsTableProps) => {
                 Code
               </TableHead>
               <TableHead className="text-gray-800 font-medium">
-                Explorer
+                Customer
               </TableHead>
               <TableHead className="text-gray-800 font-medium">
                 Amount

@@ -37,7 +37,7 @@ const RecentNotifications = () => {
   };
 
   return (
-    <div className="bg-white border border-gray-100/80 rounded-lg shadow-xs p-4">
+    <div className="bg-white border border-muted rounded-lg shadow-none p-4">
       <div className="flex items-center justify-between">
         <h1 className="text-primary text-[13px] font-semibold">
           Notifications

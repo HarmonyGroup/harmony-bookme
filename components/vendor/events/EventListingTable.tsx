@@ -313,7 +313,7 @@ const EventListingTable = () => {
   return (
     <>
       <div className="h-full">
-        <div className="flex items-center justify-between">
+        <div className="md:flex items-center justify-between hidden">
           <div className="flex items-center gap-4">
             <div className="relative hidden md:block">
               <svg

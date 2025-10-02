@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import Link from "next/link";
+// import Link from "next/link";
 import Image from "next/image";
 import { Input } from "@/components/ui/input";
 import Logo from "@/public/assets/logo-wordmark-dark.png";
@@ -41,13 +41,13 @@ const Header = () => {
         </svg>
         <Input
           type="search"
-          className="w-[400px] bg-white !text-xs placeholder:text-gray-700 placeholder:text-xs placeholder:font-medium shadow-xs outline-none ring-0 focus:shadow-xs px-4 !py-5 ps-9 border focus-visible:ring-0 focus-visible:border-primary transition-all ease-in-out duration-200"
+          className="w-[400px] bg-muted/60 !text-xs placeholder:text-gray-500 placeholder:text-xs placeholder:font-normal shadow-none outline-none ring-0 focus:shadow-xs px-4 !py-5 ps-9 border border-muted focus-visible:ring-0 focus-visible:border-primary transition-all ease-in-out duration-200"
           placeholder="Search listing or booking code here"
         />
       </div>
 
       <div className="flex items-center gap-2.5">
-        <Link
+        {/* <Link
           href={"/vendor/notification-center"}
           className="relative bg-muted rounded-full p-1.5 hidden lg:block"
         >
@@ -90,7 +90,7 @@ const Header = () => {
               d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
             />
           </svg>
-        </Link>
+        </Link> */}
 
         <button
           onClick={() => setMobileMenuOpen(true)}
