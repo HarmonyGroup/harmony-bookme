@@ -34,15 +34,15 @@ export default function RootLayout({
           content="width=device-width, initial-scale=1.0"
         ></meta>
       </head>
-      <body className={`${poppins.className} antialiased relative h-screen overflow-hidden`}>
+      <body className={`${poppins.className} antialiased relative`}>
         <Providers>
           <Toaster
             position="top-right"
           />
           <VendorAuthWrapper>
-            <div className="flex h-screen w-screen overflow-hidden">
+            <div className="flex min-h-screen w-screen lg:h-screen lg:overflow-hidden">
               <Sidebar />
-              <div className="relative flex flex-1 flex-col h-full overflow-hidden">
+              <div className="relative flex flex-1 flex-col min-h-screen lg:h-full lg:overflow-hidden">
                 <Header />
                 <div className="flex-1 overflow-y-auto overflow-x-hidden">{children}</div>
               </div>
