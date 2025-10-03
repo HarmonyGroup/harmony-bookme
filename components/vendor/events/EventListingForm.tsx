@@ -225,7 +225,7 @@ const Step1Form: React.FC<Step1Props> = ({
         </div>
       </div>
 
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div className="space-y-2">
           <Label className="text-gray-600 text-xs">Event Category</Label>
           <Select
@@ -279,7 +279,7 @@ const Step1Form: React.FC<Step1Props> = ({
         </div>
       </div>
 
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div className="space-y-2">
           <Label className="text-gray-600 text-xs">Event Format</Label>
           <Select
@@ -367,7 +367,7 @@ const Step2Form: React.FC<Step2Props> = ({
 
   return (
     <div className="space-y-6">
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div className="space-y-2">
           <Label className="text-gray-600 text-xs">Start Date</Label>
           <Input
@@ -395,7 +395,7 @@ const Step2Form: React.FC<Step2Props> = ({
         </div>
       </div>
 
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div className="space-y-2">
           <Label className="text-gray-600 text-xs">End Date</Label>
           <Input
@@ -482,7 +482,7 @@ const Step3Form: React.FC<Step3Props> = ({
             )}
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="space-y-2">
               <Label className="text-gray-600 text-xs">City</Label>
               <Input
@@ -510,7 +510,7 @@ const Step3Form: React.FC<Step3Props> = ({
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="space-y-2">
               <Label className="text-gray-600 text-xs">Country</Label>
               <Input
@@ -808,7 +808,7 @@ const Step4Form: React.FC<Step4Props> = ({
                     )}
                   </div>
 
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <Label className="text-gray-600 text-xs">
                         Pricing Structure
@@ -868,7 +868,7 @@ const Step4Form: React.FC<Step4Props> = ({
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <Label className="text-gray-600 text-xs">Capacity</Label>
                       <Input
@@ -939,7 +939,7 @@ const Step4Form: React.FC<Step4Props> = ({
                         Discount Details
                       </h6>
 
-                      <div className="grid grid-cols-2 gap-4">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div className="space-y-2">
                           <Label className="text-gray-600 text-xs">
                             Discount Type
@@ -1175,7 +1175,7 @@ const Step5Form: React.FC<Step5Props> = ({
     <div className="space-y-6">
       <div className="space-y-2">
         <Label className="text-gray-600 text-xs">Event Images</Label>
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           <div
             className={`border-2 border-dashed rounded-lg p-4 flex items-center justify-center h-44 relative cursor-pointer ${
               dragActive ? "border-primary bg-primary/10" : "border-gray-200"
@@ -1243,7 +1243,7 @@ const Step5Form: React.FC<Step5Props> = ({
         )}
       </div>
 
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div className="space-y-2">
           <Label className="text-gray-600 text-xs">
             Age Restriction (optional)
@@ -1977,182 +1977,211 @@ export default function EventsListingForm({ event }: { event?: EventListing }) {
   };
 
   return (
-    <div className="h-full">
-      <div className="flex items-center justify-between border-b p-8">
+    <div className="h-full flex flex-col">
+      {/* Fixed Header */}
+      <div className="flex-shrink-0 border-b p-4 sm:p-6 lg:p-8">
         <div>
-          <h3 className="text-primary text-lg font-semibold">
+          <h1 className="text-primary text-lg md:text-xl font-semibold">
             {isEditMode ? "Edit Event" : "New Event"}
-          </h3>
-          <p className="text-gray-500 text-xs mt-1">
+          </h1>
+          <p className="text-gray-600 text-[11px] md:text-xs mt-0.5 md:mt-1">
             {isEditMode
               ? "Edit your event listing"
               : "Create your event listing"}
           </p>
         </div>
-        <Button
-          variant="outline"
-          className="text-primary text-xs font-medium shadow-none border border-primary hover:bg-primary hover:text-white transition ease-in-out duration-300 cursor-pointer"
-        >
-          Save as Draft
-        </Button>
       </div>
 
-      <div className="h-full grid grid-cols-4">
-        <div className="col-span-1">
-          <div className="h-full border-r px-10 py-8">
-            <ol className="relative border-s border-gray-200">
-              {STEPS.map((step, index) => (
-                <li
-                  key={step.id}
-                  className={index < STEPS.length - 1 ? "mb-10 ms-6" : "ms-6"}
+      {/* Main Layout - Fixed Sidebar + Scrollable Content */}
+      <div className="flex-1 flex min-h-0">
+        {/* Fixed Sidebar - Always visible on desktop */}
+        <div className="hidden lg:block w-80 flex-shrink-0 border-r px-6 xl:px-10 py-6 xl:py-8">
+          <ol className="relative border-s border-gray-200">
+            {STEPS.map((step, index) => (
+              <li
+                key={step.id}
+                className={index < STEPS.length - 1 ? "mb-8 xl:mb-10 ms-6" : "ms-6"}
+              >
+                <span
+                  className={`absolute flex items-center justify-center size-6 rounded-full -start-3 ring-8 ring-white ${
+                    currentStep === step.id
+                      ? "bg-blue-100"
+                      : currentStep > step.id
+                      ? "bg-blue-100"
+                      : "bg-gray-100"
+                  }`}
                 >
-                  <span
-                    className={`absolute flex items-center justify-center size-6 rounded-full -start-3 ring-8 ring-white ${
-                      currentStep === step.id
-                        ? "bg-blue-100"
-                        : currentStep > step.id
-                        ? "bg-blue-100"
-                        : "bg-gray-100"
-                    }`}
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      strokeWidth="3.5"
-                      stroke="currentColor"
-                      className={`size-[11px] ${
-                        currentStep === step.id
-                          ? "text-primary"
-                          : currentStep > step.id
-                          ? "text-primary"
-                          : "text-gray-400"
-                      }`}
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="m4.5 12.75 6 6 9-13.5"
-                      />
-                    </svg>
-                  </span>
-                  <h3
-                    className={`flex items-center mb-1 text-xs font-semibold ${
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth="3.5"
+                    stroke="currentColor"
+                    className={`size-[11px] ${
                       currentStep === step.id
                         ? "text-primary"
                         : currentStep > step.id
                         ? "text-primary"
-                        : "text-gray-500"
+                        : "text-gray-400"
                     }`}
                   >
-                    {step.title}
-                  </h3>
-                  <p className="mb-4 text-[11px]/relaxed text-gray-500">
-                    {step.description}
-                  </p>
-                </li>
-              ))}
-            </ol>
-          </div>
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="m4.5 12.75 6 6 9-13.5"
+                    />
+                  </svg>
+                </span>
+                <h3
+                  className={`flex items-center mb-1 text-xs font-semibold ${
+                    currentStep === step.id
+                      ? "text-primary"
+                      : currentStep > step.id
+                      ? "text-primary"
+                      : "text-gray-500"
+                  }`}
+                >
+                  {step.title}
+                </h3>
+                <p className="mb-4 text-[11px]/relaxed text-gray-500">
+                  {step.description}
+                </p>
+              </li>
+            ))}
+          </ol>
         </div>
 
-        <div className="col-span-3">
-          <div className="p-8">
-            <p className="text-gray-500 text-xs">
-              Step {currentStep}/{STEPS.length}
-            </p>
-            <h3 className="text-primary text-lg font-semibold mt-1.5">
-              {STEPS[currentStep - 1].title}
-            </h3>
-            <p className="text-gray-500 text-xs mt-1">
-              {STEPS[currentStep - 1].description}
-            </p>
+        {/* Main Content Area - Scrollable */}
+        <div className="flex-1 flex flex-col min-h-0">
+          {/* Mobile Step Indicator */}
+          <div className="lg:hidden flex-shrink-0 border-b bg-gray-50 px-4 py-3">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-2">
+                <span className="text-xs font-medium text-gray-700">
+                  Step {currentStep} of {STEPS.length}
+                </span>
+                <span className="text-xs text-gray-500">
+                  {STEPS[currentStep - 1].title}
+                </span>
+              </div>
+              <div className="flex space-x-1">
+                {STEPS.map((_, index) => (
+                  <div
+                    key={index}
+                    className={`w-2 h-2 rounded-full ${
+                      index + 1 <= currentStep ? "bg-primary" : "bg-gray-300"
+                    }`}
+                  />
+                ))}
+              </div>
+            </div>
+          </div>
 
-            <div className="mt-10">
-              <form className="space-y-6">
-                {currentStep === 1 && (
-                  <Step1Form
-                    formData={formData}
-                    updateFormData={updateFormData}
-                    errors={errors}
-                    setErrors={setErrors}
-                  />
-                )}
-                {currentStep === 2 && (
-                  <Step2Form
-                    formData={formData}
-                    updateFormData={updateFormData}
-                    errors={errors}
-                    setErrors={setErrors}
-                  />
-                )}
-                {currentStep === 3 && (
-                  <Step3Form
-                    formData={formData}
-                    updateFormData={updateFormData}
-                    errors={errors}
-                    setErrors={setErrors}
-                  />
-                )}
-                {currentStep === 4 && (
-                  <Step4Form
-                    formData={formData}
-                    updateFormData={updateFormData}
-                    errors={errors}
-                    setErrors={setErrors}
-                  />
-                )}
-                {currentStep === 5 && (
-                  <Step5Form
-                    formData={formData}
-                    updateFormData={updateFormData}
-                    errors={errors}
-                    setErrors={setErrors}
-                  />
-                )}
-                {currentStep === 6 && (
-                  <Step6Form
-                    formData={formData}
-                    updateFormData={updateFormData}
-                    errors={errors}
-                    setErrors={setErrors}
-                  />
-                )}
+          {/* Scrollable Form Content */}
+          <div className="flex-1 overflow-y-auto">
+            <div className="p-4 sm:p-6 lg:p-8">
+              {/* Desktop Step Info */}
+              <div className="hidden lg:block">
+                <p className="text-gray-500 text-xs">
+                  Step {currentStep}/{STEPS.length}
+                </p>
+                <h3 className="text-primary text-lg font-semibold mt-1.5">
+                  {STEPS[currentStep - 1].title}
+                </h3>
+                <p className="text-gray-500 text-xs mt-1">
+                  {STEPS[currentStep - 1].description}
+                </p>
+              </div>
 
-                <div className="flex justify-between pt-8 border-t">
-                  {currentStep > 1 && (
-                    <Button
-                      type="button"
-                      variant="outline"
-                      onClick={handlePrevStep}
-                      className="flex items-center gap-2 text-xs cursor-pointer"
-                    >
-                      Previous
-                    </Button>
+              <div className="mt-6 lg:mt-10">
+                <form className="space-y-6">
+                  {currentStep === 1 && (
+                    <Step1Form
+                      formData={formData}
+                      updateFormData={updateFormData}
+                      errors={errors}
+                      setErrors={setErrors}
+                    />
                   )}
+                  {currentStep === 2 && (
+                    <Step2Form
+                      formData={formData}
+                      updateFormData={updateFormData}
+                      errors={errors}
+                      setErrors={setErrors}
+                    />
+                  )}
+                  {currentStep === 3 && (
+                    <Step3Form
+                      formData={formData}
+                      updateFormData={updateFormData}
+                      errors={errors}
+                      setErrors={setErrors}
+                    />
+                  )}
+                  {currentStep === 4 && (
+                    <Step4Form
+                      formData={formData}
+                      updateFormData={updateFormData}
+                      errors={errors}
+                      setErrors={setErrors}
+                    />
+                  )}
+                  {currentStep === 5 && (
+                    <Step5Form
+                      formData={formData}
+                      updateFormData={updateFormData}
+                      errors={errors}
+                      setErrors={setErrors}
+                    />
+                  )}
+                  {currentStep === 6 && (
+                    <Step6Form
+                      formData={formData}
+                      updateFormData={updateFormData}
+                      errors={errors}
+                      setErrors={setErrors}
+                    />
+                  )}
+                </form>
+              </div>
+            </div>
+          </div>
 
-                  <div className="ml-auto">
-                    {currentStep < STEPS.length ? (
-                      <Button
-                        type="button"
-                        onClick={handleNextStep}
-                        className="flex items-center gap-2 text-xs cursor-pointer"
-                      >
-                        Next
-                      </Button>
-                    ) : (
-                      <Button
-                        type="button"
-                        onClick={handleSubmit}
-                        className="text-xs"
-                        disabled={isPending}
-                      >
-                        {isPending ? "Creating Event..." : "Create Event"}
-                      </Button>
-                    )}
-                  </div>
-                </div>
-              </form>
+          {/* Fixed Bottom Navigation */}
+          <div className="flex-shrink-0 border-t bg-white p-4 sm:p-6 lg:p-8">
+            <div className="flex justify-between items-center">
+              {currentStep > 1 ? (
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={handlePrevStep}
+                  className="flex items-center gap-2 text-xs cursor-pointer !p-5"
+                >
+                  Previous
+                </Button>
+              ) : (
+                <div></div>
+              )}
+
+              {currentStep < STEPS.length ? (
+                <Button
+                  type="button"
+                  onClick={handleNextStep}
+                  className="flex items-center gap-2 text-xs cursor-pointer !p-5"
+                >
+                  Next
+                </Button>
+              ) : (
+                <Button
+                  type="button"
+                  onClick={handleSubmit}
+                  className="text-xs"
+                  disabled={isPending}
+                >
+                  {isPending ? "Creating Event..." : "Create Event"}
+                </Button>
+              )}
             </div>
           </div>
         </div>
