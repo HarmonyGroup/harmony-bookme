@@ -1977,7 +1977,7 @@ export default function EventsListingForm({ event }: { event?: EventListing }) {
   };
 
   return (
-    <div className="h-full flex flex-col">
+    <div className="h-full flex flex-col event-form">
       {/* Fixed Header */}
       <div className="flex-shrink-0 border-b p-4 sm:p-6 lg:p-8">
         <div>
