@@ -123,15 +123,22 @@
   }
 
   /* Prevent iOS Safari zoom on input focus - exclude auth modal, checkout forms, and event forms */
-  input[type="text"]:not([class*="auth-modal"]):not([class*="checkout-form"]):not([class*="event-form"]),
-  input[type="email"]:not([class*="auth-modal"]):not([class*="checkout-form"]):not([class*="event-form"]),
-  input[type="password"]:not([class*="auth-modal"]):not([class*="checkout-form"]):not([class*="event-form"]),
-  input[type="number"]:not([class*="auth-modal"]):not([class*="checkout-form"]):not([class*="event-form"]),
-  input[type="tel"]:not([class*="auth-modal"]):not([class*="checkout-form"]):not([class*="event-form"]),
-  input[type="url"]:not([class*="auth-modal"]):not([class*="checkout-form"]):not([class*="event-form"]),
-  input[type="search"]:not([class*="auth-modal"]):not([class*="checkout-form"]):not([class*="event-form"]),
-  textarea:not([class*="auth-modal"]):not([class*="checkout-form"]):not([class*="event-form"]),
-  select:not([class*="auth-modal"]):not([class*="checkout-form"]):not([class*="event-form"]) {
+  input[type="text"]:not([class*="auth-modal"]):not([class*="checkout-form"]),
+  input[type="email"]:not([class*="auth-modal"]):not([class*="checkout-form"]),
+  input[type="password"]:not([class*="auth-modal"]):not([class*="checkout-form"]),
+  input[type="number"]:not([class*="auth-modal"]):not([class*="checkout-form"]),
+  input[type="tel"]:not([class*="auth-modal"]):not([class*="checkout-form"]),
+  input[type="url"]:not([class*="auth-modal"]):not([class*="checkout-form"]),
+  input[type="search"]:not([class*="auth-modal"]):not([class*="checkout-form"]),
+  textarea:not([class*="auth-modal"]):not([class*="checkout-form"]),
+  select:not([class*="auth-modal"]):not([class*="checkout-form"]) {
+    font-size: 12px !important;
+  }
+
+  /* Ensure event form inputs maintain small font size and don't zoom */
+  .event-form input,
+  .event-form textarea,
+  .event-form select {
     font-size: 12px !important;
   }
 
