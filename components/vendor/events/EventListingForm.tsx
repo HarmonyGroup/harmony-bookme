@@ -1981,10 +1981,7 @@ export default function EventsListingForm({ event }: { event?: EventListing }) {
   };
 
   return (
-    <>
-      {/* Additional viewport meta tag for this form */}
-      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-      <div className="h-full flex flex-col event-form">
+    <div className="h-full flex flex-col event-form">
         {/* Fixed Header */}
         <div className="flex-shrink-0 border-b p-4 sm:p-6 lg:p-8">
         <div>
@@ -2193,7 +2190,6 @@ export default function EventsListingForm({ event }: { event?: EventListing }) {
           </div>
         </div>
       </div>
-      </div>
-    </>
+    </div>
   );
 }

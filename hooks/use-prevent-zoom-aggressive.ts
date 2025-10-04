@@ -38,24 +38,12 @@ export const usePreventZoomAggressive = () => {
     
     const handleFocus = () => {
       preventZoom();
-      // Also set font-size to 16px as backup
-      inputs.forEach(input => {
-        if (input instanceof HTMLInputElement || input instanceof HTMLTextAreaElement || input instanceof HTMLSelectElement) {
-          input.style.fontSize = '16px';
-        }
-      });
     };
 
     const handleBlur = () => {
       // Small delay to ensure zoom doesn't happen
       setTimeout(() => {
         restoreViewport();
-        // Reset font sizes
-        inputs.forEach(input => {
-          if (input instanceof HTMLInputElement || input instanceof HTMLTextAreaElement || input instanceof HTMLSelectElement) {
-            input.style.fontSize = '';
-          }
-        });
       }, 100);
     };
 
@@ -90,9 +78,6 @@ export const usePreventZoomAggressive = () => {
             if (viewport) {
               viewport.content = 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no';
             }
-            if (input instanceof HTMLInputElement || input instanceof HTMLTextAreaElement || input instanceof HTMLSelectElement) {
-              input.style.fontSize = '16px';
-            }
           };
 
           const handleBlur = () => {
@@ -100,9 +85,6 @@ export const usePreventZoomAggressive = () => {
               const viewport = document.querySelector('meta[name="viewport"]') as HTMLMetaElement;
               if (viewport && originalViewport.current) {
                 viewport.content = originalViewport.current;
-              }
-              if (input instanceof HTMLInputElement || input instanceof HTMLTextAreaElement || input instanceof HTMLSelectElement) {
-                input.style.fontSize = '';
               }
             }, 100);
           };
