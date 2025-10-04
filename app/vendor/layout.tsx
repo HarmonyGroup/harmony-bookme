@@ -31,15 +31,15 @@ export default function RootLayout({
       <head>
       <meta id="viewport" name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no" />
       </head>
-      <body className={`${poppins.className} antialiased relative`}>
+      <body className={`${poppins.className} antialiased relative overflow-x-hidden`}>
         <Providers>
           <Toaster
             position="top-right"
           />
           <VendorAuthWrapper>
-            <div className="flex min-h-screen w-screen lg:h-screen lg:overflow-hidden">
+            <div className="flex min-h-screen w-full max-w-full lg:h-screen lg:overflow-hidden">
               <Sidebar />
-              <div className="relative flex flex-1 flex-col min-h-screen lg:h-full lg:overflow-hidden">
+              <div className="relative flex flex-1 flex-col min-h-screen lg:h-full lg:overflow-hidden overflow-x-hidden">
                 <Header />
                 <div className="flex-1 overflow-y-auto overflow-x-hidden">{children}</div>
               </div>

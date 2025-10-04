@@ -11,10 +11,12 @@ const Page = () => {
   const { data: session } = useSession();
 
   return (
-    <section className="h-full bg-muted/60 p-6">
-      <div>
-        <h1 className="text-primary text-xl font-semibold">Bookings</h1>
-        <p className="text-gray-700 text-xs mt-1.5">
+    <section className="h-full flex flex-col bg-muted/60 p-4 md:p-6 overflow-y-auto">
+      <div className="mt-4 md:mt-0">
+        <h1 className="text-primary text-lg md:text-xl font-semibold">
+          Bookings
+        </h1>
+        <p className="text-gray-700 text-[11px] md:text-xs mt-1">
           Manage all explorer bookings here
         </p>
       </div>
@@ -33,8 +35,6 @@ const Page = () => {
         {session?.user?.vendorAccountPreference === "movies_and_cinema" && (
           <MovieBookingsTable />
         )}
-        {/* <EventBookingTable /> */}
-        {/* <LeisureBookingsTable /> */}
       </div>
     </section>
   );
