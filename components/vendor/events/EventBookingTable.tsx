@@ -67,11 +67,11 @@ const EventBookingTable = () => {
 
   return (
     <>
-      <div className="flex flex-col bg-white border border-muted rounded-lg p-4 mb-6">
-        <div className="hidden md:flex items-center justify-between">
+      <div className="bg-white border border-muted rounded-lg p-4 mb-6">
+        <div className="hidden md:flex items-center justify-between gap-4">
           <div className="flex items-center gap-4">
             {/* Search Input */}
-            <div className="relative hidden md:block">
+            <div className="relative flex-1 lg:flex-none">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -88,7 +88,7 @@ const EventBookingTable = () => {
               </svg>
               <Input
                 type="search"
-                className="w-[300px] bg-white !text-xs placeholder:text-gray-500 placeholder:text-xs placeholder:font-medium shadow-xs outline-none ring-0 focus:shadow-xs px-4 !py-5 ps-9 border focus-visible:ring-0 focus-visible:border-primary transition-all ease-in-out duration-200"
+                className="w-full lg:w-[280px] xl:w-[300px] bg-white !text-xs placeholder:text-gray-500 placeholder:text-xs placeholder:font-medium shadow-xs outline-none ring-0 focus:shadow-xs px-4 !py-5 ps-9 border focus-visible:ring-0 focus-visible:border-primary transition-all ease-in-out duration-200"
                 placeholder="Search booking code here"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
@@ -96,7 +96,7 @@ const EventBookingTable = () => {
             </div>
           </div>
           {/* Filters */}
-          <div className="flex items-center gap-3">
+          <div className="flex flex-wrap items-center gap-2 lg:gap-3">
             {/* Clear Filters */}
             {(statusFilter !== "all" || dateRange?.from || dateRange?.to) && (
               <Button
@@ -114,7 +114,7 @@ const EventBookingTable = () => {
 
             {/* Status Filter */}
             <Select value={statusFilter} onValueChange={setStatusFilter}>
-              <SelectTrigger className="w-[140px] h-10 bg-white border border-gray-200 text-xs py-5 cursor-pointer text-gray-500 font-medium">
+              <SelectTrigger className="w-[120px] sm:w-[140px] h-10 bg-white border border-gray-200 text-xs py-5 cursor-pointer text-gray-500 font-medium">
                 <div className="flex items-center gap-2">
                   <FilterIcon className="size-3 text-gray-500" />
                   <SelectValue placeholder="Status" />
@@ -144,7 +144,7 @@ const EventBookingTable = () => {
               <PopoverTrigger asChild>
                 <Button
                   variant="outline"
-                  className="w-[180px] bg-white border border-gray-200 text-gray-500 text-xs font-medium justify-start text-left py-5 cursor-pointer hover:bg-white"
+                  className="w-[160px] sm:w-[180px] bg-white border border-gray-200 text-gray-500 text-xs font-medium justify-start text-left py-5 cursor-pointer hover:bg-white"
                 >
                   <CalendarIcon className="mr-2 size-3 text-gray-500" />
                   {dateRange?.from ? (
@@ -180,11 +180,12 @@ const EventBookingTable = () => {
           </div>
         </div>
 
-        <div className="md:mt-4">
+        <div className="mt-0 md:mt-4">
           {isLoading ? (
-            <Table className="!px-10">
-              <TableHeader className="!px-10">
-                <TableRow className="bg-muted/90 text-xs !px-10">
+            <div className="overflow-x-auto">
+              <Table className="!px-10 min-w-full">
+                <TableHeader className="!px-10">
+                  <TableRow className="bg-muted/90 text-xs !px-10">
                   <TableHead className="text-gray-700 font-medium py-5 pl-4">
                     Booking code
                   </TableHead>
@@ -233,10 +234,12 @@ const EventBookingTable = () => {
                     </TableCell>
                   </TableRow>
                 ))}
-              </TableBody>
-            </Table>
-          ) : data?.data?.bookings?.length ? (
-              <Table className="!px-10">
+                </TableBody>
+              </Table>
+            </div>
+        ) : data?.data?.bookings?.length ? (
+            <div className="overflow-x-auto">
+              <Table className="!px-10 min-w-full">
                 <TableHeader>
                   <TableRow className="bg-muted/60 border-b border-muted text-xs !px-10">
                     <TableHead className="text-gray-800 font-medium py-6 pl-4">
@@ -327,7 +330,8 @@ const EventBookingTable = () => {
                   ))}
                 </TableBody>
               </Table>
-          ) : (
+            </div>
+        ) : (
             <div className="flex flex-col items-center justify-center gap-2 py-20 min-h-[400px]">
               <Image
                 src={EmptyIcon}

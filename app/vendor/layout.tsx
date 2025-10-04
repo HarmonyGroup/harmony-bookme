@@ -39,9 +39,9 @@ export default function RootLayout({
           <VendorAuthWrapper>
             <div className="flex min-h-screen w-full max-w-full lg:h-screen lg:overflow-hidden">
               <Sidebar />
-              <div className="relative flex flex-1 flex-col min-h-screen lg:h-full lg:overflow-hidden overflow-x-hidden">
+              <div className="relative flex flex-1 flex-col min-h-screen lg:h-full lg:overflow-hidden min-w-0">
                 <Header />
-                <div className="flex-1 overflow-y-auto overflow-x-hidden">{children}</div>
+                <div className="flex-1 overflow-y-auto overflow-x-hidden min-w-0">{children}</div>
               </div>
             </div>
           </VendorAuthWrapper>

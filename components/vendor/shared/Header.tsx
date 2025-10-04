@@ -13,7 +13,7 @@ const Header = () => {
   return (
     <>
       <MobileSidebar open={mobileMenuOpen} onOpenChange={setMobileMenuOpen} />
-      <div className="bg-white flex items-center justify-between gap-6 border-b border-gray-200/70 px-4 py-5 z-50 sticky top-0 lg:static lg:z-10">
+      <div className="bg-white flex items-center justify-between gap-6 border-b border-gray-200/70 px-4 py-5 z-50 sticky top-0">
         {/* Mobile Menu Button */}
         <div className="lg:hidden flex items-center gap-2">
           <Image
