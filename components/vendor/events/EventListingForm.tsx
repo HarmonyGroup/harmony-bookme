@@ -31,6 +31,7 @@ import { Plus, Trash2 } from "lucide-react";
 import { useCreateEventListing } from "@/services/vendor/event";
 import type { EventListing } from "@/types/event";
 import moment from "moment";
+import { usePreventZoom } from "@/hooks/use-prevent-zoom";
 
 // Zod schemas
 const TicketSchema = z
@@ -1583,6 +1584,9 @@ const Step6Form: React.FC<Step6Props> = ({
 export default function EventsListingForm({ event }: { event?: EventListing }) {
   const router = useRouter();
   const [currentStep, setCurrentStep] = useState<StepKey>(1);
+  
+  // Prevent zoom on mobile when focusing inputs
+  usePreventZoom();
   const [formData, setFormData] = useState<FormData>({
     title: event?.title || "",
     description: event?.description || "",
