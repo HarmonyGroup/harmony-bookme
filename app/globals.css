@@ -142,6 +142,15 @@
     font-size: 12px !important;
   }
 
+  /* Aggressive zoom prevention for event form */
+  .event-form input:focus,
+  .event-form textarea:focus,
+  .event-form select:focus {
+    font-size: 16px !important;
+    transform: scale(0.75) !important;
+    transform-origin: left top !important;
+  }
+
   /* Ensure auth modal inputs maintain small font size */
   input.auth-modal {
     font-size: 12px !important;

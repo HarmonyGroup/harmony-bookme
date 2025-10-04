@@ -31,7 +31,7 @@ import { Plus, Trash2 } from "lucide-react";
 import { useCreateEventListing } from "@/services/vendor/event";
 import type { EventListing } from "@/types/event";
 import moment from "moment";
-import { usePreventZoom } from "@/hooks/use-prevent-zoom";
+import { usePreventZoomAggressive } from "@/hooks/use-prevent-zoom-aggressive";
 
 // Zod schemas
 const TicketSchema = z
@@ -1586,7 +1586,7 @@ export default function EventsListingForm({ event }: { event?: EventListing }) {
   const [currentStep, setCurrentStep] = useState<StepKey>(1);
   
   // Prevent zoom on mobile when focusing inputs
-  usePreventZoom();
+  usePreventZoomAggressive();
   const [formData, setFormData] = useState<FormData>({
     title: event?.title || "",
     description: event?.description || "",
@@ -1981,9 +1981,12 @@ export default function EventsListingForm({ event }: { event?: EventListing }) {
   };
 
   return (
-    <div className="h-full flex flex-col event-form">
-      {/* Fixed Header */}
-      <div className="flex-shrink-0 border-b p-4 sm:p-6 lg:p-8">
+    <>
+      {/* Additional viewport meta tag for this form */}
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+      <div className="h-full flex flex-col event-form">
+        {/* Fixed Header */}
+        <div className="flex-shrink-0 border-b p-4 sm:p-6 lg:p-8">
         <div>
           <h1 className="text-primary text-lg md:text-xl font-semibold">
             {isEditMode ? "Edit Event" : "New Event"}
@@ -2190,6 +2193,7 @@ export default function EventsListingForm({ event }: { event?: EventListing }) {
           </div>
         </div>
       </div>
-    </div>
+      </div>
+    </>
   );
 }
