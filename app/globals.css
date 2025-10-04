@@ -132,7 +132,7 @@
   input[type="search"]:not([class*="auth-modal"]):not([class*="checkout-form"]):not([class*="event-form"]),
   textarea:not([class*="auth-modal"]):not([class*="checkout-form"]):not([class*="event-form"]),
   select:not([class*="auth-modal"]):not([class*="checkout-form"]):not([class*="event-form"]) {
-    font-size: 16px !important;
+    font-size: 12px !important;
   }
 
   /* Ensure auth modal inputs maintain small font size */
