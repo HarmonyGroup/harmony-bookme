@@ -29,7 +29,7 @@ import {
 } from "@/constants/events";
 import { Plus, Trash2 } from "lucide-react";
 import { useCreateEventListing } from "@/services/vendor/event";
-import type { EventListing } from "@/types/event";
+import type { EventListing, CreateTicketType } from "@/types/event";
 import moment from "moment";
 import { usePreventZoomAggressive } from "@/hooks/use-prevent-zoom-aggressive";
 
@@ -1833,7 +1833,7 @@ export default function EventsListingForm({ event }: { event?: EventListing }) {
         images: z
           .array(z.string().url({ message: "Each image must be a valid URL" }))
           .min(1, { message: "At least one image is required" }),
-        ageRestriction: z.string().optional(),
+        ageRestriction: z.number().min(0).max(100).optional(),
         dressCode: z.string().optional(),
         whatsIncluded: z.array(z.string()).optional(),
         requirements: z.array(z.string()).optional(),
@@ -1889,7 +1889,7 @@ export default function EventsListingForm({ event }: { event?: EventListing }) {
     if (!validateStep(currentStep)) return;
 
     try {
-      // Transform tickets to match TicketType interface (only for paid events)
+      // Transform tickets to match CreateTicketType interface (only for paid events)
       const transformedTickets =
         formData.pricingType === "paid"
           ? formData.tickets
@@ -1898,9 +1898,7 @@ export default function EventsListingForm({ event }: { event?: EventListing }) {
                   ticket.basePrice !== undefined &&
                   ticket.capacity !== undefined
               )
-              .map((ticket) => ({
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                _id: (ticket as any)._id || `temp_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+              .map((ticket): CreateTicketType => ({
                 name: ticket.name,
                 basePrice: ticket.basePrice!,
                 pricingStructure: ticket.pricingStructure,

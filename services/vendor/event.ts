@@ -82,31 +82,14 @@ export function useCreateEventListing() {
       queryClient.invalidateQueries({ queryKey: ["events"] });
 
       // Show success toast
-      toast.success("Event listing created successfully!", {
-        description:
-          "Your event has been published and is now available for registration.",
-        duration: 5000,
-      });
+      toast.success("Event listing created successfully!");
 
       // Redirect to the created event page
-      router.push(`/events/${data.data.slug}`);
+      router.push(`/vendor/events`);
     },
     onError: (error: Error) => {
       // Show error toast with specific messaging
-      toast.error("Failed to create event", {
-        description: error.message || "Something went wrong. Please try again.",
-        duration: 5000,
-      });
-
-      // If it's an authentication error, redirect to login
-      if (
-        error.message.includes("log in") ||
-        error.message.includes("Authentication")
-      ) {
-        setTimeout(() => {
-          router.push("/login");
-        }, 2000);
-      }
+      toast.error(error.message || "Failed to create event");
     },
   });
 }

@@ -76,6 +76,21 @@ export interface TicketType {
   minimumBookingsRequired?: number
 }
 
+export interface CreateTicketType {
+  name: string
+  description?: string
+  basePrice: number
+  pricingStructure: "perPerson" | "perGroup" | "flatFee"
+  capacity: number
+  soldCount?: number
+  saleStartDate?: Date
+  saleEndDate?: Date
+  hasDiscount?: boolean
+  discountType?: "fixed" | "percentage"
+  discountValue?: number
+  minimumBookingsRequired?: number
+}
+
 export interface CreateEventListingRequest {
   title: string
   description: string
@@ -110,7 +125,7 @@ export interface CreateEventListingRequest {
   virtualAccessInstructions?: string
   virtualCapacity?: number
 
-  tickets?: TicketType[] // Optional for free events
+  tickets?: CreateTicketType[] // Optional for free events
 
   images?: string[]
   ageRestriction?: number
