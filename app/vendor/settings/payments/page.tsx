@@ -23,14 +23,21 @@ import {
 import { Check, ChevronDown, Search, Loader2 } from "lucide-react";
 import PaymentsSkeleton from "@/components/vendor/settings/PaymentsSkeleton";
 import { useGetBanks } from "@/services/shared/banks";
-import { 
-  useCreatePaystackSubaccount, 
-  useUpdatePaystackSubaccount, 
+import {
+  useCreatePaystackSubaccount,
+  useUpdatePaystackSubaccount,
   usePaystackSubaccountStatus,
-  useVerifyBankDetails 
+  useVerifyBankDetails,
 } from "@/services/vendor/paystack-subaccount";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import Link from "next/link";
 
 const FormSchema = z.object({
   accountName: z.string().min(1, {
@@ -120,14 +127,19 @@ const Page = () => {
       }
     },
     (error) => {
-      toast.error(error?.message || "Bank verification failed. Please check your details.");
+      toast.error(
+        error?.message || "Bank verification failed. Please check your details."
+      );
       setIsLoading(false);
     }
   );
 
   // Populate form with existing bank details
   useEffect(() => {
-    if (subaccountStatus?.data?.hasSubaccount && subaccountStatus.data.bankDetails) {
+    if (
+      subaccountStatus?.data?.hasSubaccount &&
+      subaccountStatus.data.bankDetails
+    ) {
       const { bankDetails } = subaccountStatus.data;
       form.setValue("accountName", bankDetails.accountName || "");
       form.setValue("bankCode", bankDetails.bankCode || "");
@@ -138,7 +150,7 @@ const Page = () => {
 
   const onSubmit = async (data: z.infer<typeof FormSchema>) => {
     setIsLoading(true);
-    
+
     // First verify bank details
     verifyBank.mutate({
       accountNumber: data.accountNumber,
@@ -148,15 +160,54 @@ const Page = () => {
 
   return (
     <section className="h-full flex flex-col">
-      <div className="border-b border-gray-200/80 p-4 md:px-5 md:py-6">
-        <h3 className="text-primary text-lg font-semibold">Payments</h3>
-        <p className="text-gray-500 text-xs mt-1">
-          Manage your payment settings and set preferences
-        </p>
+      <div className="flex items-center gap-4 border-b border-gray-200/80 p-4 py-5 md:px-5 md:py-6">
+        <DropdownMenu>
+          <DropdownMenuTrigger className="block lg:hidden outline-none ring-0 cursor-pointer">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={2.4}
+              stroke="currentColor"
+              className="size-[18px] text-primary mt-[1px]"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
+              />
+            </svg>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent
+            align="start"
+            className="w-[75vw] min-w-full mt-6"
+          >
+            <DropdownMenuItem className="cursor-pointer text-gray-500 text-xs font-medium px-2.5 py-3">
+              <Link href={"/vendor/settings"} className="!w-full">
+                General settings
+              </Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem className="cursor-pointer text-gray-500 text-xs font-medium px-2.5 py-3">
+              <Link href={"/vendor/settings/payments"} className="!w-full">
+                Payment settings
+              </Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem className="cursor-pointer text-red-600 text-xs font-medium px-2.5 py-3 hover:!bg-red-100/50 hover:!text-red-600">
+              Delete Account
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+
+        <h1 className="text-primary text-base md:text-xl font-semibold">
+          Payment Settings
+        </h1>
+        {/* <p className="text-gray-700 text-[11px] md:text-xs mt-1">
+          Manage your account settings and set preferences
+        </p> */}
       </div>
 
       <VendorSettingsLayout>
-        <div className="px-6 py-5">
+        <div className="px-4 md:px-6 py-5">
           {isLoading ? (
             <PaymentsSkeleton />
           ) : (
@@ -170,7 +221,7 @@ const Page = () => {
                   name="bankCode"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-gray-600 text-xs">
+                      <FormLabel className="text-gray-700 text-xs">
                         Bank
                       </FormLabel>
                       <FormControl>
@@ -232,12 +283,12 @@ const Page = () => {
                                     key={`${bank.code}-${bank.name}-${index}`}
                                     variant="ghost"
                                     className="w-full justify-start px-3 py-3 h-auto font-normal cursor-pointer"
-                                     onClick={() => {
-                                       field.onChange(bank.code);
-                                       form.setValue("bankName", bank.name);
-                                       setBankPopoverOpen(false);
-                                       setBankSearchTerm("");
-                                     }}
+                                    onClick={() => {
+                                      field.onChange(bank.code);
+                                      form.setValue("bankName", bank.name);
+                                      setBankPopoverOpen(false);
+                                      setBankSearchTerm("");
+                                    }}
                                   >
                                     <div className="flex items-center justify-between w-full">
                                       <div className="flex flex-col items-start">
@@ -273,7 +324,7 @@ const Page = () => {
                   name="accountName"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-gray-600 text-xs">
+                      <FormLabel className="text-gray-700 text-xs">
                         Account name
                       </FormLabel>
                       <FormControl>
@@ -292,7 +343,7 @@ const Page = () => {
                   name="accountNumber"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-gray-600 text-xs">
+                      <FormLabel className="text-gray-700 text-xs">
                         Account number
                       </FormLabel>
                       <FormControl>
@@ -306,20 +357,32 @@ const Page = () => {
                     </FormItem>
                   )}
                 />
-                 <Button
-                   type="submit"
-                   disabled={isLoading || createSubaccount.isPending || updateSubaccount.isPending || verifyBank.isPending}
-                   className="bg-primary text-xs float-end cursor-pointer transition-colors ease-in-out duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
-                 >
-                   {isLoading || createSubaccount.isPending || updateSubaccount.isPending || verifyBank.isPending ? (
-                     <div className="flex items-center gap-2">
-                       <Loader2 className="h-4 w-4 animate-spin" />
-                       {subaccountStatus?.data?.hasSubaccount ? "Updating..." : "Creating..."}
-                     </div>
-                   ) : (
-                     subaccountStatus?.data?.hasSubaccount ? "Update Bank Details" : "Save Bank Details"
-                   )}
-                 </Button>
+                <Button
+                  type="submit"
+                  disabled={
+                    isLoading ||
+                    createSubaccount.isPending ||
+                    updateSubaccount.isPending ||
+                    verifyBank.isPending
+                  }
+                  className="bg-primary text-xs float-end cursor-pointer transition-colors ease-in-out duration-200 disabled:opacity-50 disabled:cursor-not-allowed p-5"
+                >
+                  {isLoading ||
+                  createSubaccount.isPending ||
+                  updateSubaccount.isPending ||
+                  verifyBank.isPending ? (
+                    <div className="flex items-center gap-2">
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                      {subaccountStatus?.data?.hasSubaccount
+                        ? "Saving changes..."
+                        : "Saving changes..."}
+                    </div>
+                  ) : subaccountStatus?.data?.hasSubaccount ? (
+                    "Save Changes"
+                  ) : (
+                    "Save Changes"
+                  )}
+                </Button>
               </form>
             </Form>
           )}

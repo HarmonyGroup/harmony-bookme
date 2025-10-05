@@ -142,6 +142,13 @@
     font-size: 12px !important;
   }
 
+  /* Ensure settings form inputs maintain small font size and don't zoom */
+  .settings-form input,
+  .settings-form textarea,
+  .settings-form select {
+    font-size: 12px !important;
+  }
+
   /* Ensure auth modal inputs maintain small font size */
   input.auth-modal {
     font-size: 12px !important;

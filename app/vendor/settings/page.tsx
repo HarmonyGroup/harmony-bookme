@@ -24,6 +24,7 @@ import { useUploadImage } from "@/services/shared/image-upload";
 import { useUpdateAvatar, useRemoveAvatar } from "@/services/shared/avatar";
 import Image from "next/image";
 import { toast } from "sonner";
+import { usePreventZoomAggressive } from "@/hooks/use-prevent-zoom-aggressive";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -51,6 +52,9 @@ const FormSchema = z.object({
 const Page = () => {
   const { data: vendorData } = useGetVendorInformation();
   const [isUploadingAvatar, setIsUploadingAvatar] = React.useState(false);
+
+  // Prevent zoom on mobile when focusing inputs
+  usePreventZoomAggressive();
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -183,7 +187,7 @@ const Page = () => {
 
       <div className="flex items-center gap-4 border-b border-gray-200/80 p-4 py-5 md:px-5 md:py-6">
         <DropdownMenu>
-          <DropdownMenuTrigger className="block lg:hidden">
+          <DropdownMenuTrigger className="block lg:hidden outline-none ring-0 cursor-pointer">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -199,12 +203,19 @@ const Page = () => {
               />
             </svg>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="start" className="w-full min-w-full mt-6">
+          <DropdownMenuContent
+            align="start"
+            className="w-[75vw] min-w-full mt-6"
+          >
             <DropdownMenuItem className="cursor-pointer text-gray-500 text-xs font-medium px-2.5 py-3">
-              <Link href={"/vendor/settings"} className="w-full">General</Link>
+              <Link href={"/vendor/settings"} className="!w-full">
+                General settings
+              </Link>
             </DropdownMenuItem>
             <DropdownMenuItem className="cursor-pointer text-gray-500 text-xs font-medium px-2.5 py-3">
-              <Link href={"/vendor/settings/payments"} className="w-full">Payments</Link>
+              <Link href={"/vendor/settings/payments"} className="!w-full">
+                Payment settings
+              </Link>
             </DropdownMenuItem>
             <DropdownMenuItem className="cursor-pointer text-red-600 text-xs font-medium px-2.5 py-3 hover:!bg-red-100/50 hover:!text-red-600">
               Delete Account
@@ -213,7 +224,7 @@ const Page = () => {
         </DropdownMenu>
 
         <h1 className="text-primary text-base md:text-xl font-semibold">
-          Account Settings
+          General Settings
         </h1>
         {/* <p className="text-gray-700 text-[11px] md:text-xs mt-1">
           Manage your account settings and set preferences
@@ -221,7 +232,7 @@ const Page = () => {
       </div>
 
       <VendorSettingsLayout>
-        <div className="px-6 py-5">
+        <div className="px-4 md:px-6 py-5">
           <>
             <div className="flex items-center gap-4">
               <div className="size-28 bg-muted rounded-xl flex items-center justify-center overflow-hidden">
@@ -285,14 +296,14 @@ const Page = () => {
             <Form {...form}>
               <form
                 onSubmit={form.handleSubmit(onSubmit)}
-                className="space-y-5 mt-8"
+                className="settings-form space-y-5 mt-8"
               >
                 <FormField
                   control={form.control}
                   name="businessName"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-gray-600 text-xs">
+                      <FormLabel className="text-gray-700 text-xs">
                         Business name
                       </FormLabel>
                       <FormControl>
@@ -306,13 +317,13 @@ const Page = () => {
                     </FormItem>
                   )}
                 />
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                   <FormField
                     control={form.control}
                     name="email"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="text-gray-600 text-xs">
+                        <FormLabel className="text-gray-700 text-xs">
                           Email
                         </FormLabel>
                         <FormControl>
@@ -331,7 +342,7 @@ const Page = () => {
                     name="phone"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="text-gray-600 text-xs">
+                        <FormLabel className="text-gray-700 text-xs">
                           Phone
                         </FormLabel>
                         <FormControl>
@@ -350,7 +361,7 @@ const Page = () => {
                     name="country"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="text-gray-600 text-xs">
+                        <FormLabel className="text-gray-700 text-xs">
                           Country
                         </FormLabel>
                         <FormControl>
@@ -369,7 +380,7 @@ const Page = () => {
                     name="state"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="text-gray-600 text-xs">
+                        <FormLabel className="text-gray-700 text-xs">
                           State
                         </FormLabel>
                         <FormControl>
@@ -388,7 +399,7 @@ const Page = () => {
                     name="city"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="text-gray-600 text-xs">
+                        <FormLabel className="text-gray-700 text-xs">
                           City
                         </FormLabel>
                         <FormControl>
@@ -407,7 +418,7 @@ const Page = () => {
                     name="streetAddress"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="text-gray-600 text-xs">
+                        <FormLabel className="text-gray-700 text-xs">
                           Street Address
                         </FormLabel>
                         <FormControl>
