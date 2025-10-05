@@ -122,332 +122,343 @@ const VendorTransactionsTable = () => {
   };
 
   return (
-    <div className="h-full">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-4">
-          {/* Search Input */}
-          <div className="relative hidden md:block">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth="2"
-              stroke="currentColor"
-              className="absolute left-4 top-1/2 -translate-y-1/2 size-[13px] text-gray-700"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
-              />
-            </svg>
-            <Input
-              type="search"
-              className="w-[300px] bg-white !text-xs placeholder:text-gray-500 placeholder:text-xs placeholder:font-medium shadow-xs outline-none ring-0 focus:shadow-xs px-4 !py-5 ps-9 border focus-visible:ring-0 focus-visible:border-primary transition-all ease-in-out duration-200"
-              placeholder="Search transaction reference here"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
-          </div>
-        </div>
-        {/* Filters */}
-        <div className="flex items-center gap-3">
-          {/* Clear Filters */}
-          {(statusFilter !== "all" || dateRange?.from || dateRange?.to) && (
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => {
-                setStatusFilter("all");
-                setDateRange(undefined);
-              }}
-              className="text-xs text-gray-500 hover:text-gray-700"
-            >
-              Clear filters
-            </Button>
-          )}
-
-          {/* Status Filter */}
-          <Select value={statusFilter} onValueChange={setStatusFilter}>
-            <SelectTrigger className="w-[140px] h-10 bg-white border border-gray-200 text-xs py-5 cursor-pointer text-gray-500 font-medium">
-              <div className="flex items-center gap-2">
-                <FilterIcon className="size-3 text-gray-500" />
-                <SelectValue placeholder="Status" />
-              </div>
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem
-                value="all"
-                className="text-gray-500 text-xs font-medium cursor-pointer"
+    <>
+      <div className="bg-white border border-muted rounded-lg p-4 mb-6">
+        <div className="hidden md:flex items-center justify-between gap-4">
+          <div className="flex items-center gap-4">
+            {/* Search Input */}
+            <div className="relative">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth="2"
+                stroke="currentColor"
+                className="absolute left-4 top-1/2 -translate-y-1/2 size-[13px] text-gray-700"
               >
-                All Status
-              </SelectItem>
-              {PAYMENT_STATUSES.map((status) => (
-                <SelectItem
-                  key={status.value}
-                  value={status.value}
-                  className="text-gray-500 text-xs font-medium cursor-pointer py-2.5"
-                >
-                  {status.label}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-
-          {/* Date Range Filter */}
-          <Popover open={isDatePickerOpen} onOpenChange={setIsDatePickerOpen}>
-            <PopoverTrigger asChild>
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
+                />
+              </svg>
+              <Input
+                type="search"
+                className="w-[300px] bg-white !text-xs placeholder:text-gray-500 placeholder:text-xs placeholder:font-medium shadow-xs outline-none ring-0 focus:shadow-xs px-4 !py-5 ps-9 border focus-visible:ring-0 focus-visible:border-primary transition-all ease-in-out duration-200"
+                placeholder="Search transaction reference here"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+            </div>
+          </div>
+          {/* Filters */}
+          <div className="flex items-center gap-3">
+            {/* Clear Filters */}
+            {(statusFilter !== "all" || dateRange?.from || dateRange?.to) && (
               <Button
-                variant="outline"
-                className="w-[180px] bg-white border border-gray-200 text-gray-500 text-xs font-medium justify-start text-left py-5 cursor-pointer hover:bg-white"
-              >
-                <CalendarIcon className="mr-2 size-3 text-gray-500" />
-                {dateRange?.from ? (
-                  dateRange?.to ? (
-                    <>
-                      {moment(dateRange.from).format("MMM DD")} -{" "}
-                      {moment(dateRange.to).format("MMM DD")}
-                    </>
-                  ) : (
-                    moment(dateRange.from).format("MMM DD, YYYY")
-                  )
-                ) : (
-                  "Select date range"
-                )}
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent className="w-auto p-0" align="end">
-              <Calendar
-                initialFocus
-                mode="range"
-                defaultMonth={dateRange?.from || new Date()}
-                selected={dateRange}
-                onSelect={(range) => {
-                  setDateRange(range);
-                  if (range?.from && range?.to) {
-                    setIsDatePickerOpen(false);
-                  }
+                variant="ghost"
+                size="sm"
+                onClick={() => {
+                  setStatusFilter("all");
+                  setDateRange(undefined);
                 }}
-                numberOfMonths={2}
-              />
-            </PopoverContent>
-          </Popover>
-        </div>
-      </div>
+                className="text-xs text-gray-500 hover:text-gray-700"
+              >
+                Clear filters
+              </Button>
+            )}
 
-      {isLoading ? (
-        <Table className="!px-10 mt-4">
-          <TableHeader className="!px-10">
-            <TableRow className="bg-muted/90 text-xs !px-10">
-              <TableHead className="text-gray-700 font-medium py-5 pl-4">
-                Reference
-              </TableHead>
-              <TableHead className="text-gray-700 font-medium">
-                Customer
-              </TableHead>
-              <TableHead className="text-gray-700 font-medium">
-                Booking
-              </TableHead>
-              <TableHead className="text-gray-700 font-medium">
-                Amount
-              </TableHead>
-              <TableHead className="text-gray-700 font-medium">
-                Status
-              </TableHead>
-              <TableHead className="text-gray-700 font-medium">Date</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {[...Array(7)].map((_, index) => (
-              <TableRow key={index}>
-                <TableCell className="pl-4 py-6">
-                  <Skeleton className="h-6 w-[120px] bg-gray-200 rounded-sm" />
-                </TableCell>
-                <TableCell>
-                  <div className="flex items-center gap-2">
-                    <Skeleton className="h-6 w-[120px] bg-gray-200 rounded-sm" />
-                  </div>
-                </TableCell>
-                <TableCell>
-                  <Skeleton className="h-6 w-[100px] bg-gray-200 rounded-sm" />
-                </TableCell>
-                <TableCell>
-                  <Skeleton className="h-6 w-[80px] bg-gray-200 rounded-sm" />
-                </TableCell>
-                <TableCell>
-                  <Skeleton className="h-6 w-[100px] bg-gray-200 rounded-sm" />
-                </TableCell>
-                <TableCell>
-                  <Skeleton className="h-6 w-[100px] bg-gray-200 rounded-sm" />
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      ) : data?.data?.payments?.length ? (
-        <div className="mt-4">
-          <Table>
-            <TableHeader>
-              <TableRow className="bg-muted/90 text-xs !px-10">
-                <TableHead className="text-gray-700 font-medium py-6 pl-4">
-                  Reference
-                </TableHead>
-                <TableHead className="text-gray-700 font-medium">
-                  Customer
-                </TableHead>
-                <TableHead className="text-gray-700 font-medium">
-                  Booking
-                </TableHead>
-                <TableHead className="text-gray-700 font-medium">
-                  Amount
-                </TableHead>
-                <TableHead className="text-gray-700 font-medium">
-                  Status
-                </TableHead>
-                <TableHead className="text-gray-700 font-medium">
-                  Date
-                </TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {data?.data?.payments?.map((payment, index) => (
-                <TableRow key={index}>
-                  <TableCell className="text-gray-700 text-xs font-semibold pl-4 py-6">
-                    {payment?.paystackReference}
-                  </TableCell>
-                  <TableCell className="text-gray-500 text-xs font-medium">
-                    <div className="flex items-center gap-2">
-                      {payment?.explorer?.avatar ? (
-                        <Image
-                          src={payment.explorer.avatar}
-                          alt={payment.customerName}
-                          width={24}
-                          height={24}
-                          className="rounded-full"
-                        />
-                      ) : (
-                        <div className="w-6 h-6 bg-gray-200 rounded-full flex items-center justify-center">
-                          <span className="text-xs font-medium text-gray-600">
-                            {payment.customerName.charAt(0).toUpperCase()}
-                          </span>
-                        </div>
-                      )}
-                      <div>
-                        <p className="font-medium">{payment?.customerName}</p>
-                        <p className="text-gray-400 text-[10px]">
-                          {payment?.customerEmail}
-                        </p>
-                      </div>
-                    </div>
-                  </TableCell>
-                  <TableCell className="text-gray-500 text-xs font-medium">
-                    {payment?.bookingId?.code}
-                  </TableCell>
-                  <TableCell className="text-gray-500 text-xs font-medium">
-                    NGN {formatPrice(payment?.amount)}
-                  </TableCell>
-                  <TableCell className="">
-                    <span
-                      className={cn(
-                        "text-[11px] capitalize font-medium rounded-md px-2 py-1",
-                        payment?.status === "pending" &&
-                          "text-amber-700 bg-amber-50 border border-amber-200",
-                        payment?.status === "success" &&
-                          "text-emerald-700 bg-emerald-50 border border-emerald-200",
-                        payment?.status === "failed" &&
-                          "text-red-700 bg-red-50 border border-red-200",
-                        payment?.status === "abandoned" &&
-                          "text-gray-700 bg-gray-50 border border-gray-200"
-                      )}
-                    >
-                      {payment?.status}
-                    </span>
-                  </TableCell>
-                  <TableCell className="text-gray-500 text-xs font-medium">
-                    {payment?.paidAt
-                      ? moment(payment.paidAt).format("lll")
-                      : moment(payment?.createdAt).format("lll")}
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </div>
-      ) : (
-        <div className="flex flex-col items-center justify-center gap-2 py-20 min-h-[400px]">
-          <Image
-            src={EmptyIcon}
-            className="size-14"
-            alt="Harmony Bookme"
-            loading="lazy"
-          />
-          <h1 className="text-gray-700 text-sm font-semibold">
-            No transactions found
-          </h1>
-          <p className="text-gray-500 text-xs text-center max-w-md">
-            {searchQuery || statusFilter !== "all" || dateRange
-              ? "Try adjusting your filters to see more results."
-              : "You haven't received any payments yet."}
-          </p>
-        </div>
-      )}
+            {/* Status Filter */}
+            <Select value={statusFilter} onValueChange={setStatusFilter}>
+              <SelectTrigger className="w-[140px] h-10 bg-white border border-gray-200 text-xs py-5 cursor-pointer text-gray-500 font-medium">
+                <div className="flex items-center gap-2">
+                  <FilterIcon className="size-3 text-gray-500" />
+                  <SelectValue placeholder="Status" />
+                </div>
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem
+                  value="all"
+                  className="text-gray-500 text-xs font-medium cursor-pointer"
+                >
+                  All Status
+                </SelectItem>
+                {PAYMENT_STATUSES.map((status) => (
+                  <SelectItem
+                    key={status.value}
+                    value={status.value}
+                    className="text-gray-500 text-xs font-medium cursor-pointer py-2.5"
+                  >
+                    {status.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
 
-      {/* Pagination */}
-      {data?.data?.payments?.length && (
-        <div className="mt-6 w-full flex items-center justify-between">
-          <div className="text-xs text-gray-500 whitespace-nowrap">
-            Showing {(currentPage - 1) * itemsPerPage + 1} to{" "}
-            {Math.min(currentPage * itemsPerPage, data.data.total)} of{" "}
-            {data.data.total} transactions
-          </div>
-          
-          <Pagination className="mx-0 w-auto justify-end">
-            <PaginationContent>
-              <PaginationItem>
-                <PaginationPrevious
-                  onClick={() =>
-                    hasPreviousPage && handlePageChange(currentPage - 1)
-                  }
-                  className={cn(
-                    "cursor-pointer text-xs",
-                    !hasPreviousPage && "pointer-events-none opacity-50"
-                  )}
-                />
-              </PaginationItem>
-
-              {generatePageNumbers().map((page, index) => (
-                <PaginationItem key={index}>
-                  {page === "ellipsis" ? (
-                    <PaginationEllipsis />
+            {/* Date Range Filter */}
+            <Popover open={isDatePickerOpen} onOpenChange={setIsDatePickerOpen}>
+              <PopoverTrigger asChild>
+                <Button
+                  variant="outline"
+                  className="w-[180px] bg-white border border-gray-200 text-gray-500 text-xs font-medium justify-start text-left py-5 cursor-pointer hover:bg-white"
+                >
+                  <CalendarIcon className="mr-2 size-3 text-gray-500" />
+                  {dateRange?.from ? (
+                    dateRange?.to ? (
+                      <>
+                        {moment(dateRange.from).format("MMM DD")} -{" "}
+                        {moment(dateRange.to).format("MMM DD")}
+                      </>
+                    ) : (
+                      moment(dateRange.from).format("MMM DD, YYYY")
+                    )
                   ) : (
-                    <PaginationLink
-                      onClick={() => handlePageChange(page as number)}
-                      isActive={currentPage === page}
-                      className="cursor-pointer text-xs"
-                      size={"sm"}
-                    >
-                      {page}
-                    </PaginationLink>
+                    "Select date range"
                   )}
-                </PaginationItem>
-              ))}
-
-              <PaginationItem>
-                <PaginationNext
-                  onClick={() =>
-                    hasNextPage && handlePageChange(currentPage + 1)
-                  }
-                  className={cn(
-                    "cursor-pointer text-xs",
-                    !hasNextPage && "pointer-events-none opacity-50"
-                  )}
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-auto p-0" align="end">
+                <Calendar
+                  initialFocus
+                  mode="range"
+                  defaultMonth={dateRange?.from || new Date()}
+                  selected={dateRange}
+                  onSelect={(range) => {
+                    setDateRange(range);
+                    if (range?.from && range?.to) {
+                      setIsDatePickerOpen(false);
+                    }
+                  }}
+                  numberOfMonths={2}
                 />
-              </PaginationItem>
-            </PaginationContent>
-          </Pagination>
+              </PopoverContent>
+            </Popover>
+          </div>
         </div>
-      )}
-    </div>
+
+        <div className="mt-0 md:mt-4">
+          {isLoading ? (
+            <div className="overflow-x-auto">
+              <Table className="!px-10 min-w-full">
+                <TableHeader className="!px-10">
+                  <TableRow className="bg-muted/90 text-xs !px-10">
+                    <TableHead className="text-gray-700 font-medium py-5 pl-4">
+                      Reference
+                    </TableHead>
+                    <TableHead className="text-gray-700 font-medium">
+                      Customer
+                    </TableHead>
+                    <TableHead className="text-gray-700 font-medium">
+                      Booking
+                    </TableHead>
+                    <TableHead className="text-gray-700 font-medium">
+                      Amount
+                    </TableHead>
+                    <TableHead className="text-gray-700 font-medium">
+                      Status
+                    </TableHead>
+                    <TableHead className="text-gray-700 font-medium">
+                      Date
+                    </TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {[...Array(7)].map((_, index) => (
+                    <TableRow key={index}>
+                      <TableCell className="pl-4 py-6">
+                        <Skeleton className="h-6 w-[120px] bg-gray-200 rounded-sm" />
+                      </TableCell>
+                      <TableCell>
+                        <div className="flex items-center gap-2">
+                          <Skeleton className="h-6 w-[120px] bg-gray-200 rounded-sm" />
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <Skeleton className="h-6 w-[100px] bg-gray-200 rounded-sm" />
+                      </TableCell>
+                      <TableCell>
+                        <Skeleton className="h-6 w-[80px] bg-gray-200 rounded-sm" />
+                      </TableCell>
+                      <TableCell>
+                        <Skeleton className="h-6 w-[100px] bg-gray-200 rounded-sm" />
+                      </TableCell>
+                      <TableCell>
+                        <Skeleton className="h-6 w-[100px] bg-gray-200 rounded-sm" />
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
+          ) : data?.data?.payments?.length ? (
+            <div className="overflow-x-auto">
+              <Table className="!px-10 min-w-full">
+                <TableHeader>
+                  <TableRow className="bg-muted/60 border-b border-muted text-xs !px-10">
+                    <TableHead className="text-gray-800 font-medium py-6 pl-4">
+                      Reference
+                    </TableHead>
+                    <TableHead className="text-gray-800 font-medium">
+                      Customer
+                    </TableHead>
+                    <TableHead className="text-gray-800 font-medium">
+                      Booking
+                    </TableHead>
+                    <TableHead className="text-gray-800 font-medium">
+                      Amount
+                    </TableHead>
+                    <TableHead className="text-gray-800 font-medium">
+                      Status
+                    </TableHead>
+                    <TableHead className="text-gray-800 font-medium">
+                      Date
+                    </TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {data?.data?.payments?.map((payment, index) => (
+                    <TableRow key={index} className="border-muted">
+                      <TableCell className="text-gray-800 text-xs font-semibold pl-4 py-7">
+                        {payment?.paystackReference}
+                      </TableCell>
+                      <TableCell className="text-gray-600 text-xs font-medium capitalize">
+                        {/* <div className="flex items-center gap-2">
+                          {payment?.explorer?.avatar ? (
+                            <Image
+                              src={payment.explorer.avatar}
+                              alt={payment.customerName}
+                              width={24}
+                              height={24}
+                              className="rounded-full"
+                            />
+                          ) : (
+                            <div className="w-6 h-6 bg-gray-200 rounded-full flex items-center justify-center">
+                              <span className="text-xs font-medium text-gray-600">
+                                {payment.customerName.charAt(0).toUpperCase()}
+                              </span>
+                            </div>
+                          )}
+                          <div>
+                            <p className="font-medium">
+                              {payment?.customerName}
+                            </p>
+                            <p className="text-gray-400 text-[10px]">
+                              {payment?.customerEmail}
+                            </p>
+                          </div>
+                        </div> */}
+                        {payment?.customerName}
+                      </TableCell>
+                      <TableCell className="text-gray-600 text-xs font-medium">
+                        {payment?.bookingId?.code}
+                      </TableCell>
+                      <TableCell className="text-gray-600 text-xs font-medium">
+                        NGN {formatPrice(payment?.amount)}
+                      </TableCell>
+                      <TableCell className="">
+                        <span
+                          className={cn(
+                            "text-[11px] capitalize font-medium rounded-md px-2 py-1",
+                            payment?.status === "pending" &&
+                              "text-amber-700 bg-amber-100/60 border-amber-200",
+                            payment?.status === "success" &&
+                              "text-emerald-700 bg-emerald-100/60 border-emerald-200",
+                            payment?.status === "failed" &&
+                              "text-red-700 bg-red-100/60 border-red-200",
+                            payment?.status === "abandoned" &&
+                              "text-gray-700 bg-gray-100/60 border-gray-200"
+                          )}
+                        >
+                          {payment?.status}
+                        </span>
+                      </TableCell>
+                      <TableCell className="text-gray-600 text-xs font-medium">
+                        {payment?.paidAt
+                          ? moment(payment.paidAt).format("lll")
+                          : "---"}
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
+          ) : (
+            <div className="flex flex-col items-center justify-center gap-2 py-20 min-h-[400px]">
+              <Image
+                src={EmptyIcon}
+                className="size-14"
+                alt="Harmony Bookme"
+                loading="lazy"
+              />
+              <h1 className="text-gray-700 text-sm font-semibold">
+                No transactions found
+              </h1>
+              <p className="text-gray-500 text-xs text-center max-w-md">
+                {searchQuery || statusFilter !== "all" || dateRange
+                  ? "Try adjusting your filters to see more results."
+                  : "You haven't received any payments yet."}
+              </p>
+            </div>
+          )}
+        </div>
+
+        {/* Pagination */}
+        {data?.data?.payments?.length && (
+          <div className="mt-6 w-full flex items-center justify-between">
+            <div className="text-xs text-gray-500 whitespace-nowrap">
+              Showing {(currentPage - 1) * itemsPerPage + 1} to{" "}
+              {Math.min(currentPage * itemsPerPage, data.data.total)} of{" "}
+              {data.data.total} transactions
+            </div>
+
+            <Pagination className="mx-0 w-auto justify-end">
+              <PaginationContent>
+                <PaginationItem>
+                  <PaginationPrevious
+                    onClick={() =>
+                      hasPreviousPage && handlePageChange(currentPage - 1)
+                    }
+                    className={cn(
+                      "cursor-pointer text-xs",
+                      !hasPreviousPage && "pointer-events-none opacity-50"
+                    )}
+                  />
+                </PaginationItem>
+
+                {generatePageNumbers().map((page, index) => (
+                  <PaginationItem key={index}>
+                    {page === "ellipsis" ? (
+                      <PaginationEllipsis />
+                    ) : (
+                      <PaginationLink
+                        onClick={() => handlePageChange(page as number)}
+                        isActive={currentPage === page}
+                        className="cursor-pointer text-xs"
+                        size={"sm"}
+                      >
+                        {page}
+                      </PaginationLink>
+                    )}
+                  </PaginationItem>
+                ))}
+
+                <PaginationItem>
+                  <PaginationNext
+                    onClick={() =>
+                      hasNextPage && handlePageChange(currentPage + 1)
+                    }
+                    className={cn(
+                      "cursor-pointer text-xs",
+                      !hasNextPage && "pointer-events-none opacity-50"
+                    )}
+                  />
+                </PaginationItem>
+              </PaginationContent>
+            </Pagination>
+          </div>
+        )}
+      </div>
+    </>
   );
 };
 

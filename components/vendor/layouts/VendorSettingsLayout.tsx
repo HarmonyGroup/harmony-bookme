@@ -12,7 +12,7 @@ const VendorSettingsLayout = ({ children }: { children: React.ReactNode }) => {
 
   const navLinks = [
     { href: "/vendor/settings", label: "General" },
-    { href: "/vendor/settings/security", label: "Security" },
+    // { href: "/vendor/settings/security", label: "Security" },
     { href: "/vendor/settings/payments", label: "Payments" },
   ];
 
@@ -20,7 +20,7 @@ const VendorSettingsLayout = ({ children }: { children: React.ReactNode }) => {
     <>
       <div className="h-full bg-white rounded-lg">
         <div className="h-full grid grid-cols-5">
-          <div className="h-full col-span-1">
+          <div className="h-full col-span-1 hidden lg:block">
             <div className="flex h-full flex-col justify-between border-e border-gray-200/80 bg-white p-5">
               <div>
                 <ul className="space-y-3">
@@ -55,7 +55,7 @@ const VendorSettingsLayout = ({ children }: { children: React.ReactNode }) => {
               </div>
             </div>
           </div>
-          <div className="col-span-4">{children}</div>
+          <div className="col-span-5 lg:col-span-4">{children}</div>
         </div>
       </div>
 
