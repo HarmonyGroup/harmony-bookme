@@ -24,6 +24,13 @@ import { useUploadImage } from "@/services/shared/image-upload";
 import { useUpdateAvatar, useRemoveAvatar } from "@/services/shared/avatar";
 import Image from "next/image";
 import { toast } from "sonner";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import Link from "next/link";
 // import GeneralSkeleton from "@/components/vendor/settings/GeneralSkeleton";
 
 const FormSchema = z.object({
@@ -174,7 +181,37 @@ const Page = () => {
         </p>
       </div> */}
 
-      <div className="border-b border-gray-200/80 p-4 py-5 md:px-5 md:py-6">
+      <div className="flex items-center gap-4 border-b border-gray-200/80 p-4 py-5 md:px-5 md:py-6">
+        <DropdownMenu>
+          <DropdownMenuTrigger className="block lg:hidden">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={2.4}
+              stroke="currentColor"
+              className="size-[18px] text-primary mt-[1px]"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
+              />
+            </svg>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="start" className="w-full min-w-full mt-6">
+            <DropdownMenuItem className="cursor-pointer text-gray-500 text-xs font-medium px-2.5 py-3">
+              <Link href={"/vendor/settings"} className="w-full">General</Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem className="cursor-pointer text-gray-500 text-xs font-medium px-2.5 py-3">
+              <Link href={"/vendor/settings/payments"} className="w-full">Payments</Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem className="cursor-pointer text-red-600 text-xs font-medium px-2.5 py-3 hover:!bg-red-100/50 hover:!text-red-600">
+              Delete Account
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+
         <h1 className="text-primary text-base md:text-xl font-semibold">
           Account Settings
         </h1>
@@ -248,7 +285,7 @@ const Page = () => {
             <Form {...form}>
               <form
                 onSubmit={form.handleSubmit(onSubmit)}
-                className="space-y-5 mt-6"
+                className="space-y-5 mt-8"
               >
                 <FormField
                   control={form.control}
