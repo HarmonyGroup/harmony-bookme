@@ -175,7 +175,7 @@ const Page = () => {
       </div> */}
 
       <div className="border-b border-gray-200/80 p-4 py-5 md:px-5 md:py-6">
-        <h1 className="text-primary text-lg md:text-xl font-semibold">
+        <h1 className="text-primary text-base md:text-xl font-semibold">
           Account Settings
         </h1>
         {/* <p className="text-gray-700 text-[11px] md:text-xs mt-1">
@@ -214,7 +214,7 @@ const Page = () => {
                 )}
               </div>
               <div>
-                <div className="flex items-center gap-2">
+                <div className="flex flex-col md:flex-row items-start md:items-center gap-2">
                   <input
                     type="file"
                     accept="image/jpeg,image/png,image/gif"
@@ -269,7 +269,7 @@ const Page = () => {
                     </FormItem>
                   )}
                 />
-                <div className="grid grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <FormField
                     control={form.control}
                     name="email"
@@ -387,7 +387,7 @@ const Page = () => {
                 </div>
                 <Button
                   type="submit"
-                  className="bg-primary text-xs float-end cursor-pointer transition-colors ease-in-out duration-200"
+                  className="bg-primary text-xs float-end cursor-pointer transition-colors ease-in-out duration-200 p-5"
                   disabled={isPending}
                 >
                   {isPending ? "Saving changes..." : "Save changes"}
