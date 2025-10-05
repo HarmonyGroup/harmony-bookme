@@ -38,6 +38,7 @@ import { useSignup } from "@/services/auth/signup";
 import { vendorAccountPreferences } from "@/constants/vendor-account-preferences";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { usePreventZoomAggressive } from "@/hooks/use-prevent-zoom-aggressive";
 import BG from "@/public/assets/sun-tornado.svg";
 
 const FormSchema = z.object({
@@ -70,6 +71,9 @@ const Page = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [displaySlide, setDisplaySlide] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
+  
+  // Prevent zoom on mobile when focusing inputs
+  usePreventZoomAggressive();
 
   // Refs for GSAP animations
   const pageRef = useRef(null);
@@ -285,7 +289,7 @@ const Page = () => {
                 <div className="pb-4">
                   <form
                     onSubmit={form.handleSubmit(onSubmit)}
-                    className="space-y-5"
+                    className="auth-form space-y-5"
                   >
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                       <FormField

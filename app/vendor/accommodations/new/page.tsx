@@ -3,9 +3,9 @@ import AccommodationListingForm from "@/components/vendor/accommodations/Accommo
 
 const Page = () => {
   return (
-    <div>
+    <>
       <AccommodationListingForm />
-    </div>
+    </>
   );
 };
 

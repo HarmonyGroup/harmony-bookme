@@ -240,7 +240,9 @@ const RecentBookingsTable = ({ type }: RecentBookingsTableProps) => {
                       booking?.status === "cancelled" &&
                         "text-red-700 bg-red-100/60 border-red-200",
                       booking?.status === "failed" &&
-                        "text-rose-700 bg-rose-100/60 border-rose-200"
+                        "text-rose-700 bg-rose-100/60 border-rose-200",
+                      booking?.status === "requested" &&
+                        "text-cyan-700 bg-cyan-100/60 border-cyan-200"
                     )}
                   >
                     {booking?.status}

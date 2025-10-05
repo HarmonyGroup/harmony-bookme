@@ -31,7 +31,7 @@ const Header = () => {
           viewBox="0 0 24 24"
           strokeWidth="2"
           stroke="currentColor"
-          className="absolute left-4 top-1/2 -translate-y-1/2 size-[13px] text-gray-700"
+          className="absolute left-4 top-1/2 -translate-y-1/2 size-[13px] text-gray-500"
         >
           <path
             strokeLinecap="round"
@@ -41,7 +41,7 @@ const Header = () => {
         </svg>
         <Input
           type="search"
-          className="w-[400px] bg-muted/60 !text-xs placeholder:text-gray-500 placeholder:text-xs placeholder:font-normal shadow-none outline-none ring-0 focus:shadow-xs px-4 !py-5 ps-9 border border-muted focus-visible:ring-0 focus-visible:border-primary transition-all ease-in-out duration-200"
+          className="w-[400px] bg-muted/60 !text-xs placeholder:text-gray-500 placeholder:text-xs placeholder:font-normal shadow-none outline-none ring-0 focus:shadow-xs px-4 !py-5 ps-9 border border-gray-200/60 focus-visible:ring-0 focus-visible:border-primary transition-all ease-in-out duration-200"
           placeholder="Search listing or booking code here"
         />
       </div>

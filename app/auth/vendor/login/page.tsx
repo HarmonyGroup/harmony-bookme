@@ -28,6 +28,7 @@ import DarkLogo from "@/public/assets/logo-wordmark-dark.png";
 import { useSignIn } from "@/services/auth/login";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { usePreventZoomAggressive } from "@/hooks/use-prevent-zoom-aggressive";
 import { BsEye, BsEyeSlash } from "react-icons/bs";
 import BG from "@/public/assets/sun-tornado.svg";
 
@@ -45,6 +46,9 @@ const Page = () => {
   const [isPaused, setIsPaused] = useState(false);
   const router = useRouter();
   const { signIn, isPending } = useSignIn();
+  
+  // Prevent zoom on mobile when focusing inputs
+  usePreventZoomAggressive();
 
   // Refs for GSAP animations
   const pageRef = useRef(null);
@@ -248,7 +252,7 @@ const Page = () => {
               <div className="pb-4">
                 <form
                   onSubmit={form.handleSubmit(onSubmit)}
-                  className="space-y-5"
+                  className="auth-form space-y-5"
                 >
                   <FormField
                     control={form.control}

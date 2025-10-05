@@ -25,6 +25,7 @@ import type { CreateAccommodationListingRequest } from "@/types/accommodation";
 import { toast } from "sonner";
 import { useUploadImage } from "@/services/shared/image-upload";
 import Image from "next/image";
+import { usePreventZoomAggressive } from "@/hooks/use-prevent-zoom-aggressive";
 
 const BaseFormSchema = z.object({
   // Step 1: Basic Information
@@ -35,7 +36,7 @@ const BaseFormSchema = z.object({
     .string()
     .min(10, "Description must be at least 10 characters."),
   accommodationType: z.enum(["shortlet", "hotel"], {
-    message: "Please select either Shortlet or Hotel."
+    message: "Please select either Shortlet or Hotel.",
   }),
   buildingType: z.string().optional(),
   propertySize: z.string().optional(),
@@ -73,29 +74,40 @@ const BaseFormSchema = z.object({
   amenities: z.record(z.string(), z.boolean()).optional(),
 
   // Step 4: Pricing
-  basePrice: z
-    .number()
-    .min(1, "Base price must be greater than 0.")
-    .optional(),
+  basePrice: z.number().min(1, "Base price must be greater than 0.").optional(),
   hasDiscount: z.boolean().optional(),
   discountType: z.enum(["fixed", "percentage"]).optional(),
-  discountValue: z.number().min(0, "Discount value must be positive").optional(),
-  rooms: z.array(z.object({
-    name: z.string().min(1, "Room name is required"),
-    availableRooms: z.number().min(1, "Available rooms must be at least 1").optional().or(z.literal(undefined)),
-    basePrice: z.number().min(1, "Base price must be greater than 0").optional().or(z.literal(undefined)),
-    hasDiscount: z.boolean().optional(),
-    discountType: z.enum(["fixed", "percentage"]).optional(),
-    discountValue: z.number().min(0, "Discount value must be positive").optional(),
-  })).optional(),
+  discountValue: z
+    .number()
+    .min(0, "Discount value must be positive")
+    .optional(),
+  rooms: z
+    .array(
+      z.object({
+        name: z.string().min(1, "Room name is required"),
+        availableRooms: z
+          .number()
+          .min(1, "Available rooms must be at least 1")
+          .optional()
+          .or(z.literal(undefined)),
+        basePrice: z
+          .number()
+          .min(1, "Base price must be greater than 0")
+          .optional()
+          .or(z.literal(undefined)),
+        hasDiscount: z.boolean().optional(),
+        discountType: z.enum(["fixed", "percentage"]).optional(),
+        discountValue: z
+          .number()
+          .min(0, "Discount value must be positive")
+          .optional(),
+      })
+    )
+    .optional(),
 
   // Step 5: Details and Media
-  images: z
-    .array(z.string().url())
-    .min(1, "At least one image is required."),
-  tags: z
-    .array(z.string().min(1, "Tag cannot be empty"))
-    .optional(),
+  images: z.array(z.string().url()).min(1, "At least one image is required."),
+  tags: z.array(z.string().min(1, "Tag cannot be empty")).optional(),
   whatsIncluded: z
     .array(z.string().min(1, "Inclusion cannot be empty"))
     .optional(),
@@ -107,8 +119,7 @@ const BaseFormSchema = z.object({
   houseRules: z.string().optional(),
 });
 
-const FormSchema = BaseFormSchema
-.refine(
+const FormSchema = BaseFormSchema.refine(
   (data) =>
     !data.hasDiscount ||
     (data.discountType !== undefined && data.discountValue !== undefined),
@@ -116,16 +127,17 @@ const FormSchema = BaseFormSchema
     message: "Discount type and value are required when discount is enabled",
     path: ["discountType"],
   }
-)
-.refine(
+).refine(
   (data) =>
     !data.rooms ||
-    data.rooms.every(room =>
-      !room.hasDiscount ||
-      (room.discountType !== undefined && room.discountValue !== undefined)
+    data.rooms.every(
+      (room) =>
+        !room.hasDiscount ||
+        (room.discountType !== undefined && room.discountValue !== undefined)
     ),
   {
-    message: "Discount type and value are required when discount is enabled for rooms",
+    message:
+      "Discount type and value are required when discount is enabled for rooms",
     path: ["rooms"],
   }
 );
@@ -148,7 +160,11 @@ const STEPS = [
   },
   { id: 3, title: "Amenities", description: "Features and facilities" },
   { id: 4, title: "Pricing", description: "Rates and fees" },
-  { id: 5, title: "Details and Media", description: "Images, tags, and additional details" },
+  {
+    id: 5,
+    title: "Details and Media",
+    description: "Images, tags, and additional details",
+  },
   { id: 6, title: "Policies", description: "Rules and restrictions" },
 ];
 
@@ -175,27 +191,27 @@ const Step1Form: React.FC<StepProps> = ({
     setErrors({ ...errors, [field]: "" });
   };
 
-        return (
-          <div className="space-y-6">
+  return (
+    <div className="space-y-6">
       <div className="space-y-2">
         <Label className="text-gray-600 text-xs">Accommodation Title</Label>
-                    <Input
-                      placeholder="e.g. Luxury Apartments"
+        <Input
+          placeholder="e.g. Luxury Apartments"
           value={formData.title}
           onChange={(e) => handleInputChange("title", e.target.value)}
-                      className="!py-6 !text-xs font-normal shadow-none placeholder:text-gray-500 placeholder:text-xs placeholder:font-normal focus-visible:ring-0 focus-visible:border-primary transition-all ease-in-out duration-200"
-                    />
+          className="!py-6 !text-xs font-normal shadow-none placeholder:text-gray-500 placeholder:text-xs placeholder:font-normal focus-visible:ring-0 focus-visible:border-primary transition-all ease-in-out duration-200"
+        />
         {errors.title && <p className="text-xs text-red-600">{errors.title}</p>}
       </div>
 
       <div className="space-y-2">
         <Label className="text-gray-600 text-xs">Description</Label>
-                    <Textarea
-                      placeholder="Tell us more about this accommodation"
+        <Textarea
+          placeholder="Tell us more about this accommodation"
           value={formData.description}
           onChange={(e) => handleInputChange("description", e.target.value)}
-                      className="!py-3 !text-xs font-normal shadow-none placeholder:text-gray-500 placeholder:text-xs placeholder:font-normal focus-visible:ring-0 focus-visible:border-primary transition-all ease-in-out duration-200 min-h-40"
-                    />
+          className="!py-3 !text-xs font-normal shadow-none placeholder:text-gray-500 placeholder:text-xs placeholder:font-normal focus-visible:ring-0 focus-visible:border-primary transition-all ease-in-out duration-200 min-h-40"
+        />
         {errors.description && (
           <p className="text-xs text-red-600">{errors.description}</p>
         )}
@@ -206,7 +222,10 @@ const Step1Form: React.FC<StepProps> = ({
         <Select
           value={formData.accommodationType}
           onValueChange={(value) => {
-            handleInputChange("accommodationType", value as "shortlet" | "hotel");
+            handleInputChange(
+              "accommodationType",
+              value as "shortlet" | "hotel"
+            );
             // Reset fields when switching accommodation types
             if (value === "hotel") {
               handleInputChange("buildingType", "");
@@ -225,9 +244,9 @@ const Step1Form: React.FC<StepProps> = ({
             }
           }}
         >
-                      <SelectTrigger className="w-full text-xs shadow-none !py-6 cursor-pointer">
+          <SelectTrigger className="w-full text-xs shadow-none !py-6 cursor-pointer">
             <SelectValue placeholder="Select accommodation type" />
-                      </SelectTrigger>
+          </SelectTrigger>
           <SelectContent>
             <SelectItem
               value="shortlet"
@@ -258,42 +277,44 @@ const Step1Form: React.FC<StepProps> = ({
             <SelectTrigger className="w-full text-xs shadow-none !py-6 cursor-pointer">
               <SelectValue placeholder="Select a building type" />
             </SelectTrigger>
-                    <SelectContent>
-                      {PROPERTY_TYPES.map((type) => (
-                        <SelectItem
-                          key={type}
-                          value={type}
-                          className="text-gray-600 text-xs !py-2.5 cursor-pointer"
-                        >
-                          {type}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+            <SelectContent>
+              {PROPERTY_TYPES.map((type) => (
+                <SelectItem
+                  key={type}
+                  value={type}
+                  className="text-gray-600 text-xs !py-2.5 cursor-pointer"
+                >
+                  {type}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
           {errors.buildingType && (
             <p className="text-xs text-red-600">{errors.buildingType}</p>
-              )}
+          )}
         </div>
       )}
 
       {formData.accommodationType === "shortlet" && (
         <>
-            <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="space-y-2">
               <Label className="text-gray-600 text-xs">Bedrooms *</Label>
-                      <Input
-                        type="number"
-                        placeholder="0"
+              <Input
+                type="number"
+                placeholder="0"
                 value={formData.bedrooms ?? ""}
-                        onChange={(e) => {
-                          const value = e.target.value;
+                onChange={(e) => {
+                  const value = e.target.value;
                   handleInputChange(
                     "bedrooms",
-                    value === "" ? undefined : Number.parseInt(value) || undefined
-                          );
-                        }}
-                        className="!py-6 !text-xs font-normal shadow-none placeholder:text-gray-500 placeholder:text-xs placeholder:font-normal focus-visible:ring-0 focus-visible:border-primary transition-all ease-in-out duration-200"
-                      />
+                    value === ""
+                      ? undefined
+                      : Number.parseInt(value) || undefined
+                  );
+                }}
+                className="!py-6 !text-xs font-normal shadow-none placeholder:text-gray-500 placeholder:text-xs placeholder:font-normal focus-visible:ring-0 focus-visible:border-primary transition-all ease-in-out duration-200"
+              />
               {errors.bedrooms && (
                 <p className="text-xs text-red-600">{errors.bedrooms}</p>
               )}
@@ -301,19 +322,21 @@ const Step1Form: React.FC<StepProps> = ({
 
             <div className="space-y-2">
               <Label className="text-gray-600 text-xs">Bathrooms *</Label>
-                      <Input
-                        type="number"
-                        placeholder="0"
+              <Input
+                type="number"
+                placeholder="0"
                 value={formData.bathrooms ?? ""}
-                        onChange={(e) => {
-                          const value = e.target.value;
+                onChange={(e) => {
+                  const value = e.target.value;
                   handleInputChange(
                     "bathrooms",
-                    value === "" ? undefined : Number.parseInt(value) || undefined
-                          );
-                        }}
-                        className="!py-6 !text-xs font-normal shadow-none placeholder:text-gray-500 placeholder:text-xs placeholder:font-normal focus-visible:ring-0 focus-visible:border-primary transition-all ease-in-out duration-200"
-                      />
+                    value === ""
+                      ? undefined
+                      : Number.parseInt(value) || undefined
+                  );
+                }}
+                className="!py-6 !text-xs font-normal shadow-none placeholder:text-gray-500 placeholder:text-xs placeholder:font-normal focus-visible:ring-0 focus-visible:border-primary transition-all ease-in-out duration-200"
+              />
               {errors.bathrooms && (
                 <p className="text-xs text-red-600">{errors.bathrooms}</p>
               )}
@@ -321,38 +344,42 @@ const Step1Form: React.FC<StepProps> = ({
           </div>
 
           <div className="space-y-2">
-            <Label className="text-gray-600 text-xs">Property Size (optional)</Label>
+            <Label className="text-gray-600 text-xs">
+              Property Size (optional)
+            </Label>
             <Input
               placeholder="e.g. 1200 sq ft"
               value={formData.propertySize}
-              onChange={(e) => handleInputChange("propertySize", e.target.value)}
+              onChange={(e) =>
+                handleInputChange("propertySize", e.target.value)
+              }
               className="!py-6 !text-xs font-normal shadow-none placeholder:text-gray-500 placeholder:text-xs placeholder:font-normal focus-visible:ring-0 focus-visible:border-primary transition-all ease-in-out duration-200"
             />
             {errors.propertySize && (
               <p className="text-xs text-red-600">{errors.propertySize}</p>
             )}
-            </div>
+          </div>
         </>
       )}
 
       {formData.accommodationType === "shortlet" && (
-            <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="space-y-2">
             <Label className="text-gray-600 text-xs">Maximum Guests *</Label>
-                      <Input
-                        type="number"
-                        min={1}
-                        placeholder="1"
+            <Input
+              type="number"
+              min={1}
+              placeholder="1"
               value={formData.maxGuests ?? ""}
-                        onChange={(e) => {
-                          const value = e.target.value;
+              onChange={(e) => {
+                const value = e.target.value;
                 handleInputChange(
                   "maxGuests",
                   value === "" ? undefined : Number.parseInt(value) || undefined
-                          );
-                        }}
-                        className="!py-6 !text-xs font-normal shadow-none placeholder:text-gray-500 placeholder:text-xs placeholder:font-normal focus-visible:ring-0 focus-visible:border-primary transition-all ease-in-out duration-200"
-                      />
+                );
+              }}
+              className="!py-6 !text-xs font-normal shadow-none placeholder:text-gray-500 placeholder:text-xs placeholder:font-normal focus-visible:ring-0 focus-visible:border-primary transition-all ease-in-out duration-200"
+            />
             {errors.maxGuests && (
               <p className="text-xs text-red-600">{errors.maxGuests}</p>
             )}
@@ -360,30 +387,30 @@ const Step1Form: React.FC<StepProps> = ({
 
           <div className="space-y-2">
             <Label className="text-gray-600 text-xs">Parking Spaces</Label>
-                      <Input
-                        type="number"
-                        placeholder="0"
+            <Input
+              type="number"
+              placeholder="0"
               value={formData.parkingSpaces ?? ""}
-                        onChange={(e) => {
-                          const value = e.target.value;
+              onChange={(e) => {
+                const value = e.target.value;
                 handleInputChange(
                   "parkingSpaces",
                   value === "" ? undefined : Number.parseInt(value) || undefined
-                          );
-                        }}
-                        className="!py-6 !text-xs font-normal shadow-none placeholder:text-gray-500 placeholder:text-xs placeholder:font-normal focus-visible:ring-0 focus-visible:border-primary transition-all ease-in-out duration-200"
-                      />
+                );
+              }}
+              className="!py-6 !text-xs font-normal shadow-none placeholder:text-gray-500 placeholder:text-xs placeholder:font-normal focus-visible:ring-0 focus-visible:border-primary transition-all ease-in-out duration-200"
+            />
             {errors.parkingSpaces && (
               <p className="text-xs text-red-600">{errors.parkingSpaces}</p>
-                )}
-            </div>
+            )}
+          </div>
         </div>
       )}
 
       {formData.accommodationType === "hotel" && (
         <div className="space-y-2">
           <Label className="text-gray-600 text-xs">Parking Spaces</Label>
-                    <Input
+          <Input
             type="number"
             placeholder="0"
             value={formData.parkingSpaces ?? ""}
@@ -394,16 +421,15 @@ const Step1Form: React.FC<StepProps> = ({
                 value === "" ? undefined : Number.parseInt(value) || undefined
               );
             }}
-                      className="!py-6 !text-xs font-normal shadow-none placeholder:text-gray-500 placeholder:text-xs placeholder:font-normal focus-visible:ring-0 focus-visible:border-primary transition-all ease-in-out duration-200"
-                    />
+            className="!py-6 !text-xs font-normal shadow-none placeholder:text-gray-500 placeholder:text-xs placeholder:font-normal focus-visible:ring-0 focus-visible:border-primary transition-all ease-in-out duration-200"
+          />
           {errors.parkingSpaces && (
             <p className="text-xs text-red-600">{errors.parkingSpaces}</p>
           )}
-                </div>
-              )}
-
-          </div>
-        );
+        </div>
+      )}
+    </div>
+  );
 };
 
 // Step 2: Location & Access
@@ -421,76 +447,84 @@ const Step2Form: React.FC<StepProps> = ({
     setErrors({ ...errors, [field]: "" });
   };
 
-        return (
-          <div className="space-y-6">
+  return (
+    <div className="space-y-6">
       <div className="space-y-2">
         <Label className="text-gray-600 text-xs">Country</Label>
-                    <Input
-                      placeholder="e.g. Nigeria"
+        <Input
+          placeholder="e.g. Nigeria"
           value={formData.country}
           onChange={(e) => handleInputChange("country", e.target.value)}
-                      className="!py-6 !text-xs font-normal shadow-none placeholder:text-gray-500 placeholder:text-xs placeholder:font-normal focus-visible:ring-0 focus-visible:border-primary transition-all ease-in-out duration-200"
-                    />
-        {errors.country && <p className="text-xs text-red-600">{errors.country}</p>}
+          className="!py-6 !text-xs font-normal shadow-none placeholder:text-gray-500 placeholder:text-xs placeholder:font-normal focus-visible:ring-0 focus-visible:border-primary transition-all ease-in-out duration-200"
+        />
+        {errors.country && (
+          <p className="text-xs text-red-600">{errors.country}</p>
+        )}
       </div>
 
-            <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div className="space-y-2">
           <Label className="text-gray-600 text-xs">State</Label>
-                      <Input
-                        placeholder="e.g. Lagos"
+          <Input
+            placeholder="e.g. Lagos"
             value={formData.state}
             onChange={(e) => handleInputChange("state", e.target.value)}
-                        className="!py-6 !text-xs font-normal shadow-none placeholder:text-gray-500 placeholder:text-xs placeholder:font-normal focus-visible:ring-0 focus-visible:border-primary transition-all ease-in-out duration-200"
-                      />
-          {errors.state && <p className="text-xs text-red-600">{errors.state}</p>}
+            className="!py-6 !text-xs font-normal shadow-none placeholder:text-gray-500 placeholder:text-xs placeholder:font-normal focus-visible:ring-0 focus-visible:border-primary transition-all ease-in-out duration-200"
+          />
+          {errors.state && (
+            <p className="text-xs text-red-600">{errors.state}</p>
+          )}
         </div>
 
         <div className="space-y-2">
           <Label className="text-gray-600 text-xs">City</Label>
-                      <Input
-                        placeholder="e.g. Victoria Island"
+          <Input
+            placeholder="e.g. Victoria Island"
             value={formData.city}
             onChange={(e) => handleInputChange("city", e.target.value)}
-                        className="!py-6 !text-xs font-normal shadow-none placeholder:text-gray-500 placeholder:text-xs placeholder:font-normal focus-visible:ring-0 focus-visible:border-primary transition-all ease-in-out duration-200"
-                      />
+            className="!py-6 !text-xs font-normal shadow-none placeholder:text-gray-500 placeholder:text-xs placeholder:font-normal focus-visible:ring-0 focus-visible:border-primary transition-all ease-in-out duration-200"
+          />
           {errors.city && <p className="text-xs text-red-600">{errors.city}</p>}
         </div>
-            </div>
+      </div>
 
       <div className="space-y-2">
         <Label className="text-gray-600 text-xs">Street Address</Label>
-                    <Input
-                      placeholder="e.g. 123 Main Street"
+        <Input
+          placeholder="e.g. 123 Main Street"
           value={formData.streetAddress}
           onChange={(e) => handleInputChange("streetAddress", e.target.value)}
-                      className="!py-6 !text-xs font-normal shadow-none placeholder:text-gray-500 placeholder:text-xs placeholder:font-normal focus-visible:ring-0 focus-visible:border-primary transition-all ease-in-out duration-200"
-                    />
+          className="!py-6 !text-xs font-normal shadow-none placeholder:text-gray-500 placeholder:text-xs placeholder:font-normal focus-visible:ring-0 focus-visible:border-primary transition-all ease-in-out duration-200"
+        />
         {errors.streetAddress && (
           <p className="text-xs text-red-600">{errors.streetAddress}</p>
         )}
       </div>
 
       <div className="space-y-2">
-        <Label className="text-gray-600 text-xs">ZIP/Postal Code (optional)</Label>
-                    <Input
-                      placeholder="e.g. 10001"
+        <Label className="text-gray-600 text-xs">
+          ZIP/Postal Code (optional)
+        </Label>
+        <Input
+          placeholder="e.g. 10001"
           value={formData.zipCode}
           onChange={(e) => handleInputChange("zipCode", e.target.value)}
-                      className="!py-6 !text-xs font-normal shadow-none placeholder:text-gray-500 placeholder:text-xs placeholder:font-normal focus-visible:ring-0 focus-visible:border-primary transition-all ease-in-out duration-200"
-                    />
-        {errors.zipCode && <p className="text-xs text-red-600">{errors.zipCode}</p>}
+          className="!py-6 !text-xs font-normal shadow-none placeholder:text-gray-500 placeholder:text-xs placeholder:font-normal focus-visible:ring-0 focus-visible:border-primary transition-all ease-in-out duration-200"
+        />
+        {errors.zipCode && (
+          <p className="text-xs text-red-600">{errors.zipCode}</p>
+        )}
       </div>
 
-            <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div className="space-y-2">
           <Label className="text-gray-600 text-xs">Check-in Time</Label>
-                      <Input
-                        type="time"
+          <Input
+            type="time"
             value={formData.checkInTime}
             onChange={(e) => handleInputChange("checkInTime", e.target.value)}
-                        className="!py-6 !text-xs font-normal shadow-none placeholder:text-gray-500 placeholder:text-xs placeholder:font-normal focus-visible:ring-0 focus-visible:border-primary transition-all ease-in-out duration-200"
-                      />
+            className="!py-6 !text-xs font-normal shadow-none placeholder:text-gray-500 placeholder:text-xs placeholder:font-normal focus-visible:ring-0 focus-visible:border-primary transition-all ease-in-out duration-200"
+          />
           {errors.checkInTime && (
             <p className="text-xs text-red-600">{errors.checkInTime}</p>
           )}
@@ -498,19 +532,19 @@ const Step2Form: React.FC<StepProps> = ({
 
         <div className="space-y-2">
           <Label className="text-gray-600 text-xs">Check-out Time</Label>
-                      <Input
-                        type="time"
+          <Input
+            type="time"
             value={formData.checkOutTime}
             onChange={(e) => handleInputChange("checkOutTime", e.target.value)}
-                        className="!py-6 !text-xs font-normal shadow-none placeholder:text-gray-500 placeholder:text-xs placeholder:font-normal focus-visible:ring-0 focus-visible:border-primary transition-all ease-in-out duration-200"
-                      />
+            className="!py-6 !text-xs font-normal shadow-none placeholder:text-gray-500 placeholder:text-xs placeholder:font-normal focus-visible:ring-0 focus-visible:border-primary transition-all ease-in-out duration-200"
+          />
           {errors.checkOutTime && (
             <p className="text-xs text-red-600">{errors.checkOutTime}</p>
-                )}
+          )}
         </div>
-            </div>
-          </div>
-        );
+      </div>
+    </div>
+  );
 };
 
 // Step 3: Amenities
@@ -531,38 +565,43 @@ const Step3Form: React.FC<StepProps> = ({
     setErrors({ ...errors, amenities: "" });
   };
 
-        return (
-          <div className="space-y-8">
-      {Object.entries(AMENITY_CATEGORIES).map(([categoryKey, categoryLabel]) => {
-                const categoryAmenities = AMENITIES.filter(
-                  (amenity) => amenity.category === categoryKey
-                );
+  return (
+    <div className="space-y-8">
+      {Object.entries(AMENITY_CATEGORIES).map(
+        ([categoryKey, categoryLabel]) => {
+          const categoryAmenities = AMENITIES.filter(
+            (amenity) => amenity.category === categoryKey
+          );
 
-                return (
-                  <div key={categoryKey} className="space-y-4">
-                    <h4 className="text-sm font-medium text-gray-700">
-                      {categoryLabel}
-                    </h4>
-                    <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                      {categoryAmenities.map((amenity) => (
-                <div key={amenity.key} className="flex items-center space-x-3">
-                                <Checkbox
-                    checked={formData.amenities?.[amenity.key] || false}
-                    onCheckedChange={(checked) =>
-                      handleAmenityChange(amenity.key, !!checked)
-                    }
-                  />
-                  <Label className="text-xs text-gray-600 cursor-pointer">
-                                  {amenity.label}
-                  </Label>
-                              </div>
-                      ))}
-                    </div>
+          return (
+            <div key={categoryKey} className="space-y-4">
+              <h4 className="text-sm font-medium text-gray-700">
+                {categoryLabel}
+              </h4>
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                {categoryAmenities.map((amenity) => (
+                  <div
+                    key={amenity.key}
+                    className="flex items-center space-x-3"
+                  >
+                    <Checkbox
+                      checked={formData.amenities?.[amenity.key] || false}
+                      onCheckedChange={(checked) =>
+                        handleAmenityChange(amenity.key, !!checked)
+                      }
+                    />
+                    <Label className="text-xs text-gray-600 cursor-pointer">
+                      {amenity.label}
+                    </Label>
                   </div>
-                );
-      })}
-          </div>
-        );
+                ))}
+              </div>
+            </div>
+          );
+        }
+      )}
+    </div>
+  );
 };
 
 // Step 4: Pricing
@@ -583,7 +622,7 @@ const Step4Form: React.FC<StepProps> = ({
   const handleRoomChange = (index: number, field: string, value: unknown) => {
     const updatedRooms = [...(formData.rooms || [])];
     updatedRooms[index] = { ...updatedRooms[index], [field]: value };
-    
+
     // Clear discount fields when hasDiscount is false
     if (field === "hasDiscount" && !value) {
       updatedRooms[index] = {
@@ -592,7 +631,7 @@ const Step4Form: React.FC<StepProps> = ({
         discountValue: undefined,
       };
     }
-    
+
     updateFormData({ rooms: updatedRooms });
     setErrors({ ...errors, [`rooms.${index}.${field}`]: "" });
   };
@@ -614,28 +653,32 @@ const Step4Form: React.FC<StepProps> = ({
     updateFormData({ rooms: updatedRooms });
   };
 
-        return (
-          <div className="space-y-6">
+  return (
+    <div className="space-y-6">
       {formData.accommodationType === "shortlet" ? (
         // Shortlet Pricing
         <>
           <div className="space-y-2">
-            <Label className="text-gray-600 text-xs">Base Price per Night *</Label>
-                    <Input
-                      type="number"
-                      min="1"
-                      step="0.01"
-                      placeholder="0.00"
+            <Label className="text-gray-600 text-xs">
+              Base Price per Night *
+            </Label>
+            <Input
+              type="number"
+              min="1"
+              step="0.01"
+              placeholder="0.00"
               value={formData.basePrice ?? ""}
-                      onChange={(e) => {
-                        const value = e.target.value;
+              onChange={(e) => {
+                const value = e.target.value;
                 handleInputChange(
                   "basePrice",
-                  value === "" ? undefined : Number.parseFloat(value) || undefined
-                        );
-                      }}
-                      className="!py-6 !text-xs font-normal shadow-none placeholder:text-gray-500 placeholder:text-xs placeholder:font-normal focus-visible:ring-0 focus-visible:border-primary transition-all ease-in-out duration-200"
-                    />
+                  value === ""
+                    ? undefined
+                    : Number.parseFloat(value) || undefined
+                );
+              }}
+              className="!py-6 !text-xs font-normal shadow-none placeholder:text-gray-500 placeholder:text-xs placeholder:font-normal focus-visible:ring-0 focus-visible:border-primary transition-all ease-in-out duration-200"
+            />
             {errors.basePrice && (
               <p className="text-xs text-red-600">{errors.basePrice}</p>
             )}
@@ -655,7 +698,10 @@ const Step4Form: React.FC<StepProps> = ({
                 }}
                 className="cursor-pointer"
               />
-              <Label htmlFor="hasDiscount" className="text-xs text-gray-600 cursor-pointer">
+              <Label
+                htmlFor="hasDiscount"
+                className="text-xs text-gray-600 cursor-pointer"
+              >
                 Apply Discount
               </Label>
             </div>
@@ -663,62 +709,80 @@ const Step4Form: React.FC<StepProps> = ({
 
           {formData.hasDiscount && (
             <div className="space-y-4 p-4 bg-gray-50 rounded-lg">
-              <h6 className="text-xs font-medium text-gray-700">Discount Details</h6>
-              
-              <div className="grid grid-cols-2 gap-4">
+              <h6 className="text-xs font-medium text-gray-700">
+                Discount Details
+              </h6>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label className="text-gray-600 text-xs">Discount Type</Label>
                   <Select
                     value={formData.discountType}
                     onValueChange={(value) =>
-                      handleInputChange("discountType", value as "fixed" | "percentage")
+                      handleInputChange(
+                        "discountType",
+                        value as "fixed" | "percentage"
+                      )
                     }
                   >
-                        <SelectTrigger className="w-full text-xs shadow-none !py-6 cursor-pointer">
-                          <SelectValue placeholder="Select discount type" />
-                        </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem
-                          value="fixed"
-                          className="text-gray-600 text-xs !py-2.5 cursor-pointer"
-                        >
-                          Fixed Amount
-                        </SelectItem>
-                        <SelectItem
-                          value="percentage"
-                          className="text-gray-600 text-xs !py-2.5 cursor-pointer"
-                        >
-                          Percentage
-                        </SelectItem>
-                      </SelectContent>
-                    </Select>
+                    <SelectTrigger className="w-full text-xs shadow-none !py-6 cursor-pointer">
+                      <SelectValue placeholder="Select discount type" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem
+                        value="fixed"
+                        className="text-gray-600 text-xs !py-2.5 cursor-pointer"
+                      >
+                        Fixed Amount
+                      </SelectItem>
+                      <SelectItem
+                        value="percentage"
+                        className="text-gray-600 text-xs !py-2.5 cursor-pointer"
+                      >
+                        Percentage
+                      </SelectItem>
+                    </SelectContent>
+                  </Select>
                   {errors.discountType && (
-                    <p className="text-xs text-red-600">{errors.discountType}</p>
+                    <p className="text-xs text-red-600">
+                      {errors.discountType}
+                    </p>
                   )}
                 </div>
 
                 <div className="space-y-2">
                   <Label className="text-gray-600 text-xs">
-                    Discount {formData.discountType === "percentage" ? "Percentage" : "Amount"}
+                    Discount{" "}
+                    {formData.discountType === "percentage"
+                      ? "Percentage"
+                      : "Amount"}
                   </Label>
-                      <Input
-                        type="number"
-                        min="0"
+                  <Input
+                    type="number"
+                    min="0"
                     step={formData.discountType === "percentage" ? "1" : "0.01"}
-                    max={formData.discountType === "percentage" ? "100" : undefined}
-                    placeholder={formData.discountType === "percentage" ? "0" : "0.00"}
+                    max={
+                      formData.discountType === "percentage" ? "100" : undefined
+                    }
+                    placeholder={
+                      formData.discountType === "percentage" ? "0" : "0.00"
+                    }
                     value={formData.discountValue ?? ""}
-                        onChange={(e) => {
-                          const value = e.target.value;
+                    onChange={(e) => {
+                      const value = e.target.value;
                       handleInputChange(
                         "discountValue",
-                        value === "" ? undefined : Number.parseFloat(value) || undefined
-                          );
-                        }}
-                        className="!py-6 !text-xs font-normal shadow-none placeholder:text-gray-500 placeholder:text-xs placeholder:font-normal focus-visible:ring-0 focus-visible:border-primary transition-all ease-in-out duration-200"
-                      />
+                        value === ""
+                          ? undefined
+                          : Number.parseFloat(value) || undefined
+                      );
+                    }}
+                    className="!py-6 !text-xs font-normal shadow-none placeholder:text-gray-500 placeholder:text-xs placeholder:font-normal focus-visible:ring-0 focus-visible:border-primary transition-all ease-in-out duration-200"
+                  />
                   {errors.discountValue && (
-                    <p className="text-xs text-red-600">{errors.discountValue}</p>
+                    <p className="text-xs text-red-600">
+                      {errors.discountValue}
+                    </p>
                   )}
                 </div>
               </div>
@@ -742,9 +806,14 @@ const Step4Form: React.FC<StepProps> = ({
             </div>
 
             {(formData.rooms || []).map((room, index) => (
-              <div key={index} className="p-4 border border-gray-200 rounded-lg space-y-4">
+              <div
+                key={index}
+                className="p-4 border border-gray-200 rounded-lg space-y-4"
+              >
                 <div className="flex items-center justify-between">
-                  <h5 className="text-xs font-medium text-gray-600">Room {index + 1}</h5>
+                  <h5 className="text-xs font-medium text-gray-600">
+                    Room {index + 1}
+                  </h5>
                   {(formData.rooms || []).length > 1 && (
                     <Button
                       type="button"
@@ -756,65 +825,81 @@ const Step4Form: React.FC<StepProps> = ({
                       Remove
                     </Button>
                   )}
-            </div>
+                </div>
 
-            <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <Label className="text-gray-600 text-xs">Room Name *</Label>
                     <Input
                       placeholder="e.g. Standard Room"
                       value={room.name}
-                      onChange={(e) => handleRoomChange(index, "name", e.target.value)}
+                      onChange={(e) =>
+                        handleRoomChange(index, "name", e.target.value)
+                      }
                       className="!py-6 !text-xs font-normal shadow-none placeholder:text-gray-500 placeholder:text-xs placeholder:font-normal focus-visible:ring-0 focus-visible:border-primary transition-all ease-in-out duration-200"
                     />
                     {errors[`rooms.${index}.name`] && (
-                      <p className="text-xs text-red-600">{errors[`rooms.${index}.name`]}</p>
+                      <p className="text-xs text-red-600">
+                        {errors[`rooms.${index}.name`]}
+                      </p>
                     )}
                   </div>
 
                   <div className="space-y-2">
-                    <Label className="text-gray-600 text-xs">Available Rooms *</Label>
-                      <Input
-                        type="number"
+                    <Label className="text-gray-600 text-xs">
+                      Available Rooms *
+                    </Label>
+                    <Input
+                      type="number"
                       min="1"
                       placeholder="0"
                       value={room.availableRooms ?? ""}
-                        onChange={(e) => {
-                          const value = e.target.value;
+                      onChange={(e) => {
+                        const value = e.target.value;
                         handleRoomChange(
                           index,
                           "availableRooms",
-                          value === "" ? undefined : Number.parseInt(value) || undefined
-                          );
-                        }}
-                        className="!py-6 !text-xs font-normal shadow-none placeholder:text-gray-500 placeholder:text-xs placeholder:font-normal focus-visible:ring-0 focus-visible:border-primary transition-all ease-in-out duration-200"
-                      />
+                          value === ""
+                            ? undefined
+                            : Number.parseInt(value) || undefined
+                        );
+                      }}
+                      className="!py-6 !text-xs font-normal shadow-none placeholder:text-gray-500 placeholder:text-xs placeholder:font-normal focus-visible:ring-0 focus-visible:border-primary transition-all ease-in-out duration-200"
+                    />
                     {errors[`rooms.${index}.availableRooms`] && (
-                      <p className="text-xs text-red-600">{errors[`rooms.${index}.availableRooms`]}</p>
+                      <p className="text-xs text-red-600">
+                        {errors[`rooms.${index}.availableRooms`]}
+                      </p>
                     )}
                   </div>
                 </div>
 
                 <div className="space-y-2">
-                  <Label className="text-gray-600 text-xs">Base Price per Night *</Label>
-                      <Input
-                        type="number"
+                  <Label className="text-gray-600 text-xs">
+                    Base Price per Night *
+                  </Label>
+                  <Input
+                    type="number"
                     min="1"
-                        step="0.01"
-                        placeholder="0.00"
+                    step="0.01"
+                    placeholder="0.00"
                     value={room.basePrice ?? ""}
-                        onChange={(e) => {
-                          const value = e.target.value;
+                    onChange={(e) => {
+                      const value = e.target.value;
                       handleRoomChange(
                         index,
                         "basePrice",
-                        value === "" ? undefined : Number.parseFloat(value) || undefined
-                          );
-                        }}
-                        className="!py-6 !text-xs font-normal shadow-none placeholder:text-gray-500 placeholder:text-xs placeholder:font-normal focus-visible:ring-0 focus-visible:border-primary transition-all ease-in-out duration-200"
-                      />
+                        value === ""
+                          ? undefined
+                          : Number.parseFloat(value) || undefined
+                      );
+                    }}
+                    className="!py-6 !text-xs font-normal shadow-none placeholder:text-gray-500 placeholder:text-xs placeholder:font-normal focus-visible:ring-0 focus-visible:border-primary transition-all ease-in-out duration-200"
+                  />
                   {errors[`rooms.${index}.basePrice`] && (
-                    <p className="text-xs text-red-600">{errors[`rooms.${index}.basePrice`]}</p>
+                    <p className="text-xs text-red-600">
+                      {errors[`rooms.${index}.basePrice`]}
+                    </p>
                   )}
                 </div>
 
@@ -823,74 +908,104 @@ const Step4Form: React.FC<StepProps> = ({
                     <Checkbox
                       id={`hasDiscount-${index}`}
                       checked={room.hasDiscount}
-                      onCheckedChange={(checked) => handleRoomChange(index, "hasDiscount", !!checked)}
+                      onCheckedChange={(checked) =>
+                        handleRoomChange(index, "hasDiscount", !!checked)
+                      }
                       className="cursor-pointer"
                     />
-                    <Label htmlFor={`hasDiscount-${index}`} className="text-xs text-gray-600 cursor-pointer">
+                    <Label
+                      htmlFor={`hasDiscount-${index}`}
+                      className="text-xs text-gray-600 cursor-pointer"
+                    >
                       Apply Discount
                     </Label>
-            </div>
-          </div>
+                  </div>
+                </div>
 
                 {room.hasDiscount && (
                   <div className="space-y-4 p-4 bg-gray-50 rounded-lg">
-                    <h6 className="text-xs font-medium text-gray-700">Discount Details</h6>
-                    
-                    <div className="grid grid-cols-2 gap-4">
+                    <h6 className="text-xs font-medium text-gray-700">
+                      Discount Details
+                    </h6>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <div className="space-y-2">
-                        <Label className="text-gray-600 text-xs">Discount Type</Label>
+                        <Label className="text-gray-600 text-xs">
+                          Discount Type
+                        </Label>
                         <Select
                           value={room.discountType}
                           onValueChange={(value) =>
-                            handleRoomChange(index, "discountType", value as "fixed" | "percentage")
+                            handleRoomChange(
+                              index,
+                              "discountType",
+                              value as "fixed" | "percentage"
+                            )
                           }
                         >
-                        <SelectTrigger className="w-full text-xs shadow-none !py-6 cursor-pointer">
+                          <SelectTrigger className="w-full text-xs shadow-none !py-6 cursor-pointer">
                             <SelectValue placeholder="Select discount type" />
-                        </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem
                               value="fixed"
-                          className="text-gray-600 text-xs !py-2.5 cursor-pointer"
-                        >
+                              className="text-gray-600 text-xs !py-2.5 cursor-pointer"
+                            >
                               Fixed Amount
-                        </SelectItem>
-                        <SelectItem
+                            </SelectItem>
+                            <SelectItem
                               value="percentage"
-                          className="text-gray-600 text-xs !py-2.5 cursor-pointer"
-                        >
+                              className="text-gray-600 text-xs !py-2.5 cursor-pointer"
+                            >
                               Percentage
-                        </SelectItem>
-                      </SelectContent>
-                    </Select>
+                            </SelectItem>
+                          </SelectContent>
+                        </Select>
                         {errors[`rooms.${index}.discountType`] && (
-                          <p className="text-xs text-red-600">{errors[`rooms.${index}.discountType`]}</p>
+                          <p className="text-xs text-red-600">
+                            {errors[`rooms.${index}.discountType`]}
+                          </p>
                         )}
                       </div>
 
                       <div className="space-y-2">
                         <Label className="text-gray-600 text-xs">
-                          Discount {room.discountType === "percentage" ? "Percentage" : "Amount"}
+                          Discount{" "}
+                          {room.discountType === "percentage"
+                            ? "Percentage"
+                            : "Amount"}
                         </Label>
-                      <Input
-                        type="number"
-                        min="0"
-                          step={room.discountType === "percentage" ? "1" : "0.01"}
-                          max={room.discountType === "percentage" ? "100" : undefined}
-                          placeholder={room.discountType === "percentage" ? "0" : "0.00"}
+                        <Input
+                          type="number"
+                          min="0"
+                          step={
+                            room.discountType === "percentage" ? "1" : "0.01"
+                          }
+                          max={
+                            room.discountType === "percentage"
+                              ? "100"
+                              : undefined
+                          }
+                          placeholder={
+                            room.discountType === "percentage" ? "0" : "0.00"
+                          }
                           value={room.discountValue ?? ""}
-                        onChange={(e) => {
-                          const value = e.target.value;
+                          onChange={(e) => {
+                            const value = e.target.value;
                             handleRoomChange(
                               index,
                               "discountValue",
-                              value === "" ? undefined : Number.parseFloat(value) || undefined
-                          );
-                        }}
-                        className="!py-6 !text-xs font-normal shadow-none placeholder:text-gray-500 placeholder:text-xs placeholder:font-normal focus-visible:ring-0 focus-visible:border-primary transition-all ease-in-out duration-200"
-                      />
+                              value === ""
+                                ? undefined
+                                : Number.parseFloat(value) || undefined
+                            );
+                          }}
+                          className="!py-6 !text-xs font-normal shadow-none placeholder:text-gray-500 placeholder:text-xs placeholder:font-normal focus-visible:ring-0 focus-visible:border-primary transition-all ease-in-out duration-200"
+                        />
                         {errors[`rooms.${index}.discountValue`] && (
-                          <p className="text-xs text-red-600">{errors[`rooms.${index}.discountValue`]}</p>
+                          <p className="text-xs text-red-600">
+                            {errors[`rooms.${index}.discountValue`]}
+                          </p>
                         )}
                       </div>
                     </div>
@@ -932,12 +1047,22 @@ const Step5Form: React.FC<StepProps> = ({
   //   setErrors({ ...errors, [field]: "" });
   // };
 
-  const handleArrayChange = (field: "tags" | "whatsIncluded", value: string, action: "add" | "remove") => {
+  const handleArrayChange = (
+    field: "tags" | "whatsIncluded",
+    value: string,
+    action: "add" | "remove"
+  ) => {
     const currentArray = formData[field] || [];
-    if (action === "add" && value.trim() && !currentArray.includes(value.trim())) {
+    if (
+      action === "add" &&
+      value.trim() &&
+      !currentArray.includes(value.trim())
+    ) {
       updateFormData({ [field]: [...currentArray, value.trim()] });
     } else if (action === "remove") {
-      updateFormData({ [field]: currentArray.filter((item) => item !== value) });
+      updateFormData({
+        [field]: currentArray.filter((item) => item !== value),
+      });
     }
     setErrors({ ...errors, [field]: "" });
   };
@@ -992,9 +1117,15 @@ const Step5Form: React.FC<StepProps> = ({
       setImageUrls(updatedUrls);
     } catch (error: unknown) {
       toastIds.forEach((id) => toast.dismiss(id));
-      toast.error(`Failed to upload images: ${error instanceof Error ? error.message : "Unknown error"}`);
+      toast.error(
+        `Failed to upload images: ${
+          error instanceof Error ? error.message : "Unknown error"
+        }`
+      );
     } finally {
-      setUploadingFiles((prev) => prev.filter((name) => !newUploading.includes(name)));
+      setUploadingFiles((prev) =>
+        prev.filter((name) => !newUploading.includes(name))
+      );
     }
   };
 
@@ -1012,7 +1143,7 @@ const Step5Form: React.FC<StepProps> = ({
     <div className="space-y-6">
       <div className="space-y-2">
         <Label className="text-gray-600 text-xs">Images</Label>
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           <div
             className={`border-2 border-dashed rounded-lg p-4 flex items-center justify-center h-44 relative cursor-pointer ${
               dragActive ? "border-primary bg-primary/10" : "border-gray-200"
@@ -1049,7 +1180,9 @@ const Step5Form: React.FC<StepProps> = ({
               <p className="text-[11px] text-gray-500 mt-2">
                 Drag photos here or click to browse
               </p>
-              <p className="text-[10px] text-gray-400 mt-1.5">JPEG/PNG, max 5MB</p>
+              <p className="text-[10px] text-gray-400 mt-1.5">
+                JPEG/PNG, max 5MB
+              </p>
             </div>
           </div>
           {imageUrls.map((url, index) => (
@@ -1083,7 +1216,11 @@ const Step5Form: React.FC<StepProps> = ({
                   stroke="currentColor"
                   className="size-3"
                 >
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M6 18L18 6M6 6l12 12"
+                  />
                 </svg>
               </button>
               {uploadingFiles.includes(url.split("/").pop() || "") && (
@@ -1094,9 +1231,10 @@ const Step5Form: React.FC<StepProps> = ({
             </div>
           ))}
         </div>
-        {errors.images && <p className="text-xs text-red-600">{errors.images}</p>}
+        {errors.images && (
+          <p className="text-xs text-red-600">{errors.images}</p>
+        )}
       </div>
-
 
       <div className="space-y-2">
         <Label className="text-gray-600 text-xs">Tags (optional)</Label>
@@ -1126,7 +1264,9 @@ const Step5Form: React.FC<StepProps> = ({
       </div>
 
       <div className="space-y-2">
-        <Label className="text-gray-600 text-xs">What&apos;s Included (optional)</Label>
+        <Label className="text-gray-600 text-xs">
+          What&apos;s Included (optional)
+        </Label>
         <div className="flex flex-wrap gap-2">
           {(formData.whatsIncluded || []).map((item, index) => (
             <div
@@ -1152,9 +1292,9 @@ const Step5Form: React.FC<StepProps> = ({
         {errors.whatsIncluded && (
           <p className="text-xs text-red-600">{errors.whatsIncluded}</p>
         )}
-            </div>
-          </div>
-        );
+      </div>
+    </div>
+  );
 };
 
 // Step 6: Policies
@@ -1172,115 +1312,120 @@ const Step6Form: React.FC<StepProps> = ({
     setErrors({ ...errors, [field]: "" });
   };
 
-        return (
-          <div className="space-y-6">
-            <div className="space-y-2">
-              <Label className="text-gray-600 text-xs">Smoking Policy</Label>
-              <Select
-                value={formData.smokingPolicy}
-                onValueChange={(value) =>
-                  handleInputChange("smokingPolicy", value as "allowed" | "notAllowed")
-                }
-              >
-                        <SelectTrigger className="w-full text-xs shadow-none !py-6 cursor-pointer">
-                  <SelectValue placeholder="Select smoking policy" />
-                        </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem
-                    value="allowed"
-                          className="text-gray-600 text-xs !py-2.5 cursor-pointer"
-                        >
-                    Smoking Allowed
-                        </SelectItem>
-                        <SelectItem
-                    value="notAllowed"
-                          className="text-gray-600 text-xs !py-2.5 cursor-pointer"
-                        >
-                    Smoking Not Allowed
-                        </SelectItem>
-                      </SelectContent>
-                    </Select>
-              {errors.smokingPolicy && (
-                <p className="text-xs text-red-600">{errors.smokingPolicy}</p>
-              )}
-            </div>
+  return (
+    <div className="space-y-6">
+      <div className="space-y-2">
+        <Label className="text-gray-600 text-xs">Smoking Policy</Label>
+        <Select
+          value={formData.smokingPolicy}
+          onValueChange={(value) =>
+            handleInputChange(
+              "smokingPolicy",
+              value as "allowed" | "notAllowed"
+            )
+          }
+        >
+          <SelectTrigger className="w-full text-xs shadow-none !py-6 cursor-pointer">
+            <SelectValue placeholder="Select smoking policy" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem
+              value="allowed"
+              className="text-gray-600 text-xs !py-2.5 cursor-pointer"
+            >
+              Smoking Allowed
+            </SelectItem>
+            <SelectItem
+              value="notAllowed"
+              className="text-gray-600 text-xs !py-2.5 cursor-pointer"
+            >
+              Smoking Not Allowed
+            </SelectItem>
+          </SelectContent>
+        </Select>
+        {errors.smokingPolicy && (
+          <p className="text-xs text-red-600">{errors.smokingPolicy}</p>
+        )}
+      </div>
 
-            <div className="space-y-2">
-              <Label className="text-gray-600 text-xs">Pet Policy</Label>
-              <Select
-                value={formData.petPolicy}
-                onValueChange={(value) =>
-                  handleInputChange("petPolicy", value as "allowed" | "notAllowed")
-                }
-              >
-                        <SelectTrigger className="w-full text-xs shadow-none !py-6 cursor-pointer">
-                  <SelectValue placeholder="Select pet policy" />
-                        </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem
-                    value="allowed"
-                          className="text-gray-600 text-xs !py-2.5 cursor-pointer"
-                        >
-                    Pets Allowed
-                        </SelectItem>
-                        <SelectItem
-                    value="notAllowed"
-                          className="text-gray-600 text-xs !py-2.5 cursor-pointer"
-                        >
-                    Pets Not Allowed
-                        </SelectItem>
-                      </SelectContent>
-                    </Select>
-              {errors.petPolicy && (
-                <p className="text-xs text-red-600">{errors.petPolicy}</p>
-                )}
-            </div>
+      <div className="space-y-2">
+        <Label className="text-gray-600 text-xs">Pet Policy</Label>
+        <Select
+          value={formData.petPolicy}
+          onValueChange={(value) =>
+            handleInputChange("petPolicy", value as "allowed" | "notAllowed")
+          }
+        >
+          <SelectTrigger className="w-full text-xs shadow-none !py-6 cursor-pointer">
+            <SelectValue placeholder="Select pet policy" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem
+              value="allowed"
+              className="text-gray-600 text-xs !py-2.5 cursor-pointer"
+            >
+              Pets Allowed
+            </SelectItem>
+            <SelectItem
+              value="notAllowed"
+              className="text-gray-600 text-xs !py-2.5 cursor-pointer"
+            >
+              Pets Not Allowed
+            </SelectItem>
+          </SelectContent>
+        </Select>
+        {errors.petPolicy && (
+          <p className="text-xs text-red-600">{errors.petPolicy}</p>
+        )}
+      </div>
 
-            <div className="space-y-2">
-              <Label className="text-gray-600 text-xs">Children Policy</Label>
-              <Select
-                value={formData.childrenPolicy}
-                onValueChange={(value) =>
-                  handleInputChange("childrenPolicy", value as "allowed" | "notAllowed")
-                }
-              >
-                      <SelectTrigger className="w-full text-xs shadow-none !py-6 cursor-pointer">
-                  <SelectValue placeholder="Select children policy" />
-                      </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem
-                    value="allowed"
-                        className="text-gray-600 text-xs !py-2.5 cursor-pointer"
-                      >
-                    Children Allowed
-                      </SelectItem>
-                      <SelectItem
-                    value="notAllowed"
-                        className="text-gray-600 text-xs !py-2.5 cursor-pointer"
-                      >
-                    Children Not Allowed
-                      </SelectItem>
-                    </SelectContent>
-                  </Select>
-              {errors.childrenPolicy && (
-                <p className="text-xs text-red-600">{errors.childrenPolicy}</p>
-              )}
-            </div>
-
+      <div className="space-y-2">
+        <Label className="text-gray-600 text-xs">Children Policy</Label>
+        <Select
+          value={formData.childrenPolicy}
+          onValueChange={(value) =>
+            handleInputChange(
+              "childrenPolicy",
+              value as "allowed" | "notAllowed"
+            )
+          }
+        >
+          <SelectTrigger className="w-full text-xs shadow-none !py-6 cursor-pointer">
+            <SelectValue placeholder="Select children policy" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem
+              value="allowed"
+              className="text-gray-600 text-xs !py-2.5 cursor-pointer"
+            >
+              Children Allowed
+            </SelectItem>
+            <SelectItem
+              value="notAllowed"
+              className="text-gray-600 text-xs !py-2.5 cursor-pointer"
+            >
+              Children Not Allowed
+            </SelectItem>
+          </SelectContent>
+        </Select>
+        {errors.childrenPolicy && (
+          <p className="text-xs text-red-600">{errors.childrenPolicy}</p>
+        )}
+      </div>
 
       <div className="space-y-2">
         <Label className="text-gray-600 text-xs">House Rules (optional)</Label>
-                    <Textarea
-                      placeholder="e.g. No parties or events, Quiet hours from 10 PM to 8 AM, No shoes inside..."
+        <Textarea
+          placeholder="e.g. No parties or events, Quiet hours from 10 PM to 8 AM, No shoes inside..."
           value={formData.houseRules}
           onChange={(e) => handleInputChange("houseRules", e.target.value)}
-                      className="!py-3 !text-xs font-normal shadow-none placeholder:text-gray-500 placeholder:text-xs placeholder:font-normal focus-visible:ring-0 focus-visible:border-primary transition-all ease-in-out duration-200 min-h-32"
-                    />
+          className="!py-3 !text-xs font-normal shadow-none placeholder:text-gray-500 placeholder:text-xs placeholder:font-normal focus-visible:ring-0 focus-visible:border-primary transition-all ease-in-out duration-200 min-h-32"
+        />
         {errors.houseRules && (
           <p className="text-xs text-red-600">{errors.houseRules}</p>
-              )}
+        )}
       </div>
-          </div>
+    </div>
   );
 };
 
@@ -1288,6 +1433,9 @@ const Step6Form: React.FC<StepProps> = ({
 const AccommodationListingForm: React.FC = () => {
   const router = useRouter();
   const [currentStep, setCurrentStep] = useState<StepKey>(1);
+
+  // Prevent zoom on mobile when focusing inputs
+  usePreventZoomAggressive();
   const [formData, setFormData] = useState<FormData>({
     title: "",
     description: "",
@@ -1328,12 +1476,38 @@ const AccommodationListingForm: React.FC = () => {
   };
 
   type StepData = {
-    1: Pick<FormData, "title" | "description" | "accommodationType" | "buildingType" | "bedrooms" | "bathrooms" | "maxGuests" | "parkingSpaces" | "propertySize">;
-    2: Pick<FormData, "country" | "state" | "city" | "streetAddress" | "zipCode" | "checkInTime" | "checkOutTime">;
+    1: Pick<
+      FormData,
+      | "title"
+      | "description"
+      | "accommodationType"
+      | "buildingType"
+      | "bedrooms"
+      | "bathrooms"
+      | "maxGuests"
+      | "parkingSpaces"
+      | "propertySize"
+    >;
+    2: Pick<
+      FormData,
+      | "country"
+      | "state"
+      | "city"
+      | "streetAddress"
+      | "zipCode"
+      | "checkInTime"
+      | "checkOutTime"
+    >;
     3: Pick<FormData, "amenities">;
-    4: Pick<FormData, "basePrice" | "hasDiscount" | "discountType" | "discountValue" | "rooms">;
+    4: Pick<
+      FormData,
+      "basePrice" | "hasDiscount" | "discountType" | "discountValue" | "rooms"
+    >;
     5: Pick<FormData, "images" | "tags" | "whatsIncluded">;
-    6: Pick<FormData, "smokingPolicy" | "petPolicy" | "childrenPolicy" | "houseRules">;
+    6: Pick<
+      FormData,
+      "smokingPolicy" | "petPolicy" | "childrenPolicy" | "houseRules"
+    >;
   };
   const validateStep = (step: StepKey): boolean => {
     const stepSchemas: Record<StepKey, z.ZodObject<z.ZodRawShape>> = {
@@ -1341,22 +1515,27 @@ const AccommodationListingForm: React.FC = () => {
         title: BaseFormSchema.shape.title,
         description: BaseFormSchema.shape.description,
         accommodationType: BaseFormSchema.shape.accommodationType,
-        buildingType: formData.accommodationType === "shortlet" 
-          ? z.string().min(1, "Building type is required for shortlets.")
-          : BaseFormSchema.shape.buildingType,
-        bedrooms: formData.accommodationType === "shortlet" 
-          ? z.number().min(0, "Number of bedrooms must be 0 or more.")
-          : BaseFormSchema.shape.bedrooms.optional(),
-        bathrooms: formData.accommodationType === "shortlet" 
-          ? z.number().min(0, "Number of bathrooms must be 0 or more.")
-          : BaseFormSchema.shape.bathrooms.optional(),
-        maxGuests: formData.accommodationType === "shortlet" 
-          ? z.number().min(1, "Maximum guests must be at least 1.")
-          : BaseFormSchema.shape.maxGuests.optional(),
+        buildingType:
+          formData.accommodationType === "shortlet"
+            ? z.string().min(1, "Building type is required for shortlets.")
+            : BaseFormSchema.shape.buildingType,
+        bedrooms:
+          formData.accommodationType === "shortlet"
+            ? z.number().min(0, "Number of bedrooms must be 0 or more.")
+            : BaseFormSchema.shape.bedrooms.optional(),
+        bathrooms:
+          formData.accommodationType === "shortlet"
+            ? z.number().min(0, "Number of bathrooms must be 0 or more.")
+            : BaseFormSchema.shape.bathrooms.optional(),
+        maxGuests:
+          formData.accommodationType === "shortlet"
+            ? z.number().min(1, "Maximum guests must be at least 1.")
+            : BaseFormSchema.shape.maxGuests.optional(),
         parkingSpaces: BaseFormSchema.shape.parkingSpaces,
-        propertySize: formData.accommodationType === "shortlet" 
-          ? BaseFormSchema.shape.propertySize.optional()
-          : BaseFormSchema.shape.propertySize.optional(),
+        propertySize:
+          formData.accommodationType === "shortlet"
+            ? BaseFormSchema.shape.propertySize.optional()
+            : BaseFormSchema.shape.propertySize.optional(),
       }),
       2: z.object({
         country: BaseFormSchema.shape.country,
@@ -1371,22 +1550,39 @@ const AccommodationListingForm: React.FC = () => {
         amenities: BaseFormSchema.shape.amenities,
       }),
       4: z.object({
-        basePrice: formData.accommodationType === "shortlet" 
-          ? z.number().min(1, "Base price must be greater than 0.")
-          : BaseFormSchema.shape.basePrice.optional(),
+        basePrice:
+          formData.accommodationType === "shortlet"
+            ? z.number().min(1, "Base price must be greater than 0.")
+            : BaseFormSchema.shape.basePrice.optional(),
         hasDiscount: BaseFormSchema.shape.hasDiscount,
         discountType: BaseFormSchema.shape.discountType,
         discountValue: BaseFormSchema.shape.discountValue,
-        rooms: formData.accommodationType === "hotel"
-          ? z.array(z.object({
-              name: z.string().min(1, "Room name is required"),
-              availableRooms: z.number().min(1, "Available rooms must be at least 1").optional().or(z.literal(undefined)),
-              basePrice: z.number().min(1, "Base price must be greater than 0").optional().or(z.literal(undefined)),
-              hasDiscount: z.boolean().optional(),
-              discountType: z.enum(["fixed", "percentage"]).optional(),
-              discountValue: z.number().min(0, "Discount value must be positive").optional(),
-            })).min(1, "At least one room is required for hotels")
-          : BaseFormSchema.shape.rooms,
+        rooms:
+          formData.accommodationType === "hotel"
+            ? z
+                .array(
+                  z.object({
+                    name: z.string().min(1, "Room name is required"),
+                    availableRooms: z
+                      .number()
+                      .min(1, "Available rooms must be at least 1")
+                      .optional()
+                      .or(z.literal(undefined)),
+                    basePrice: z
+                      .number()
+                      .min(1, "Base price must be greater than 0")
+                      .optional()
+                      .or(z.literal(undefined)),
+                    hasDiscount: z.boolean().optional(),
+                    discountType: z.enum(["fixed", "percentage"]).optional(),
+                    discountValue: z
+                      .number()
+                      .min(0, "Discount value must be positive")
+                      .optional(),
+                  })
+                )
+                .min(1, "At least one room is required for hotels")
+            : BaseFormSchema.shape.rooms,
       }),
       5: z.object({
         images: BaseFormSchema.shape.images,
@@ -1459,24 +1655,30 @@ const AccommodationListingForm: React.FC = () => {
     // Additional custom validation for Step 4
     if (step === 4) {
       const newErrors: Errors = {};
-      
+
       // For shortlet: validate base price is required and discount fields
       if (formData.accommodationType === "shortlet") {
         if (!formData.basePrice || formData.basePrice <= 0) {
-          newErrors.basePrice = "Base price is required and must be greater than 0";
+          newErrors.basePrice =
+            "Base price is required and must be greater than 0";
         }
-        
+
         // Validate discount fields when discount is enabled
         if (formData.hasDiscount) {
           if (!formData.discountType) {
-            newErrors.discountType = "Discount type is required when discount is enabled";
+            newErrors.discountType =
+              "Discount type is required when discount is enabled";
           }
-          if (formData.discountValue === undefined || formData.discountValue <= 0) {
-            newErrors.discountValue = "Discount value is required when discount is enabled";
+          if (
+            formData.discountValue === undefined ||
+            formData.discountValue <= 0
+          ) {
+            newErrors.discountValue =
+              "Discount value is required when discount is enabled";
           }
         }
       }
-      
+
       // For hotel: validate room fields and discount fields
       if (formData.accommodationType === "hotel") {
         if (!formData.rooms || formData.rooms.length === 0) {
@@ -1487,31 +1689,35 @@ const AccommodationListingForm: React.FC = () => {
               newErrors[`rooms.${index}.name`] = "Room name is required";
             }
             if (room.availableRooms === undefined || room.availableRooms <= 0) {
-              newErrors[`rooms.${index}.availableRooms`] = "Available rooms is required and must be at least 1";
+              newErrors[`rooms.${index}.availableRooms`] =
+                "Available rooms is required and must be at least 1";
             }
             if (room.basePrice === undefined || room.basePrice <= 0) {
-              newErrors[`rooms.${index}.basePrice`] = "Base price is required and must be greater than 0";
+              newErrors[`rooms.${index}.basePrice`] =
+                "Base price is required and must be greater than 0";
             }
-            
+
             // Validate discount fields when discount is enabled
             if (room.hasDiscount) {
               if (!room.discountType) {
-                newErrors[`rooms.${index}.discountType`] = "Discount type is required when discount is enabled";
+                newErrors[`rooms.${index}.discountType`] =
+                  "Discount type is required when discount is enabled";
               }
               if (room.discountValue === undefined || room.discountValue <= 0) {
-                newErrors[`rooms.${index}.discountValue`] = "Discount value is required when discount is enabled";
+                newErrors[`rooms.${index}.discountValue`] =
+                  "Discount value is required when discount is enabled";
               }
             }
           });
         }
       }
-      
+
       if (Object.keys(newErrors).length > 0) {
         setErrors(newErrors);
         return false;
       }
     }
-    
+
     setErrors({});
     return true;
   };
@@ -1665,133 +1871,169 @@ const AccommodationListingForm: React.FC = () => {
   };
 
   return (
-    <div className="h-full">
-      <div className="flex items-center justify-between border-b p-4 md:p-8">
-        <div>
-          <h3 className="text-primary text-lg font-semibold">
-            New Accommodation
-          </h3>
-          <p className="text-gray-500 text-xs mt-1">
-            Tell us more about your accommodation
-          </p>
-        </div>
-        <Button
-          variant="outline"
-          className="text-primary text-xs font-medium shadow-none border border-primary hover:bg-primary hover:text-white transition ease-in-out duration-300 cursor-pointer"
-        >
-          Save as Draft
-        </Button>
-      </div>
-
-      <div className="h-full grid grid-cols-4">
-        <div className="hidden md:block col-span-1">
-          <div className="h-full border-r px-10 py-8">
-            <ol className="relative border-s border-gray-200">
-              {STEPS.map((step, index) => (
-                <li
-                  key={step.id}
-                  className={index < STEPS.length - 1 ? "mb-10 ms-6" : "ms-6"}
-                >
-                  <span
-                    className={`absolute flex items-center justify-center size-6 rounded-full -start-3 ring-8 ring-white ${
-                      currentStep === step.id
-                        ? "bg-blue-100"
-                        : currentStep > step.id
-                        ? "bg-blue-100"
-                        : "bg-gray-100"
-                    }`}
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      strokeWidth="3.5"
-                      stroke="currentColor"
-                      className={`size-[11px] ${
-                        currentStep === step.id
-                          ? "text-primary"
-                          : currentStep > step.id
-                          ? "text-primary"
-                          : "text-gray-400"
-                      }`}
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="m4.5 12.75 6 6 9-13.5"
-                      />
-                    </svg>
-                  </span>
-                  <h3
-                    className={`flex items-center mb-1 text-xs font-semibold ${
-                      currentStep === step.id
-                        ? "text-primary"
-                        : currentStep > step.id
-                        ? "text-primary"
-                        : "text-gray-500"
-                    }`}
-                  >
-                    {step.title}
-                  </h3>
-                  <p className="mb-4 text-[11px]/relaxed text-gray-500">
-                    {step.description}
-                  </p>
-                </li>
-              ))}
-            </ol>
+    <div className="h-full flex flex-col event-form">
+      {/* Fixed Header */}
+      <div className="flex-shrink-0 border-b px-4 lg:px-7 py-6">
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-primary text-base lg:text-[18px] font-semibold">
+              New Accommodation
+            </h1>
+            {/* <p className="hidden md:block text-gray-600 text-[11px] md:text-xs mt-0.5 md:mt-1">
+              Tell us more about your accommodation
+            </p> */}
           </div>
         </div>
+      </div>
 
-        <div className="col-span-4 md:col-span-3">
-          <div className="p-4 md:p-8">
-            <p className="text-gray-500 text-xs">
-              Step {currentStep}/{STEPS.length}
-            </p>
-            <h3 className="text-primary text-lg font-semibold mt-1.5">
-              {STEPS[currentStep - 1].title}
-            </h3>
-            <p className="text-gray-500 text-xs mt-1">
-              {STEPS[currentStep - 1].description}
-            </p>
+      {/* Main Layout - Fixed Sidebar + Scrollable Content */}
+      <div className="flex-1 flex min-h-0">
+        {/* Fixed Sidebar - Always visible on desktop */}
+        <div className="hidden lg:block w-80 flex-shrink-0 border-r px-6 xl:px-10 py-6 xl:py-8">
+          <ol className="relative border-s border-gray-200">
+            {STEPS.map((step, index) => (
+              <li
+                key={step.id}
+                className={
+                  index < STEPS.length - 1 ? "mb-8 xl:mb-10 ms-6" : "ms-6"
+                }
+              >
+                <span
+                  className={`absolute flex items-center justify-center size-6 rounded-full -start-3 ring-8 ring-white ${
+                    currentStep === step.id
+                      ? "bg-blue-100"
+                      : currentStep > step.id
+                      ? "bg-blue-100"
+                      : "bg-gray-100"
+                  }`}
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth="3.5"
+                    stroke="currentColor"
+                    className={`size-[11px] ${
+                      currentStep === step.id
+                        ? "text-primary"
+                        : currentStep > step.id
+                        ? "text-primary"
+                        : "text-gray-400"
+                    }`}
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="m4.5 12.75 6 6 9-13.5"
+                    />
+                  </svg>
+                </span>
+                <h3
+                  className={`flex items-center mb-1 text-xs font-semibold ${
+                    currentStep === step.id
+                      ? "text-primary"
+                      : currentStep > step.id
+                      ? "text-primary"
+                      : "text-gray-500"
+                  }`}
+                >
+                  {step.title}
+                </h3>
+                <p className="mb-4 text-[11px]/relaxed text-gray-500">
+                  {step.description}
+                </p>
+              </li>
+            ))}
+          </ol>
+        </div>
 
-            <div className="mt-10">
+        {/* Main Content Area - Scrollable */}
+        <div className="flex-1 flex flex-col min-h-0">
+          {/* Mobile Step Indicator */}
+          <div className="lg:hidden flex-shrink-0 border-b bg-gray-50 px-4 py-3">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-2">
+                <span className="text-xs font-medium text-gray-700">
+                  Step {currentStep} of {STEPS.length}
+                </span>
+                <span className="text-xs text-gray-500">
+                  {STEPS[currentStep - 1].title}
+                </span>
+              </div>
+              <div className="flex space-x-1">
+                {STEPS.map((_, index) => (
+                  <div
+                    key={index}
+                    className={`w-2 h-2 rounded-full ${
+                      index + 1 <= currentStep ? "bg-primary" : "bg-gray-300"
+                    }`}
+                  />
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Scrollable Form Content */}
+          <div className="flex-1 overflow-y-auto">
+            <div className="p-4 sm:p-6 lg:p-8">
+              {/* Desktop Step Info */}
+              <div className="hidden lg:block">
+                <p className="text-gray-500 text-xs">
+                  Step {currentStep}/{STEPS.length}
+                </p>
+                <h3 className="text-primary text-lg font-semibold mt-1.5">
+                  {STEPS[currentStep - 1].title}
+                </h3>
+                <p className="text-gray-500 text-xs mt-1">
+                  {STEPS[currentStep - 1].description}
+                </p>
+              </div>
+
+              <div className="mt-6 lg:mt-10">
                 <form onSubmit={handleSubmit} className="space-y-6">
                   {renderStepContent()}
-
-                  <div className="flex justify-between pt-8 border-t">
-                    {currentStep > 1 && (
-                      <Button
-                        type="button"
-                        variant="outline"
-                        onClick={handlePrevStep}
-                        className="text-xs cursor-pointer"
-                      disabled={creatingAccommodation}
-                      >
-                        Previous
-                      </Button>
-                    )}
-
-                    <div className="ml-auto">
-                      {currentStep < STEPS.length ? (
-                        <Button
-                          type="button"
-                          onClick={handleNextStep}
-                          className="text-xs cursor-pointer"
-                        >
-                          Next
-                        </Button>
-                      ) : (
-                        <Button
-                          type="submit"
-                          className="text-xs cursor-pointer"
-                        disabled={creatingAccommodation}
-                        >
-                          {creatingAccommodation ? "Creating Accommodation..." : "Create Accommodation"}
-                        </Button>
-                      )}
-                    </div>
-                  </div>
                 </form>
+              </div>
+            </div>
+          </div>
+
+          {/* Fixed Bottom Navigation */}
+          <div className="flex-shrink-0 border-t bg-white p-4 sm:p-6 lg:p-8">
+            <div className="flex justify-between items-center">
+              {currentStep > 1 ? (
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={handlePrevStep}
+                  className="flex items-center gap-2 text-xs cursor-pointer !p-5"
+                  disabled={creatingAccommodation}
+                >
+                  Previous
+                </Button>
+              ) : (
+                <div></div>
+              )}
+
+              {currentStep < STEPS.length ? (
+                <Button
+                  type="button"
+                  onClick={handleNextStep}
+                  className="flex items-center gap-2 text-xs cursor-pointer !p-5"
+                >
+                  Next
+                </Button>
+              ) : (
+                <Button
+                  type="submit"
+                  onClick={handleSubmit}
+                  className="text-xs cursor-pointer !p-5"
+                  disabled={creatingAccommodation}
+                >
+                  {creatingAccommodation
+                    ? "Creating Accommodation..."
+                    : "Create Accommodation"}
+                </Button>
+              )}
             </div>
           </div>
         </div>
