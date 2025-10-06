@@ -90,7 +90,7 @@ const Extras = () => {
             </div>
           </div>
 
-          <div className="bg-white p-5 rounded-xl flex items-center justify-between mt-10">
+          <div className="bg-white p-5 rounded-xl hidden md:flex items-center justify-between mt-10">
             <h1 className="text-primary text-base/relaxed md:text-base/relaxed font-semibold">
               Where do you want to go?
             </h1>

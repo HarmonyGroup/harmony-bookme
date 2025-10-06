@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+
 "use client";
 import React, { useState } from "react";
 import Image from "next/image";
@@ -18,7 +20,7 @@ const Hero = () => {
   return (
     <div className="relative">
       {/* Main Hero Section */}
-      <section className="relative min-h-[40vh] flex items-center justify-center overflow-hidden">
+      <section className="relative min-h-[30vh] flex items-center justify-center overflow-hidden">
         {/* Background with Parallax Effect */}
         <div className="absolute inset-0 z-0">
           <Image
@@ -55,11 +57,10 @@ const Hero = () => {
           </div>
 
           {/* Search Interface */}
-          <div className="max-w-3xl mx-auto">
+          {/* <div className="max-w-3xl mx-auto">
             <Card className="bg-white backdrop-blur-lg border-0 shadow-2xl rounded-3xl p-4 md:p-6">
               <div className="">
                 <div className="relative mb-4">
-                  {/* <MagnifyingGlassIcon className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" /> */}
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
@@ -174,7 +175,7 @@ const Hero = () => {
                 </div>
               </div>
             </Card>
-          </div>
+          </div> */}
         </div>
       </section>
     </div>

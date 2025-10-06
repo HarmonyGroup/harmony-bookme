@@ -34,7 +34,7 @@ const NavLink = ({
   onClick?: () => void;
 }) => {
   const pathname = usePathname();
-  const isActive = pathname === href;
+  const isActive = pathname.includes(href);
 
   return (
     <li>

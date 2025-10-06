@@ -307,7 +307,7 @@ const ShowingToday = () => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [cinema, setCinema] = useState("");
   const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
-  const [selectedMovieCinema, setSelectedMovieCinema] = useState(null);
+  const [selectedMovieCinema] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [showtimeModal, setShowtimeModal] = useState(false);
 
@@ -322,9 +322,11 @@ const ShowingToday = () => {
 
   return (
     <>
-      <div className="bg-white rounded-lg shadow-xs p-4">
+      <div className="bg-white border border-muted rounded-lg shadow-none p-4">
         <div className="flex items-center justify-between">
-          <h1 className="text-primary text-sm font-semibold">Showing Today</h1>
+          <h1 className="text-primary text-[13px] font-semibold">
+            Showing Today
+          </h1>
           <div className="relative hidden md:block">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -342,7 +344,7 @@ const ShowingToday = () => {
             </svg>
             <Input
               type="search"
-              className="w-[320px] bg-muted/95 !text-xs placeholder:text-gray-500 placeholder:text-xs placeholder:font-normal outline-none ring-0 shadow-none px-4 !py-5 ps-9 border-none rounded-full focus-visible:ring-0 focus-visible:border-primary transition-all ease-in-out duration-200"
+              className="w-[300px] bg-muted/60 !text-xs placeholder:text-gray-400 placeholder:text-xs placeholder:font-medium shadow-none outline-none ring-0 focus:shadow-none px-4 !py-5 ps-9 border !border-muted focus-visible:ring-0 focus-visible:border-primary transition-all ease-in-out duration-200"
               placeholder="Search booking code here"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
@@ -352,30 +354,30 @@ const ShowingToday = () => {
 
         <div>
           {isLoading ? (
-            <Table className="mt-4">
-              <TableHeader>
-                <TableRow className="bg-muted/90 text-xs">
-                  <TableHead className="text-gray-700 font-medium py-4 pl-4">
+            <Table className="mt-4 !px-10">
+              <TableHeader className="!px-10">
+                <TableRow className="bg-muted/60 border-muted text-xs !px-10">
+                  <TableHead className="text-gray-800 font-medium py-5 pl-4">
                     Movie Name
                   </TableHead>
-                  <TableHead className="text-gray-700 font-medium py-4">
+                  <TableHead className="text-gray-800 font-medium py-4">
                     Cinema
                   </TableHead>
-                  <TableHead className="text-gray-700 font-medium py-4">
+                  <TableHead className="text-gray-800 font-medium py-4">
                     Total Bookings
                   </TableHead>
-                  <TableHead className="text-gray-700 font-medium py-4">
+                  <TableHead className="text-gray-800 font-medium py-4">
                     Revenue
                   </TableHead>
-                  <TableHead className="text-gray-700 font-medium py-4 text-right pr-4">
+                  <TableHead className="text-gray-800 font-medium py-4 text-right pr-4">
                     Action
                   </TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {[...Array(3)].map((_, index) => (
-                  <TableRow key={index}>
-                    <TableCell className="py-4 pl-4 align-middle">
+                  <TableRow key={index} className="border-muted">
+                    <TableCell className="py-7 pl-4 align-middle">
                       <div className="flex items-center gap-2.5">
                         <Skeleton className="h-10 w-10 bg-gray-200 rounded-md" />
                         <Skeleton className="h-4 w-[200px] bg-gray-200 rounded-sm" />
@@ -398,22 +400,22 @@ const ShowingToday = () => {
               </TableBody>
             </Table>
           ) : data?.data?.length ? (
-            <Table className="mt-4">
-              <TableHeader>
-                <TableRow className="bg-muted/90 text-xs border-none">
-                  <TableHead className="text-gray-700 font-medium py-5 pl-4">
+            <Table className="mt-4 !px-10">
+              <TableHeader className="!px-10">
+                <TableRow className="bg-muted/60 border-muted text-xs !px-10">
+                  <TableHead className="text-gray-800 font-medium py-6 pl-4">
                     Movie Name
                   </TableHead>
-                  <TableHead className="text-gray-700 font-medium py-4">
+                  <TableHead className="text-gray-800 font-medium">
                     Cinema
                   </TableHead>
-                  <TableHead className="text-gray-700 font-medium py-4">
+                  <TableHead className="text-gray-800 font-medium">
                     Bookings
                   </TableHead>
                   {/* <TableHead className="text-gray-700 font-medium py-4">
                     Revenue
                   </TableHead> */}
-                  <TableHead className="text-gray-700 font-medium py-4 text-right pr-4">
+                  <TableHead className="text-gray-800 font-medium text-right pr-4">
                     Action
                   </TableHead>
                 </TableRow>
@@ -421,7 +423,7 @@ const ShowingToday = () => {
 
               <TableBody>
                 {data?.data?.map((movie) => (
-                  <TableRow key={movie?._id}>
+                  <TableRow key={movie?._id} className="border-muted">
                     <TableCell className="py-7 pl-4 align-middle">
                       {/* <Link
                         href={`/vendor/movies/${movie?.slug}`}
@@ -448,20 +450,24 @@ const ShowingToday = () => {
                             fill
                           />
                         </div>
-                        <span className="text-gray-700 text-xs font-semibold">
+                        <span className="text-gray-800 text-xs font-semibold">
                           {movie?.title}
                         </span>
                       </div>
                     </TableCell>
-                    <TableCell className="py-4 align-middle text-gray-700 text-xs font-medium">
+                    <TableCell className="py-4 align-middle text-gray-600 text-xs font-medium">
                       {movie?.cinema?.title}
                     </TableCell>
-                    <TableCell className="py-4 align-middle text-gray-700 text-xs font-medium">
+                    <TableCell className="py-4 align-middle text-gray-600 text-xs font-medium">
                       {movie.showtimes?.reduce(
-                        (sum: number, showtime: { tickets: { soldCount: number }[] }) =>
+                        (
+                          sum: number,
+                          showtime: { tickets: { soldCount: number }[] }
+                        ) =>
                           sum +
                           showtime.tickets.reduce(
-                            (s: number, t: { soldCount: number }) => s + t.soldCount,
+                            (s: number, t: { soldCount: number }) =>
+                              s + t.soldCount,
                             0
                           ),
                         0
@@ -484,9 +490,9 @@ const ShowingToday = () => {
                             xmlns="http://www.w3.org/2000/svg"
                             fill="none"
                             viewBox="0 0 24 24"
-                            strokeWidth="1.5"
+                            strokeWidth="1.8"
                             stroke="currentColor"
-                            className="size-[22px]"
+                            className="size-[20px] text-gray-700"
                           >
                             <path
                               strokeLinecap="round"
@@ -501,30 +507,11 @@ const ShowingToday = () => {
                               setSelectedMovie({ ...dummyMovie, ...movie }); // Merge dummy data with real movie data
                               setIsModalOpen(true);
                             }}
-                            className="text-gray-700 text-xs font-medium cursor-pointer flex items-center gap-2"
+                            className="text-gray-700 text-xs font-medium cursor-pointer hover:bg-muted"
                           >
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              fill="none"
-                              viewBox="0 0 24 24"
-                              strokeWidth="1.8"
-                              stroke="currentColor"
-                              className="text-gray-700 size-[14px]"
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z"
-                              />
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
-                              />
-                            </svg>
                             Preview
                           </DropdownMenuItem>
-                          <DropdownMenuItem
+                          {/* <DropdownMenuItem
                             onClick={() => {
                               setSelectedMovieCinema(movie?.cinema?._id);
                               setShowtimeModal(true);
@@ -546,7 +533,7 @@ const ShowingToday = () => {
                               />
                             </svg>
                             Add showtime
-                          </DropdownMenuItem>
+                          </DropdownMenuItem> */}
                         </DropdownMenuContent>
                       </DropdownMenu>
                     </TableCell>

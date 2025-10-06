@@ -38,7 +38,7 @@ const NavLink = ({
   onLinkClick?: () => void;
 }) => {
   const pathname = usePathname();
-  const isActive = pathname === href;
+  const isActive = pathname.includes(href);
 
   const handleClick = () => {
     if (onClick) {
@@ -242,12 +242,12 @@ const MobileSidebar = ({ open, onOpenChange }: MobileSidebarProps) => {
       : baseNavLinks;
 
   const supportLinks = [
-    {
-      href: "/vendor/support",
-      title: "Support",
-      iconPath:
-        "M18.364 5.636A9 9 0 1 1 5.636 18.364 9 9 0 0 1 18.364 5.636ZM12 9.75a.75.75 0 0 0-.75.75v3a.75.75 0 0 0 1.5 0v-3a.75.75 0 0 0-.75-.75Zm0-3a.75.75 0 0 0-.75.75v.75a.75.75 0 0 0 1.5 0v-.75a.75.75 0 0 0-.75-.75Z",
-    },
+    // {
+    //   href: "/vendor/support",
+    //   title: "Support",
+    //   iconPath:
+    //     "M18.364 5.636A9 9 0 1 1 5.636 18.364 9 9 0 0 1 18.364 5.636ZM12 9.75a.75.75 0 0 0-.75.75v3a.75.75 0 0 0 1.5 0v-3a.75.75 0 0 0-.75-.75Zm0-3a.75.75 0 0 0-.75.75v.75a.75.75 0 0 0 1.5 0v-.75a.75.75 0 0 0-.75-.75Z",
+    // },
     {
       href: "#",
       title: "Log out",

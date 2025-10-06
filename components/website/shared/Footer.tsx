@@ -101,25 +101,32 @@ const Footer = () => {
             </h3>
             <div className="inline-flex flex-row items-center gap-4 mt-6">
               <Link
-                href={"/"}
+                target="_blank"
+                href={"https://www.instagram.com/harmonybookme/"}
                 className="!bg-white/10 size-[38px] flex items-center justify-center rounded-lg p-2"
               >
                 <FaInstagram size={20} className="text-white" />
               </Link>
               <Link
-                href={"/"}
+                target="_blank"
+                href={
+                  "https://www.facebook.com/p/harmonybookmecom-61552699975574/"
+                }
                 className="!bg-white/10 size-[38px] flex items-center justify-center rounded-lg p-2"
               >
                 <FaSquareFacebook size={20} className="text-white" />
               </Link>
               <Link
-                href={"/"}
+                href={
+                  "https://www.tiktok.com/@harmonybookme.com?_t=ZS-90Js1eekQUM&_r=1"
+                }
                 className="!bg-white/10 size-[38px] flex items-center justify-center rounded-lg p-2"
               >
                 <IoLogoTiktok size={19} className="text-white" />
               </Link>
               <Link
-                href={"/"}
+                target="_blank"
+                href={"https://x.com/harmonybookme?s=21"}
                 className="!bg-white/10 size-[38px] flex items-center justify-center rounded-lg p-2"
               >
                 <BsTwitterX size={15} className="text-white" />

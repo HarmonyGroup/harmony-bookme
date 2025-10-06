@@ -1,27 +1,31 @@
 import React from "react";
 import Link from "next/link";
-import AllMoviesTable from "@/components/vendor/movies-and-cinema/AllMoviesTable";
+// import AllMoviesTable from "@/components/vendor/movies-and-cinema/AllMoviesTable";
+import MovieListingGrid from "@/components/vendor/movies-and-cinema/MovieListingGrid";
 
 const Page = () => {
   return (
-    <section className="h-full flex flex-col bg-muted/60 p-6">
-      <div className="flex items-center justify-between">
+    <section className="min-h-full bg-muted/60 p-4 md:p-5">
+      <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 md:gap-0">
         <div>
-          <h1 className="text-primary text-xl font-semibold">Movies</h1>
-          <p className="text-gray-600 text-xs mt-1.5">
-            List and manage movie tickets here
+          <h1 className="text-primary text-lg md:text-xl font-semibold">
+            Movies
+          </h1>
+          <p className="text-gray-600 text-[11px] md:text-xs mt-0.5 md:mt-1">
+            Create and manage movies here
           </p>
         </div>
         <Link
           href={"/vendor/movies/new"}
-          className="bg-primary text-white text-xs font-medium px-4 py-2.5 rounded-md"
+          className="bg-primary text-white text-[11px] md:text-xs font-medium px-4 py-2.5 rounded-md hover:bg-primary/90 transition-all ease-in-out duration-300"
         >
           Create Movie
         </Link>
       </div>
 
-      <div className="h-full mt-6">
-        <AllMoviesTable />
+      <div className="mt-6">
+        {/* <AllMoviesTable /> */}
+        <MovieListingGrid />
       </div>
     </section>
   );

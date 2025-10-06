@@ -283,7 +283,7 @@ const CustomMobileNav: React.FC<CustomMobileNavProps> = ({
             {/* User-specific links when logged in */}
             {session && (
               <>
-                <Link
+                {/* <Link
                   href="/profile"
                   onClick={handleClose}
                   className="flex items-center justify-between gap-3 px-4 py-5 text-primary hover:bg-muted/50 hover:text-primary transition-all duration-300 group border-muted border-b"
@@ -303,8 +303,8 @@ const CustomMobileNav: React.FC<CustomMobileNavProps> = ({
                       d="m8.25 4.5 7.5 7.5-7.5 7.5"
                     />
                   </svg>
-                </Link>
-                <Link
+                </Link> */}
+                {/* <Link
                   href="/notifications"
                   onClick={handleClose}
                   className="flex items-center justify-between gap-3 px-4 py-5 text-primary hover:bg-muted/50 hover:text-primary transition-all duration-300 group border-muted border-b"
@@ -324,7 +324,7 @@ const CustomMobileNav: React.FC<CustomMobileNavProps> = ({
                       d="m8.25 4.5 7.5 7.5-7.5 7.5"
                     />
                   </svg>
-                </Link>
+                </Link> */}
                 <Link
                   href="/bookings"
                   onClick={handleClose}

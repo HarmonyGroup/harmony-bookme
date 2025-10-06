@@ -219,7 +219,7 @@ const Navbar = () => {
                       </div>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end" className="mt-4">
-                      <DropdownMenuItem className="text-gray-600 text-xs font-medium">
+                      {/* <DropdownMenuItem className="text-gray-600 text-xs font-medium">
                         <Link
                           href={"/profile"}
                           className="flex items-center gap-2 text-gray-600 text-xs font-medium w-full cursor-pointer"
@@ -240,7 +240,7 @@ const Navbar = () => {
                           </svg>
                           Profile
                         </Link>
-                      </DropdownMenuItem>
+                      </DropdownMenuItem> */}
                       <DropdownMenuItem className="text-gray-600 text-xs font-medium">
                         <Link
                           href={"/bookings"}
@@ -250,7 +250,7 @@ const Navbar = () => {
                           Bookings
                         </Link>
                       </DropdownMenuItem>
-                      <DropdownMenuItem className="text-gray-600 text-xs font-medium">
+                      {/* <DropdownMenuItem className="text-gray-600 text-xs font-medium">
                         <Link
                           href={"/notifications"}
                           className="flex items-center gap-2 text-gray-600 text-xs font-medium w-full cursor-pointer"
@@ -271,7 +271,7 @@ const Navbar = () => {
                           </svg>
                           Notifications
                         </Link>
-                      </DropdownMenuItem>
+                      </DropdownMenuItem> */}
                       <DropdownMenuItem
                         onClick={() => handleSignOut("/")}
                         className="flex items-center gap-2 text-gray-600 text-xs font-medium cursor-pointer"

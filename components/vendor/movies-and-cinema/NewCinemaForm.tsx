@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
@@ -20,7 +20,8 @@ import { useCreateCinema } from "@/services/vendor/movies-and-cinema";
 import { useUploadImage } from "@/services/shared/image-upload";
 import { ImageIcon } from "@phosphor-icons/react";
 import Image from "next/image";
-import { Plus, Trash2 } from "lucide-react";
+import { Plus } from "lucide-react";
+import { usePreventZoomAggressive } from "@/hooks/use-prevent-zoom-aggressive";
 
 const STEPS = [
   {
@@ -726,11 +727,15 @@ const Step4Form: React.FC<StepProps> = ({
     fileInputRef.current?.click();
   };
 
+  useEffect(() => {
+    setImageUrls(formData.images);
+  }, [formData.images]);
+
   return (
     <div className="space-y-6">
       <div className="space-y-2">
-        <Label className="text-gray-600 text-xs">Cinema Images</Label>
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+        <Label className="text-gray-600 text-xs">Images</Label>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           <div
             className={`border-2 border-dashed rounded-lg p-4 flex items-center justify-center h-44 relative cursor-pointer ${
               dragActive ? "border-primary bg-primary/10" : "border-gray-200"
@@ -772,6 +777,7 @@ const Step4Form: React.FC<StepProps> = ({
                 alt={`Uploaded image ${index + 1}`}
                 fill
                 className="object-cover rounded-lg"
+                sizes="(max-width: 768px) 50vw, 33vw"
               />
               {index === 0 && (
                 <Badge className="absolute top-2 left-2 text-[11px] cursor-default">
@@ -783,7 +789,20 @@ const Step4Form: React.FC<StepProps> = ({
                 onClick={() => removeImage(index)}
                 className="absolute top-2 right-2 bg-red-500 text-white rounded-full p-1 cursor-pointer hover:bg-red-500/80 transition-colors ease-in-out duration-300"
               >
-                <Trash2 className="h-3 w-3" />
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth="3"
+                  stroke="currentColor"
+                  className="size-3"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
               </button>
               {uploadingFiles.includes(url.split("/").pop() || "") && (
                 <div className="absolute inset-0 bg-black/50 flex items-center justify-center rounded-lg">
@@ -969,6 +988,10 @@ const Step5Form: React.FC<StepProps> = ({
 const NewCinemaForm = () => {
   const router = useRouter();
   const [currentStep, setCurrentStep] = useState<StepKey>(1);
+  
+  // Prevent zoom on mobile when focusing inputs
+  usePreventZoomAggressive();
+  
   const [formData, setFormData] = useState<FormData>({
     title: "",
     description: "",
@@ -1212,127 +1235,171 @@ const NewCinemaForm = () => {
   };
 
   return (
-    <div className="h-full">
-      <div className="flex items-center justify-between border-b p-4 md:p-8">
-        <div>
-          <h3 className="text-primary text-lg font-semibold">New Cinema</h3>
-          <p className="text-gray-500 text-xs mt-1">
-            Tell us more about your cinema
-          </p>
+    <div className="h-full flex flex-col event-form">
+      {/* Fixed Header */}
+      <div className="flex-shrink-0 border-b px-4 lg:px-7 py-6">
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-primary text-base lg:text-[18px] font-semibold">
+              Create Cinema
+            </h1>
+            <p className="hidden md:block text-gray-600 text-[11px] md:text-xs mt-0.5 md:mt-1">
+              List a new cinema for your business
+            </p>
+          </div>
         </div>
       </div>
 
-      <div className="h-full grid grid-cols-4">
-        <div className="hidden md:block col-span-1">
-          <div className="h-full border-r px-10 py-8">
-            <ol className="relative border-s border-gray-200">
-              {STEPS.map((step, index) => (
-                <li
-                  key={step.id}
-                  className={index < STEPS.length - 1 ? "mb-10 ms-6" : "ms-6"}
+      {/* Main Layout - Fixed Sidebar + Scrollable Content */}
+      <div className="flex-1 flex min-h-0">
+        {/* Fixed Sidebar - Always visible on desktop */}
+        <div className="hidden lg:block w-80 flex-shrink-0 border-r px-6 xl:px-10 py-6 xl:py-8">
+          <ol className="relative border-s border-gray-200">
+            {STEPS.map((step, index) => (
+              <li
+                key={step.id}
+                className={
+                  index < STEPS.length - 1 ? "mb-8 xl:mb-10 ms-6" : "ms-6"
+                }
+              >
+                <span
+                  className={`absolute flex items-center justify-center size-6 rounded-full -start-3 ring-8 ring-white ${
+                    currentStep === step.id
+                      ? "bg-blue-100"
+                      : currentStep > step.id
+                      ? "bg-blue-100"
+                      : "bg-gray-100"
+                  }`}
                 >
-                  <span
-                    className={`absolute flex items-center justify-center size-6 rounded-full -start-3 ring-8 ring-white ${
-                      currentStep === step.id
-                        ? "bg-blue-100"
-                        : currentStep > step.id
-                        ? "bg-blue-100"
-                        : "bg-gray-100"
-                    }`}
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      strokeWidth="3.5"
-                      stroke="currentColor"
-                      className={`size-[11px] ${
-                        currentStep === step.id
-                          ? "text-primary"
-                          : currentStep > step.id
-                          ? "text-primary"
-                          : "text-gray-400"
-                      }`}
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="m4.5 12.75 6 6 9-13.5"
-                      />
-                    </svg>
-                  </span>
-                  <h3
-                    className={`flex items-center mb-1 text-xs font-semibold ${
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth="3.5"
+                    stroke="currentColor"
+                    className={`size-[11px] ${
                       currentStep === step.id
                         ? "text-primary"
                         : currentStep > step.id
                         ? "text-primary"
-                        : "text-gray-500"
+                        : "text-gray-400"
                     }`}
                   >
-                    {step.title}
-                  </h3>
-                  <p className="mb-4 text-[11px]/relaxed text-gray-500">
-                    {step.description}
-                  </p>
-                </li>
-              ))}
-            </ol>
-          </div>
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="m4.5 12.75 6 6 9-13.5"
+                    />
+                  </svg>
+                </span>
+                <h3
+                  className={`flex items-center mb-1 text-xs font-semibold ${
+                    currentStep === step.id
+                      ? "text-primary"
+                      : currentStep > step.id
+                      ? "text-primary"
+                      : "text-gray-500"
+                  }`}
+                >
+                  {step.title}
+                </h3>
+                <p className="mb-4 text-[11px]/relaxed text-gray-500">
+                  {step.description}
+                </p>
+              </li>
+            ))}
+          </ol>
         </div>
 
-        <div className="col-span-4 md:col-span-3">
-          <div className="p-4 md:p-8">
-            <p className="text-gray-500 text-xs">
-              Step {currentStep}/{STEPS.length}
-            </p>
-            <h3 className="text-primary text-lg font-semibold mt-1.5">
-              {STEPS[currentStep - 1].title}
-            </h3>
-            <p className="text-gray-500 text-xs mt-1">
-              {STEPS[currentStep - 1].description}
-            </p>
+        {/* Main Content Area - Scrollable */}
+        <div className="flex-1 flex flex-col min-h-0">
+          {/* Mobile Step Indicator */}
+          <div className="lg:hidden flex-shrink-0 border-b bg-gray-50 px-4 py-3">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-2">
+                <span className="text-xs font-medium text-gray-700">
+                  Step {currentStep} of {STEPS.length}
+                </span>
+                <span className="text-xs text-gray-500">
+                  {STEPS[currentStep - 1].title}
+                </span>
+              </div>
+              <div className="flex space-x-1">
+                {STEPS.map((_, index) => (
+                  <div
+                    key={index}
+                    className={`w-2 h-2 rounded-full ${
+                      index + 1 <= currentStep ? "bg-primary" : "bg-gray-300"
+                    }`}
+                  />
+                ))}
+              </div>
+            </div>
+          </div>
 
-            <div className="mt-10">
-              <form onSubmit={handleSubmit} className="space-y-6">
-                {renderStepContent()}
-                <div className="flex justify-between pt-8 border-t">
-                  {currentStep > 1 && (
-                    <Button
-                      disabled={creatingCinema}
-                      type="button"
-                      variant="outline"
-                      onClick={handlePrevStep}
-                      className="text-xs cursor-pointer hover:bg-muted shadow-none transition-all ease-in-out duration-300"
-                    >
-                      Previous step
-                    </Button>
+          {/* Scrollable Form Content */}
+          <div className="flex-1 overflow-y-auto">
+            <div className="p-4 sm:p-6 lg:p-8">
+              {/* Desktop Step Info */}
+              <div className="hidden lg:block">
+                <p className="text-gray-500 text-xs">
+                  Step {currentStep}/{STEPS.length}
+                </p>
+                <h3 className="text-primary text-lg font-semibold mt-1.5">
+                  {STEPS[currentStep - 1].title}
+                </h3>
+                <p className="text-gray-500 text-xs mt-1">
+                  {STEPS[currentStep - 1].description}
+                </p>
+              </div>
+
+              <div className="mt-6 lg:mt-10">
+                <form onSubmit={handleSubmit} className="space-y-6">
+                  {renderStepContent()}
+                </form>
+              </div>
+            </div>
+          </div>
+
+          {/* Fixed Bottom Navigation */}
+          <div className="flex-shrink-0 border-t bg-white p-4 sm:p-6 lg:p-8">
+            <div className="flex justify-between items-center">
+              {currentStep > 1 ? (
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={handlePrevStep}
+                  className="flex items-center gap-2 text-xs cursor-pointer !p-5"
+                  disabled={creatingCinema}
+                >
+                  Previous
+                </Button>
+              ) : (
+                <div></div>
+              )}
+
+              {currentStep < STEPS.length ? (
+                <Button
+                  type="button"
+                  onClick={handleNextStep}
+                  className="flex items-center gap-2 text-xs cursor-pointer !p-5"
+                >
+                  Next
+                </Button>
+              ) : (
+                <Button
+                  type="submit"
+                  onClick={handleSubmit}
+                  className="text-xs cursor-pointer !p-5"
+                  disabled={creatingCinema}
+                >
+                  {creatingCinema ? (
+                    <span>Creating...</span>
+                  ) : (
+                    <span>Create Cinema</span>
                   )}
-                  <div className="ml-auto">
-                    {currentStep < STEPS.length ? (
-                      <Button
-                        type="button"
-                        onClick={handleNextStep}
-                        className="text-xs cursor-pointer transition-all ease-in-out duration-300"
-                      >
-                        Next step
-                      </Button>
-                    ) : (
-                      <Button
-                        disabled={creatingCinema}
-                        type="submit"
-                        className="text-xs cursor-pointer transition-all ease-in-out duration-300"
-                      >
-                        {creatingCinema ? (
-                          <span>Creating...</span>
-                        ) : (
-                          <span>Create Cinema</span>
-                        )}
-                      </Button>
-                    )}
-                  </div>
-                </div>
-              </form>
+                </Button>
+              )}
             </div>
           </div>
         </div>

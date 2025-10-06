@@ -10,10 +10,13 @@ import RewardsBanner from "@/components/website/homepage/RewardsBanner";
 // import Promotions from "@/components/website/homepage/Promotions";
 import Extras from "@/components/website/homepage/Extras";
 import Feedback from "@/components/website/homepage/Feedback";
+import StructuredData, { websiteSchema, organizationSchema } from "@/components/shared/StructuredData";
 
 const Page = () => {
   return (
     <div>
+      <StructuredData data={websiteSchema} />
+      <StructuredData data={organizationSchema} />
       <Hero />
       {/* <Promotions /> */}
       {/* <HeroSearchBox /> */}

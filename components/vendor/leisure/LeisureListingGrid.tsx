@@ -1,25 +1,24 @@
-"use client";
-
 import React, { useState } from "react";
-import { useGetVendorAccommodations } from "@/services/vendor/accommodation";
+import { useLeisureListings } from "@/services/vendor/leisure";
 import { useDebounce } from "use-debounce";
-import AccommodationListingCard from "./AccommodationListingCard";
+import LeisureListingCard from "./LeisureListingCard";
 import MovieListingCardSkeleton from "../movies-and-cinema/MovieListingCardSkeleton";
-import Image from "next/image";
 import EmptyIcon from "@/public/assets/empty-data-icon.png";
+import Image from "next/image";
 
-const AccommodationListingGrid = () => {
+const LeisureListingGrid = () => {
   const [page] = useState(1);
-  const [limit] = useState(20);
-  const [searchQuery] = useState("");
-  const [debouncedSearchQuery] = useDebounce(searchQuery, 300);
-  const { data, isLoading } = useGetVendorAccommodations({
+  const [limit] = useState(10);
+  const [search] = useState("");
+  const [debouncedSearch] = useDebounce(search, 500);
+
+  const { data, isLoading } = useLeisureListings({
     page,
     limit,
-    search: debouncedSearchQuery,
+    search: debouncedSearch,
   });
 
-  const accommodations = data?.data || [];
+  const leisureListings = data?.data || [];
 
   return (
     <div>
@@ -29,7 +28,7 @@ const AccommodationListingGrid = () => {
             <MovieListingCardSkeleton key={index} />
           ))}
         </div>
-      ) : accommodations.length === 0 ? (
+      ) : leisureListings.length === 0 ? (
         <div className="flex flex-col items-center justify-center gap-2 py-20 px-4">
           <Image
             src={EmptyIcon}
@@ -38,21 +37,18 @@ const AccommodationListingGrid = () => {
             loading="lazy"
           />
           <h3 className="text-gray-700 text-sm font-semibold">
-            No Accommodations Found
+            No Leisure Found
           </h3>
           <p className="text-gray-500 text-xs text-center max-w-md">
-            {searchQuery
-              ? "No accommodations match your current filters. Try adjusting your search criteria."
-              : "You haven't created any accommodations yet. Get started by creating your first accommodation."}
+            {search
+              ? "No leisure match your current filters. Try adjusting your search criteria."
+              : "You haven't created any leisure yet. Get started by creating your first leisure."}
           </p>
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3.5">
-          {accommodations.map((accommodation) => (
-            <AccommodationListingCard
-              key={accommodation._id}
-              accommodation={accommodation}
-            />
+          {leisureListings.map((leisure) => (
+            <LeisureListingCard key={leisure._id} leisure={leisure} />
           ))}
         </div>
       )}
@@ -60,4 +56,4 @@ const AccommodationListingGrid = () => {
   );
 };
 
-export default AccommodationListingGrid;
+export default LeisureListingGrid;

@@ -28,6 +28,7 @@ import { useDebounce } from "use-debounce";
 import { ImageIcon } from "@phosphor-icons/react";
 import { movieGenres } from "@/constants/movie-genres";
 import { Movie } from "@/types/vendor/movies-and-cinema";
+import { usePreventZoomAggressive } from "@/hooks/use-prevent-zoom-aggressive";
 
 // Define Movie type based on expected API response
 // interface Movie {
@@ -214,7 +215,7 @@ const Step1Form: React.FC<Step1Props> = ({
       </div>
       <div className="space-y-2">
         <Label className="text-gray-600 text-xs">Genre</Label>
-        <div className="grid grid-cols-3 gap-5 mt-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5 mt-4">
           {movieGenres?.map((genre) => (
             <div key={genre} className="flex items-center space-x-2">
               <Checkbox
@@ -1012,7 +1013,7 @@ const Step4Form: React.FC<Step4Props> = ({
     <div className="space-y-6">
       <div className="space-y-2">
         <Label className="text-gray-600 text-xs">Images</Label>
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           <div
             className={`border-2 border-dashed rounded-lg p-4 flex items-center justify-center h-44 relative cursor-pointer ${
               dragActive ? "border-primary bg-primary/10" : "border-gray-200"
@@ -1154,6 +1155,10 @@ interface NewMovieFormProps {
 const NewMovieForm: React.FC<NewMovieFormProps> = ({ movie }) => {
   const router = useRouter();
   const [currentStep, setCurrentStep] = useState<StepKey>(1);
+  
+  // Prevent zoom on mobile when focusing inputs
+  usePreventZoomAggressive();
+  
   const [formData, setFormData] = useState<FormData>({
     title: movie?.title || "",
     description: movie?.description || "",
@@ -1449,141 +1454,173 @@ const NewMovieForm: React.FC<NewMovieFormProps> = ({ movie }) => {
   };
 
   return (
-    <div className="h-full flex flex-col">
-      <div className="flex items-center justify-between border-b p-4 md:p-8">
-        <div>
-          <h3 className="text-primary text-lg font-semibold">
-            {isEditMode ? "Edit Movie" : "Create Movie"}
-          </h3>
-          <p className="text-gray-500 text-xs mt-1">
-            {isEditMode
-              ? "Update movie details for your cinema"
-              : "List a new movie for your cinema"}
-          </p>
+    <div className="h-full flex flex-col event-form">
+      {/* Fixed Header */}
+      <div className="flex-shrink-0 border-b px-4 lg:px-7 py-6">
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-primary text-base lg:text-[18px] font-semibold">
+              {isEditMode ? "Edit Movie" : "Create Movie"}
+            </h1>
+            <p className="hidden md:block text-gray-600 text-[11px] md:text-xs mt-0.5 md:mt-1">
+              {isEditMode
+                ? "Update movie details for your cinema"
+                : "List a new movie for your cinema"}
+            </p>
+          </div>
         </div>
       </div>
 
-      <div className="grid grid-cols-4 flex-1 min-h-0">
-        <div className="hidden md:block col-span-1">
-          <div className="h-full border-r relative" style={{ paddingLeft: '2.5rem', paddingRight: '2.5rem', paddingTop: '2rem', paddingBottom: '2rem' }}>
-            <div 
-              className="absolute bg-gray-200"
-              style={{ 
-                left: '2.5rem',
-                top: '2rem', 
-                bottom: '2rem', 
-                width: '1px',
-                height: 'calc(100% - 23rem)'
-              }}
-            ></div>
-            <ol className="relative">
-              {STEPS.map((step, index) => (
-                <li
-                  key={step.id}
-                  className={index < STEPS.length - 1 ? "mb-10 ms-6" : "ms-6"}
+      {/* Main Layout - Fixed Sidebar + Scrollable Content */}
+      <div className="flex-1 flex min-h-0">
+        {/* Fixed Sidebar - Always visible on desktop */}
+        <div className="hidden lg:block w-80 flex-shrink-0 border-r px-6 xl:px-10 py-6 xl:py-8">
+          <ol className="relative border-s border-gray-200">
+            {STEPS.map((step, index) => (
+              <li
+                key={step.id}
+                className={
+                  index < STEPS.length - 1 ? "mb-8 xl:mb-10 ms-6" : "ms-6"
+                }
+              >
+                <span
+                  className={`absolute flex items-center justify-center size-6 rounded-full -start-3 ring-8 ring-white ${
+                    currentStep === step.id
+                      ? "bg-blue-100"
+                      : currentStep > step.id
+                      ? "bg-blue-100"
+                      : "bg-gray-100"
+                  }`}
                 >
-                  <span
-                    className={`absolute flex items-center justify-center size-6 rounded-full -start-3 ring-8 ring-white ${
-                      currentStep === step.id
-                        ? "bg-blue-100"
-                        : currentStep > step.id
-                        ? "bg-blue-100"
-                        : "bg-gray-100"
-                    }`}
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      strokeWidth="3.5"
-                      stroke="currentColor"
-                      className={`size-[11px] ${
-                        currentStep === step.id
-                          ? "text-primary"
-                          : currentStep > step.id
-                          ? "text-primary"
-                          : "text-gray-400"
-                      }`}
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="m4.5 12.75 6 6 9-13.5"
-                      />
-                    </svg>
-                  </span>
-                  <h3
-                    className={`flex items-center mb-1 text-xs font-semibold ${
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth="3.5"
+                    stroke="currentColor"
+                    className={`size-[11px] ${
                       currentStep === step.id
                         ? "text-primary"
                         : currentStep > step.id
                         ? "text-primary"
-                        : "text-gray-500"
+                        : "text-gray-400"
                     }`}
                   >
-                    {step.title}
-                  </h3>
-                  <p className="mb-4 text-[11px]/relaxed text-gray-500">
-                    {step.description}
-                  </p>
-                </li>
-              ))}
-            </ol>
-          </div>
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="m4.5 12.75 6 6 9-13.5"
+                    />
+                  </svg>
+                </span>
+                <h3
+                  className={`flex items-center mb-1 text-xs font-semibold ${
+                    currentStep === step.id
+                      ? "text-primary"
+                      : currentStep > step.id
+                      ? "text-primary"
+                      : "text-gray-500"
+                  }`}
+                >
+                  {step.title}
+                </h3>
+                <p className="mb-4 text-[11px]/relaxed text-gray-500">
+                  {step.description}
+                </p>
+              </li>
+            ))}
+          </ol>
         </div>
 
-        <div className="col-span-4 md:col-span-3 flex flex-col min-h-0">
-          <div className="p-4 md:p-8 flex-1 overflow-y-auto">
-            <p className="text-gray-500 text-xs">
-              Step {currentStep}/{STEPS.length}
-            </p>
-            <h3 className="text-primary text-lg font-semibold mt-1.5">
-              {STEPS[currentStep - 1].title}
-            </h3>
-            <p className="text-gray-500 text-xs mt-1">
-              {STEPS[currentStep - 1].description}
-            </p>
+        {/* Main Content Area - Scrollable */}
+        <div className="flex-1 flex flex-col min-h-0">
+          {/* Mobile Step Indicator */}
+          <div className="lg:hidden flex-shrink-0 border-b bg-gray-50 px-4 py-3">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-2">
+                <span className="text-xs font-medium text-gray-700">
+                  Step {currentStep} of {STEPS.length}
+                </span>
+                <span className="text-xs text-gray-500">
+                  {STEPS[currentStep - 1].title}
+                </span>
+              </div>
+              <div className="flex space-x-1">
+                {STEPS.map((_, index) => (
+                  <div
+                    key={index}
+                    className={`w-2 h-2 rounded-full ${
+                      index + 1 <= currentStep ? "bg-primary" : "bg-gray-300"
+                    }`}
+                  />
+                ))}
+              </div>
+            </div>
+          </div>
 
-            <div className="mt-10">
-              <form onSubmit={handleSubmit} className="space-y-6">
-                {renderStepContent()}
-                <div className="flex justify-between pt-8 border-t">
-                  {currentStep > 1 && (
-                    <Button
-                      type="button"
-                      variant="outline"
-                      onClick={handlePrevStep}
-                      disabled={isPending}
-                      className="text-xs cursor-pointer hover:bg-muted shadow-none transition-all ease-in-out duration-300"
-                    >
-                      Previous Step
-                    </Button>
+          {/* Scrollable Form Content */}
+          <div className="flex-1 overflow-y-auto">
+            <div className="p-4 sm:p-6 lg:p-8">
+              {/* Desktop Step Info */}
+              <div className="hidden lg:block">
+                <p className="text-gray-500 text-xs">
+                  Step {currentStep}/{STEPS.length}
+                </p>
+                <h3 className="text-primary text-lg font-semibold mt-1.5">
+                  {STEPS[currentStep - 1].title}
+                </h3>
+                <p className="text-gray-500 text-xs mt-1">
+                  {STEPS[currentStep - 1].description}
+                </p>
+              </div>
+
+              <div className="mt-6 lg:mt-10">
+                <form onSubmit={handleSubmit} className="space-y-6">
+                  {renderStepContent()}
+                </form>
+              </div>
+            </div>
+          </div>
+
+          {/* Fixed Bottom Navigation */}
+          <div className="flex-shrink-0 border-t bg-white p-4 sm:p-6 lg:p-8">
+            <div className="flex justify-between items-center">
+              {currentStep > 1 ? (
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={handlePrevStep}
+                  className="flex items-center gap-2 text-xs cursor-pointer !p-5"
+                  disabled={isPending}
+                >
+                  Previous
+                </Button>
+              ) : (
+                <div></div>
+              )}
+
+              {currentStep < STEPS.length ? (
+                <Button
+                  type="button"
+                  onClick={handleNextStep}
+                  className="flex items-center gap-2 text-xs cursor-pointer !p-5"
+                >
+                  Next
+                </Button>
+              ) : (
+                <Button
+                  type="submit"
+                  onClick={handleSubmit}
+                  className="text-xs cursor-pointer !p-5"
+                  disabled={isPending}
+                >
+                  {isPending ? (
+                    <span>{isEditMode ? "Updating..." : "Creating..."}</span>
+                  ) : (
+                    <span>{isEditMode ? "Update Movie" : "Create Movie"}</span>
                   )}
-                  <div className="ml-auto">
-                    {currentStep < STEPS.length ? (
-                      <Button
-                        type="button"
-                        onClick={handleNextStep}
-                        className="text-xs cursor-pointer transition-all ease-in-out duration-300"
-                      >
-                        Next Step
-                      </Button>
-                    ) : (
-                      <Button
-                        type="submit"
-                        disabled={isPending}
-                        className="text-xs cursor-pointer transition-all ease-in-out duration-300"
-                      >
-                        {isPending ? (
-                          <span>{isEditMode ? "Updating..." : "Creating..."}</span>
-                        ) : (
-                          <span>{isEditMode ? "Update Movie" : "Create Movie"}</span>
-                        )}
-                      </Button>
-                    )}
-                  </div>
-                </div>
-              </form>
+                </Button>
+              )}
             </div>
           </div>
         </div>

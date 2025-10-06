@@ -8,6 +8,7 @@ import {
   CreateMovieRequest,
   CreateMovieResponse,
 } from "@/types/vendor/movies-and-cinema";
+import { Cinema } from "@/models/cinema";
 
 async function generateMovieCode(title: string): Promise<string> {
   const prefix =
@@ -100,6 +101,10 @@ export async function POST(request: NextRequest) {
 export async function GET(request: NextRequest) {
   try {
     await connectToDB();
+
+    // Ensure Cinema model is registered to prevent "no schema registered" errors
+    // when movies reference cinema data
+    Cinema; // eslint-disable-line @typescript-eslint/no-unused-expressions
 
     const { searchParams } = new URL(request.url);
     const page = Number.parseInt(searchParams.get("page") || "1");
