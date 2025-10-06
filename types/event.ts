@@ -53,7 +53,7 @@ export interface EventListing {
   smokingPolicy: "allowed" | "notAllowed"
 
   // Metadata
-  organizer: string // ObjectId as string
+  vendor: string // ObjectId as string
   createdAt: Date
   updatedAt: Date
   isActive: boolean

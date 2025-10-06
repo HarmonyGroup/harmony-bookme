@@ -37,7 +37,6 @@ import { BsInfoCircle, BsEye, BsEyeSlash } from "react-icons/bs";
 import { useSignup } from "@/services/auth/signup";
 import { vendorAccountPreferences } from "@/constants/vendor-account-preferences";
 import { toast } from "sonner";
-import { useRouter } from "next/navigation";
 import { usePreventZoomAggressive } from "@/hooks/use-prevent-zoom-aggressive";
 import BG from "@/public/assets/sun-tornado.svg";
 
@@ -65,7 +64,6 @@ const FormSchema = z.object({
 });
 
 const Page = () => {
-  const router = useRouter();
   const { mutate, isPending } = useSignup();
   const [showPassword, setShowPassword] = useState(false);
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -130,7 +128,7 @@ const Page = () => {
     mutate(data, {
       onSuccess: (response) => {
         toast.success(response?.message || "Account created successfully");
-        router.push("/vendor/dashboard");
+        // Redirect is handled in the useSignup hook
       },
       onError: (error) => {
         toast.error(error?.message || "Failed to create account");

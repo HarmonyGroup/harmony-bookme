@@ -103,7 +103,7 @@ export async function POST(request: NextRequest) {
       } else if (booking.type === "events") {
         const { Event } = await import("@/models/event");
         const event = await Event.findById(booking.listing);
-        vendorId = event?.organizer;
+        vendorId = event?.vendor;
       } else if (booking.type === "accommodations") {
         const { Accommodation } = await import("@/models/accommodation");
         const accommodation = await Accommodation.findById(booking.listing);

@@ -76,13 +76,15 @@ type RegisterData = {
 
 
 export const useSignup = () => {
+  const router = useRouter();
+
   return useMutation({
     mutationFn: async (data: RegisterData) => {
       const response = await fetch("/api/signup", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          },
+        },
         body: JSON.stringify(data),
       });
 
@@ -92,6 +94,29 @@ export const useSignup = () => {
       }
 
       return response.json();
+    },
+    onSuccess: async (data, variables) => {
+      // After successful registration, sign in the user
+      const result = await signIn("credentials", {
+        email: variables.email,
+        password: variables.password,
+        redirect: false,
+      });
+
+      if (result?.error) {
+        throw new Error(result.error);
+      }
+
+      // Redirect to role-specific dashboard after successful login
+      const redirectPath =
+        variables.role === "explorer"
+          ? "/"
+          : variables.role === "vendor"
+          ? "/vendor/dashboard"
+          : "/back-office/dashboard";
+      
+      router.push(redirectPath);
+      router.refresh();
     },
   });
 };

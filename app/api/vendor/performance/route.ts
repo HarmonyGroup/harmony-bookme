@@ -140,7 +140,7 @@ async function getTotalListings(
       : 0,
     // Event listings
     type === "events" || !type
-      ? Event.countDocuments({ organizer: vendorId })
+      ? Event.countDocuments({ vendor: vendorId })
       : 0,
     // Accommodation listings
     type === "accommodations" || !type
@@ -169,7 +169,7 @@ async function getVendorListingIds(
   }
 
   if (type === "events" || !type) {
-    const eventListings = await Event.find({ organizer: vendorId })
+    const eventListings = await Event.find({ vendor: vendorId })
       .select("_id")
       .lean();
     listingIds.push(...eventListings.map((listing: Record<string, unknown>) => String(listing._id)));
