@@ -31,7 +31,8 @@ const CustomMobileNav: React.FC<CustomMobileNavProps> = ({
     { href: "/movies", label: "Movies", icon: null },
     { href: "/leisure", label: "Leisure", icon: null },
     { href: "/accommodations", label: "Accommodations", icon: null },
-    { href: "/travel", label: "Travel", icon: null },
+    // { href: "/travel", label: "Travel", icon: null },
+    { href: "/auth/vendor/login", label: "Vendor", icon: null },
   ];
 
   const handleSignOut = async () => {
