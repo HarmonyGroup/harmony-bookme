@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Input } from "@/components/ui/input";
+// import { Input } from "@/components/ui/input";
 import { useDebounce } from "use-debounce";
 import { useGetExplorerBookings } from "@/services/explorer/booking";
 import {
@@ -33,7 +33,7 @@ export default function MyBookingsContent() {
   return (
     <div className="min-h-[90vh] bg-muted/60">
       <div className="mx-auto w-full max-w-7xl px-5 py-10 md:py-10">
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-3">
           <h1 className="text-primary text-xl font-semibold">Bookings</h1>
           <div className="flex items-center gap-2.5">
             <Select
@@ -74,7 +74,7 @@ export default function MyBookingsContent() {
               </SelectContent>
             </Select>
 
-            <div className="relative w-full">
+            {/* <div className="relative w-full">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -94,7 +94,7 @@ export default function MyBookingsContent() {
                 className="w-[300px] bg-white !text-xs placeholder:text-gray-500 placeholder:text-xs placeholder:font-medium shadow-xs outline-none ring-0 focus:shadow-xs px-4 !py-5 ps-9 border focus-visible:ring-0 focus-visible:border-primary transition-all ease-in-out duration-200"
                 placeholder="Search listing or booking code here"
               />
-            </div>
+            </div> */}
           </div>
         </div>
 
