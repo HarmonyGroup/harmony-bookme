@@ -1,8 +1,8 @@
-"use client"
+"use client";
 
-import React from 'react'
-import EventsListingForm from '@/components/vendor/events/EventListingForm'
-import { useGetVendorEvent } from '@/services/vendor/event';
+import React from "react";
+import EventsListingForm from "@/components/vendor/events/EventListingForm";
+import { useGetVendorEvent } from "@/services/vendor/event";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -10,12 +10,12 @@ interface PageProps {
 
 const Page = ({ params }: PageProps) => {
   const resolvedParams = React.use(params);
-    const { slug } = resolvedParams;
-  
-    const { data, isLoading } = useGetVendorEvent({ slug });
-    const event = data?.data;
+  const { slug } = resolvedParams;
 
-      if (isLoading) {
+  const { data, isLoading } = useGetVendorEvent({ slug });
+  const event = data?.data;
+
+  if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
         <p className="text-gray-600">Loading...</p>
@@ -32,9 +32,9 @@ const Page = ({ params }: PageProps) => {
   }
   return (
     <>
-      <EventsListingForm event={event}  />
+      <EventsListingForm event={event} />
     </>
-  )
-}
+  );
+};
 
-export default Page
+export default Page;

@@ -28,3 +28,9 @@ export interface DeleteAccommodationResponse {
   success: boolean;
   message: string;
 }
+
+export interface VendorAccommodationResponse {
+  success: boolean;
+  data: AccommodationListing;
+  message: string;
+}

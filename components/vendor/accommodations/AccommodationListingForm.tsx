@@ -20,8 +20,8 @@ import {
   AMENITY_CATEGORIES,
   PROPERTY_TYPES,
 } from "@/constants/accommodation-amenities";
-import { useCreateAccommodationListing } from "@/services/vendor/accommodation";
-import type { CreateAccommodationListingRequest } from "@/types/accommodation";
+import { useCreateAccommodationListing, useUpdateAccommodation } from "@/services/vendor/accommodation";
+import type { CreateAccommodationListingRequest, AccommodationListing } from "@/types/accommodation";
 import { toast } from "sonner";
 import { useUploadImage } from "@/services/shared/image-upload";
 import Image from "next/image";
@@ -1430,46 +1430,52 @@ const Step6Form: React.FC<StepProps> = ({
 };
 
 // Main AccommodationListingForm component
-const AccommodationListingForm: React.FC = () => {
+const AccommodationListingForm: React.FC<{ accommodation?: AccommodationListing }> = ({ accommodation }) => {
   const router = useRouter();
   const [currentStep, setCurrentStep] = useState<StepKey>(1);
 
   // Prevent zoom on mobile when focusing inputs
   usePreventZoomAggressive();
   const [formData, setFormData] = useState<FormData>({
-    title: "",
-    description: "",
-    accommodationType: "shortlet",
-    buildingType: "",
-    propertySize: "",
-    bedrooms: undefined,
-    bathrooms: undefined,
-    parkingSpaces: undefined,
-    maxGuests: undefined,
-    country: "",
-    state: "",
-    city: "",
-    streetAddress: "",
-    zipCode: "",
-    checkInTime: "",
-    checkOutTime: "",
-    basePrice: undefined,
-    hasDiscount: false,
-    discountType: undefined,
-    discountValue: undefined,
-    rooms: [],
-    images: [],
-    tags: [],
-    whatsIncluded: [],
-    smokingPolicy: "notAllowed",
-    petPolicy: "notAllowed",
-    childrenPolicy: "allowed",
-    amenities: {},
+    title: accommodation?.title || "",
+    description: accommodation?.description || "",
+    accommodationType: accommodation?.accommodationType || "shortlet",
+    buildingType: accommodation?.buildingType || "",
+    propertySize: accommodation?.propertySize || "",
+    bedrooms: accommodation?.bedrooms,
+    bathrooms: accommodation?.bathrooms,
+    parkingSpaces: accommodation?.parkingSpaces,
+    maxGuests: accommodation?.maxGuests,
+    country: accommodation?.country || "",
+    state: accommodation?.state || "",
+    city: accommodation?.city || "",
+    streetAddress: accommodation?.streetAddress || "",
+    zipCode: accommodation?.zipCode || "",
+    checkInTime: accommodation?.checkInTime || "",
+    checkOutTime: accommodation?.checkOutTime || "",
+    basePrice: accommodation?.basePrice,
+    hasDiscount: accommodation?.hasDiscount || false,
+    discountType: accommodation?.discountType,
+    discountValue: accommodation?.discountValue,
+    rooms: accommodation?.rooms || [],
+    images: accommodation?.images || [],
+    tags: accommodation?.tags || [],
+    whatsIncluded: accommodation?.whatsIncluded || [],
+    smokingPolicy: accommodation?.smokingPolicy || "notAllowed",
+    petPolicy: accommodation?.petPolicy || "notAllowed",
+    childrenPolicy: accommodation?.childrenPolicy || "allowed",
+    amenities: accommodation?.amenities || {},
+    houseRules: accommodation?.houseRules || "",
   });
   const [errors, setErrors] = useState<Errors>({});
 
   const { mutate: createAccommodation, isPending: creatingAccommodation } =
     useCreateAccommodationListing();
+  const { mutate: updateAccommodation, isPending: updatingAccommodation } =
+    useUpdateAccommodation(accommodation?.slug || "");
+  
+  const isPending = creatingAccommodation || updatingAccommodation;
+  const isEditMode = !!accommodation?._id;
 
   const updateFormData = (data: Partial<FormData>) => {
     setFormData((prev) => ({ ...prev, ...data }));
@@ -1788,17 +1794,31 @@ const AccommodationListingForm: React.FC = () => {
         houseRules: formData.houseRules,
       };
 
-      createAccommodation(requestData, {
-        onSuccess: (response) => {
-          toast.success(
-            response?.message || "Accommodation created successfully"
-          );
-          router.push(`/vendor/accommodations`);
-        },
-        onError: (error) => {
-          toast.error(error?.message || "Failed to create accommodation");
-        },
-      });
+      if (isEditMode) {
+        updateAccommodation(requestData, {
+          onSuccess: (response) => {
+            toast.success(
+              response?.message || "Accommodation updated successfully"
+            );
+            router.push(`/vendor/accommodations`);
+          },
+          onError: (error) => {
+            toast.error(error?.message || "Failed to update accommodation");
+          },
+        });
+      } else {
+        createAccommodation(requestData, {
+          onSuccess: (response) => {
+            toast.success(
+              response?.message || "Accommodation created successfully"
+            );
+            router.push(`/vendor/accommodations`);
+          },
+          onError: (error) => {
+            toast.error(error?.message || "Failed to create accommodation");
+          },
+        });
+      }
     } else {
       toast.error("Please fill out all required fields correctly");
     }
@@ -1877,10 +1897,10 @@ const AccommodationListingForm: React.FC = () => {
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-primary text-base lg:text-[18px] font-semibold">
-              New Accommodation
+              {isEditMode ? "Edit Accommodation" : "New Accommodation"}
             </h1>
             {/* <p className="hidden md:block text-gray-600 text-[11px] md:text-xs mt-0.5 md:mt-1">
-              Tell us more about your accommodation
+              {isEditMode ? "Update your accommodation listing" : "Tell us more about your accommodation"}
             </p> */}
           </div>
         </div>
@@ -2006,7 +2026,7 @@ const AccommodationListingForm: React.FC = () => {
                   variant="outline"
                   onClick={handlePrevStep}
                   className="flex items-center gap-2 text-xs cursor-pointer !p-5"
-                  disabled={creatingAccommodation}
+                  disabled={isPending}
                 >
                   Previous
                 </Button>
@@ -2027,11 +2047,11 @@ const AccommodationListingForm: React.FC = () => {
                   type="submit"
                   onClick={handleSubmit}
                   className="text-xs cursor-pointer !p-5"
-                  disabled={creatingAccommodation}
+                  disabled={isPending}
                 >
-                  {creatingAccommodation
-                    ? "Creating Accommodation..."
-                    : "Create Accommodation"}
+                  {isPending
+                    ? (isEditMode ? "Updating Accommodation..." : "Creating Accommodation...")
+                    : (isEditMode ? "Update Accommodation" : "Create Accommodation")}
                 </Button>
               )}
             </div>

@@ -4,12 +4,15 @@ import type {
   CreateAccommodationListingResponse,
   UpdateAccommodationStatusRequest,
   UpdateAccommodationStatusResponse,
+  UpdateAccommodationRequest,
+  UpdateAccommodationResponse,
 } from "@/types/accommodation";
 import {
   UseGetVendorAccommodationsParams,
   VendorAccommodationsResponse,
   DeleteAccommodationResponse,
   ApiError,
+  VendorAccommodationResponse,
 } from "@/types/vendor/accommodation";
 
 export function useCreateAccommodationListing() {
@@ -78,6 +81,35 @@ export const useGetVendorAccommodations = (
   });
 };
 
+export function useGetVendorAccommodation({ slug }: { slug: string }) {
+  return useQuery<VendorAccommodationResponse, ApiError>({
+    queryKey: ['vendorAccommodation', slug],
+    queryFn: async () => {
+      const response = await fetch(`/api/vendor/accommodation/${slug}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        // credentials: 'include', // Include cookies for authentication
+      });
+
+      if (!response.ok) {
+        const errorData: ApiError = await response.json();
+        throw new Error(errorData.message || 'Failed to fetch accommodation');
+      }
+
+      return response.json();
+    },
+    enabled: !!slug,
+    retry: (failureCount, error) => {
+      if (error.message.includes('UNAUTHORIZED') || error.message.includes('NOT_FOUND')) {
+        return false;
+      }
+      return failureCount < 3;
+    },
+  });
+}
+
 export const useDeleteVendorAccommodation = () => {
   const queryClient = useQueryClient();
   return useMutation<DeleteAccommodationResponse, ApiError, string>({
@@ -139,3 +171,38 @@ export const useUpdateAccommodationStatus = () => {
     },
   });
 };
+
+export function useUpdateAccommodation(slug: string) {
+  const queryClient = useQueryClient();
+
+  return useMutation<
+    UpdateAccommodationResponse,
+    ApiError,
+    UpdateAccommodationRequest
+  >({
+    mutationFn: async (data: UpdateAccommodationRequest): Promise<UpdateAccommodationResponse> => {
+      const response = await fetch(`/api/vendor/accommodation/${slug}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(
+          result.message || "Failed to update accommodation"
+        );
+      }
+
+      return result;
+    },
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ["vendorAccommodations"] });
+      queryClient.invalidateQueries({ queryKey: ["vendorAccommodation", slug] });
+      queryClient.invalidateQueries({ queryKey: ["vendorAccommodation", data.data.slug] });
+    },
+  });
+}
