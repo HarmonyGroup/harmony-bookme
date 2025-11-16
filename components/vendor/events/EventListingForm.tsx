@@ -29,6 +29,8 @@ import {
 } from "@/constants/events";
 import { Plus, Trash2 } from "lucide-react";
 import { useCreateEventListing } from "@/services/vendor/event";
+import { useCreateAdminEventListing } from "@/services/admin/events";
+import { usePathname } from "next/navigation";
 import type { EventListing, CreateTicketType } from "@/types/event";
 import moment from "moment";
 import { usePreventZoomAggressive } from "@/hooks/use-prevent-zoom-aggressive";
@@ -1583,6 +1585,7 @@ const Step6Form: React.FC<Step6Props> = ({
 
 export default function EventsListingForm({ event }: { event?: EventListing }) {
   const router = useRouter();
+  const pathname = usePathname();
   const [currentStep, setCurrentStep] = useState<StepKey>(1);
   
   // Prevent zoom on mobile when focusing inputs
@@ -1641,9 +1644,14 @@ export default function EventsListingForm({ event }: { event?: EventListing }) {
   const [errors, setErrors] = useState<Errors>({});
 
   // API hooks
-  const { mutate: createEvent, isPending: creatingEvent } =
+  const { mutate: createVendorEvent, isPending: creatingVendorEvent } =
     useCreateEventListing();
-  const isPending = creatingEvent;
+  const { mutate: createAdminEvent, isPending: creatingAdminEvent } =
+    useCreateAdminEventListing();
+
+  const isAdminPath = pathname.startsWith("/admin");
+  const createEvent = isAdminPath ? createAdminEvent : createVendorEvent;
+  const isPending = isAdminPath ? creatingAdminEvent : creatingVendorEvent;
   const isEditMode = !!event?._id;
 
   const updateFormData = (data: Partial<FormData>) => {
@@ -1969,7 +1977,11 @@ export default function EventsListingForm({ event }: { event?: EventListing }) {
         // Create new event
         createEvent(eventData, {
           onSuccess: () => {
-            router.push("/vendor/events");
+            if (pathname.startsWith("/admin")) {
+              router.push("/admin/events");
+            } else {
+              router.push("/vendor/events");
+            }
           },
         });
       }

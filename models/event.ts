@@ -77,7 +77,12 @@ const eventSchema = new mongoose.Schema(
     vendor: {
       type: Schema.Types.ObjectId,
       ref: 'User',
-      required: true,
+      required: function (this: any) {
+        // Vendor is required for regular vendor-created events,
+        // but optional for platform-created events
+        return !this.isPlatformEvent;
+      },
+      default: null,
     },
     slug: {
       type: String,
@@ -424,6 +429,12 @@ const eventSchema = new mongoose.Schema(
       type: String,
       enum: ["draft", "active", "inactive"],
       default: "active",
+    },
+    // Flag to indicate if the event was created by the platform (admin)
+    isPlatformEvent: {
+      type: Boolean,
+      default: false,
+      index: true,
     },
   },
   {
