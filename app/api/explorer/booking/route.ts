@@ -12,6 +12,7 @@ import Movie from "@/models/movie";
 import { Leisure } from "@/models/leisure";
 import { initializePayment } from "@/services/shared/payment-initialization";
 import { createAccommodationBookingRequest } from "@/services/explorer/accommodation-booking";
+import User from "@/models/users";
 
 // Define proper interfaces for ticket types
 interface EventTicketType {
@@ -818,6 +819,11 @@ export async function GET(request: NextRequest) {
 
     const [bookings, total] = await Promise.all([
       Booking.find(query)
+        .populate({
+          path: "explorer",
+          model: User,
+          select: "firstName lastName email username avatar",
+        })
         .skip((page - 1) * limit)
         .limit(limit)
         .lean(),

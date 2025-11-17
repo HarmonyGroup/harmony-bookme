@@ -11,8 +11,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import RecentBookingCard from "@/components/website/shared/RecentBookingCard";
 import BookingCardSkeleton from "@/components/website/bookings/BookingCardSkeleton";
+import RecentBookingCard from "@/components/website/shared/RecentBookingCard";
+import EventBookingCard from "@/components/website/bookings/EventBookingCard";
 import Image from "next/image";
 import EmptyIcon from "@/public/assets/empty-data-icon.png";
 import AccommodationBookingCard from "@/components/website/bookings/AccommodationBookingCard";
@@ -103,13 +104,21 @@ export default function MyBookingsContent() {
             [...Array(7)].map((_, index) => <BookingCardSkeleton key={index} />)
           ) : bookings?.length ? (
             <>
-              {selectedService === "accommodations"
-                ? bookings?.map((booking: ExplorerBooking, index: number) => (
-                    <AccommodationBookingCard booking={booking} key={index} />
-                  ))
-                : bookings?.map((booking: ExplorerBooking, index: number) => (
-                    <RecentBookingCard booking={booking} key={index} />
-                  ))}
+              {selectedService === "accommodations" &&
+                bookings.map((booking: ExplorerBooking, index: number) => (
+                  <AccommodationBookingCard booking={booking} key={index} />
+                ))}
+
+              {selectedService === "events" &&
+                bookings.map((booking: ExplorerBooking, index: number) => (
+                  <EventBookingCard booking={booking} key={index} />
+                ))}
+
+              {selectedService !== "accommodations" &&
+                selectedService !== "events" &&
+                bookings.map((booking: ExplorerBooking, index: number) => (
+                  <RecentBookingCard booking={booking} key={index} />
+                ))}
             </>
           ) : (
             <div className="flex flex-col items-center justify-center gap-2 py-20 min-h-[400px]">

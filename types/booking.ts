@@ -57,7 +57,7 @@ export interface CreateBookingRequest {
 
 export interface ExplorerBooking {
   _id: string;
-  explorer: { _id: string; firstName: string; lastName: string; avatar?: string; username?: string };
+  explorer: { _id: string; firstName: string; lastName: string; avatar?: string; username?: string; email?: string };
   type: "events" | "accommodations" | "leisure" | "movies_and_cinema";
   listing: {
     _id: string;
