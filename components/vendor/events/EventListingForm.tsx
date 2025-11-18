@@ -1177,7 +1177,12 @@ const Step5Form: React.FC<Step5Props> = ({
   return (
     <div className="space-y-6">
       <div className="space-y-2">
-        <Label className="text-gray-600 text-xs">Event Images</Label>
+        <div>
+          <Label className="text-gray-600 text-xs">Event Images</Label>
+          <p className="text-[10px] text-gray-500 mt-1">
+            At least 3 images are required ({formData.images?.length || 0}/3)
+          </p>
+        </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           <div
             className={`border-2 border-dashed rounded-lg p-4 flex items-center justify-center h-44 relative cursor-pointer ${
@@ -1597,7 +1602,7 @@ export default function EventsListingForm({ event }: { event?: EventListing }) {
     category: event?.category || "",
     eventType: event?.eventType || "",
     format: event?.format === "virtual" ? "virtual" : "in-person",
-    pricingType: event?.pricingType || "free",
+    pricingType: event?.pricingType || "paid",
     freeEventCapacity: (event as EventListing & { freeEventCapacity?: number })?.freeEventCapacity || undefined,
     startDate: event?.startDate
       ? moment(event.startDate).format("YYYY-MM-DD")
@@ -1617,7 +1622,7 @@ export default function EventsListingForm({ event }: { event?: EventListing }) {
     virtualAccessInstructions: "",
     virtualCapacity: undefined,
     tickets:
-      event?.pricingType === "paid"
+      (event?.pricingType || "paid") === "paid"
         ? [
             {
               name: "",
@@ -1840,7 +1845,7 @@ export default function EventsListingForm({ event }: { event?: EventListing }) {
       5: z.object({
         images: z
           .array(z.string().url({ message: "Each image must be a valid URL" }))
-          .min(1, { message: "At least one image is required" }),
+          .min(3, { message: "At least 3 images are required" }),
         ageRestriction: z.number().min(0).max(100).optional(),
         dressCode: z.string().optional(),
         whatsIncluded: z.array(z.string()).optional(),
@@ -1874,12 +1879,12 @@ export default function EventsListingForm({ event }: { event?: EventListing }) {
 
   const handleNextStep = () => {
     if (validateStep(currentStep)) {
-      // Additional check for Step 5 - require at least one image
+      // Additional check for Step 5 - require at least 3 images
       if (
         currentStep === 5 &&
-        (!formData.images || formData.images.length === 0)
+        (!formData.images || formData.images.length < 3)
       ) {
-        setErrors({ images: "At least one image is required" });
+        setErrors({ images: "At least 3 images are required" });
         return;
       }
 
