@@ -197,7 +197,7 @@ const QuickLinks = () => {
     <section ref={sectionRef} className="bg-white py-14">
       <div className="mx-auto w-full max-w-7xl px-5 md:px-10">
         {/* Header with controls on large screens */}
-        <div className="flex items-center justify-between mb-10 md:mb-12">
+        <div className="flex items-center justify-center lg:justify-between mb-10 md:mb-12">
           <h1 ref={titleRef} className="text-primary text-center text-lg md:text-xl/tight md:text-left font-semibold">
             Discover exclusive offers
           </h1>
@@ -257,7 +257,7 @@ const QuickLinks = () => {
                         <h1 className="text-white text-xs md:text-base font-semibold mb-1 duration-300">
                           {item.title}
                         </h1>
-                        <p className="text-white/80 text-[13px]/normal transition-transform duration-300 max-w-[80%]">
+                        <p className="text-white/80 text-[13px]/normal transition-transform duration-300 max-w-[80%] line-clamp-2">
                           {item.description}
                         </p>
                       </div>

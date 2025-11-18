@@ -278,7 +278,12 @@ const Hero = () => {
             priority
           />
         </div>
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-primary/60"></div>
+        <div 
+          className="absolute inset-0"
+          style={{
+            background: 'linear-gradient(to top, rgba(0, 0, 0, 0.8), rgba(24, 50, 100, 0.6))'
+          }}
+        ></div>
         <div className="relative z-10">
           {/* <div className="mx-auto inline-block gap-2 text-white text-xs text-center mb-4 bg-white/20 px-4 py-1 rounded-full">www.harmonybookme.com</div> */}
           <h2
