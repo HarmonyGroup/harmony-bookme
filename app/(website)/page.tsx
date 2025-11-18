@@ -8,9 +8,9 @@ import RewardsBanner from "@/components/website/homepage/RewardsBanner";
 // import WhyChooseUs from "@/components/website/homepage/WhyChooseUs";
 // import VendorBanner from "@/components/website/homepage/VendorBanner";
 // import Promotions from "@/components/website/homepage/Promotions";
-import Extras from "@/components/website/homepage/Extras";
 import Feedback from "@/components/website/homepage/Feedback";
 import StructuredData, { websiteSchema, organizationSchema } from "@/components/shared/StructuredData";
+import QuickLinks from "@/components/website/homepage/QuickLinks";
 
 const Page = () => {
   return (
@@ -20,14 +20,16 @@ const Page = () => {
       <Hero />
       {/* <Promotions /> */}
       {/* <HeroSearchBox /> */}
-      {/* <QuickLinks /> */}
+      <QuickLinks />
       {/* <ExploreAccommodations /> */}
+      {/* <FeaturedEvents /> */}
       <RewardsBanner />
       {/* <ExploreMovies /> */}
       {/* <VendorBanner /> */}
       {/* <WhyChooseUs /> */}
       {/* <ExploreMovies /> */}
-      <Extras />
+      {/* <Extras /> */}
+      {/* <VendorExtras /> */}
       <Feedback />
     </div>
   );

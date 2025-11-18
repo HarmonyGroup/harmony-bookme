@@ -8,7 +8,7 @@ const RewardsBanner = () => {
       <div className="mx-auto w-full max-w-7xl px-5 pt-5">
         <div className="bg-muted border-gray-200 flex flex-col md:flex-row items-center md:items-center justify-center md:justify-between gap-6 rounded-xl p-6 py-8 md:py-6">
           <div className="flex flex-col items-center md:items-start justify-center md:justify-start">
-            <h1 className="text-primary text-base/relaxed md:text-xl/relaxed font-semibold">
+            <h1 className="text-primary text-base/relaxed md:text-lg/relaxed font-semibold">
               Earn rewards with every booking
             </h1>
             <p className="text-gray-500 text-xs/relaxed md:text-[13px] text-center font-normal mt-1.5 mb-4">

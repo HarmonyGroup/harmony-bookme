@@ -11,44 +11,44 @@ import {
 
 // Feedback data structure
 const feedbackData = [
-  {
-    id: 1,
-    name: "John Doe",
-    role: "Property Manager",
-    rating: 5,
-    comment: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Tempore deleniti aperiam ex laborum dolorem incidunt minima.",
-  },
+  // {
+  //   id: 1,
+  //   name: "John Doe",
+  //   role: "Property Manager",
+  //   rating: 5,
+  //   comment: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Tempore deleniti aperiam ex laborum dolorem incidunt minima.",
+  // },
   {
     id: 2,
-    name: "Sarah Johnson",
+    name: "Martins",
     role: "Event Organizer",
     rating: 4,
     comment: "Exceptional service and attention to detail. The team went above and beyond to make our event memorable.",
   },
   {
     id: 3,
-    name: "Michael Chen",
+    name: "Ayodele Alli",
     role: "Explorer",
     rating: 5,
     comment: "Amazing experience! The platform made booking accommodations so easy and convenient.",
   },
   {
     id: 4,
-    name: "Emily Rodriguez",
+    name: "Sarah Ibeh",
     role: "Business Owner",
     rating: 5,
     comment: "Outstanding customer support and seamless booking process. Highly recommended!",
   },
   {
     id: 5,
-    name: "David Thompson",
+    name: "John A.",
     role: "Traveler",
     rating: 4,
     comment: "Great variety of options and competitive pricing. Will definitely use again.",
   },
   {
     id: 6,
-    name: "Lisa Wang",
+    name: "Olaoluwa Adeyemi",
     role: "Event Planner",
     rating: 5,
     comment: "Professional service and excellent communication throughout the entire process.",
